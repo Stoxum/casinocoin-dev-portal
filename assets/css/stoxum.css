@@ -282,12 +282,12 @@ textarea {
   line-height: inherit;
 }
 a {
-  color: #346aa9;
+  color: #629e5b;
   text-decoration: none !important;
 }
 a:hover,
 a:focus {
-  color: #22456e;
+  color: #51854b;
   text-decoration: underline;
 }
 a:focus {
@@ -3550,8 +3550,10 @@ fieldset[disabled] .home .navbar-default .btn-link:focus {
 }
 .navbar-default {
   z-index: 99999;
-  background-color: #ffffff;
   border-bottom: 1px solid #346aa9;
+  background-image: url(../img/bg-min.png);
+  background-size: 45%;
+  background-color: #fff;
 }
 .navbar-default .navbar-brand {
   color: #777777;
@@ -5648,16 +5650,16 @@ Dev subnav
 .banner .dev_nav {
   background: #f4f6f7;
   padding: 5px;
-  border-top: 1px solid #346aa9;
+  border-top: 1px solid #77ba6e;
   border-bottom: 1px solid #cccccc;
 }
 .banner .dev_nav li {
   display: inline;
-  padding: 5px 5px 5px 15px;
+  padding: 15px 5px 17px 15px;
 }
 .banner .dev_nav li.dropdown {
   display: inline;
-  padding: 5px 5px 5px 15px;
+  padding: 15px 5px 17px 15px;
 }
 .banner .dev_nav li.dropdown:hover {
   padding: 15px 5px 17px 15px;
@@ -5666,12 +5668,17 @@ Dev subnav
 .banner .dev_nav li.dropdown a {
   padding: 15px 5px;
 }
+.banner .dev_nav li.dropdown a:hover {
+  color: #77ba6e;
+}
 .banner .dev_nav ul {
   margin: 10px 0px;
   padding-left: 15px;
 }
 .banner .dev_nav .dropdown-menu {
   background: #ffffff;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
+  padding-right: 10px;
 }
 .banner .dev_nav .dropdown-menu > li > a {
   padding: 5px;
@@ -6504,6 +6511,7 @@ Media Queries
   .logo_scrolled,
   .logo {
     margin-left: 15px;
+    max-height: 100%;
   }
   .navbar-default .navbar-nav > .active > a,
   .navbar-default .navbar-nav > .active > a:hover,
@@ -6816,8 +6824,8 @@ figure.alignnone {
   color: #999999;
   padding: 50px 0;
   font-size: 14px;
-  background: #4e4e50 url(../img/casinocoin_footer_v2.jpg) repeat-x center center;
-  background-position-y: -60px;
+  background: #4e4e50;
+  margin-top: 100px;
 }
 .content-info .readmore {
   position: absolute;
@@ -8679,4 +8687,7 @@ figure.alignnone {
 }
 .fa-meanpath:before {
   content: "\f20c";
+}
+.logo {
+  max-height: 100%;
 }

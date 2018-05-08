@@ -1,8 +1,8 @@
 The CSC Ledger uses public keys to verify cryptographic signatures in several places:
 
 * To authorize transactions, a public key is attached to the transaction. The public key must be mathematically associated with the sending CSC Ledger address or the sender's regular key address.
-* To secure peer-to-peer communications between `casinocoind` servers. This uses a "node public key" that the server generates randomly when it starts with an empty database.
-* To sign validation votes as part of the consensus process. This uses a "validator public key" that the server operator [defines in the config file](tutorial-casinocoind-setup.html#validator-setup).
+* To secure peer-to-peer communications between `stoxumd` servers. This uses a "node public key" that the server generates randomly when it starts with an empty database.
+* To sign validation votes as part of the consensus process. This uses a "validator public key" that the server operator [defines in the config file](tutorial-stoxumd-setup.html#validator-setup).
 
 Validator public keys and node public keys use the exact same format.
 

@@ -27,7 +27,7 @@ const pubkey_outer_hash = crypto.createHash('ripemd160');
 pubkey_outer_hash.update(pubkey_inner_hash.digest());
 const account_id = pubkey_outer_hash.digest();
 
-// Prefix the Account ID with the type prefix for "Casinocoin Address", then
+// Prefix the Account ID with the type prefix for "Stoxum Address", then
 //   calculate a checksum as the first 4 bytes of the SHA-256 of the SHA-256
 //   of the Account ID
 const address_type_prefix = Buffer.from([0x00]);

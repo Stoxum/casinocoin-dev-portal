@@ -39,10 +39,10 @@ cover_page:
 targets:
     # First member is the default that gets built when target not specified
     -   name: local
-        display_name: CasinoCoin Developer Portal
+        display_name: Stoxum Developer Portal
 
-    -   name: casinocoin.org
-        display_name: CasinoCoin Developer Center
+    -   name: stoxum.io
+        display_name: Stoxum Developer Center
         template: template-contentwithtoc.html
         link_subs:
             "reference-casinocoind.html": https://casinocoin.org/build/casinocoind-apis/
@@ -118,16 +118,16 @@ targets:
             "img/currency-number-format.png": https://cdn.casinocoin.org/wp-content/uploads/2017/11/currency-number-format.png
             "img/demurrage-currency-code-format.png": https://cdn.casinocoin.org/wp-content/uploads/2017/11/demurrage-currency-code-format.png
 
-    -   name: casinocoind-setup
-        display_name: casinocoind Setup Guide
+    -   name: stoxumd-setup
+        display_name: stoxumd Setup Guide
         link_subs:
-            "reference-casinocoind.html": https://casinocoin.org/build/casinocoind-apis/
+            "reference-stoxumd.html": https://casinocoin.org/build/stoxumd-apis/
 
 pages:
 # References are exhaustive lists of commands and options
-    -   name: CasinoCoinAPI
+    -   name: StoxumAPI
         category: References
-        html: reference-casinocoinapi.html
+        html: reference-stoxumapi.html
         # Currently this is the only page that's fetched remotely.
         md: index.md
         filters:
@@ -135,15 +135,15 @@ pages:
             - add_version
         targets:
             - local
-            - casinocoin.org
+            - stoxum.io
 
-    -   name: casinocoind
+    -   name: stoxumd
         category: References
-        html: reference-casinocoind.html
-        md: reference-casinocoind.md
+        html: reference-stoxumd.html
+        md: reference-stoxumd.md
         targets:
             - local
-            - casinocoin.org
+            - stoxum.io
 
     -   name: Transaction Format
         category: References
@@ -151,7 +151,7 @@ pages:
         md: reference-transaction-format.md
         targets:
             - local
-            - casinocoin.org
+            - stoxum.io
 
     -   name: Ledger Format
         category: References
@@ -159,29 +159,29 @@ pages:
         md: reference-ledger-format.md
         targets:
             - local
-            - casinocoin.org
+            - stoxum.io
 
-    # -   name: CasinoCoin Data API v2
+    # -   name: Stoxum Data API v2
     #     category: References
     #     html: reference-data-api.html
     #     md: reference-data-api.md
     #     targets:
     #         - local
-    #         - casinocoin.org
+    #         - stoxum.org
 
     -   md: reference-currency.md
         category: References
         html: reference-currency.html
         targets:
             - local
-            - casinocoin.org
+            - stoxum.io
 
     -   md: reference-amendments.md
         category: References
         html: reference-amendments.html
         targets:
             - local
-            - casinocoin.org
+            - stoxum.io
 
 # Tutorials are step-by-step guides to a specific goal
     -   name: How to Multi-Sign
@@ -190,14 +190,14 @@ pages:
         md: tutorial-multisign.md
         targets:
             - local
-            - casinocoin.org
+            - stoxum.io
 
     -   category: Tutorials
         html: tutorial-paychan.html
         md: tutorial-paychan.md
         targets:
             - local
-            - casinocoin.org
+            - stoxum.io
 
         # This is more like a "best practices" doc than Tutorials...
     -   name: Issuing and Operational Addresses
@@ -206,7 +206,7 @@ pages:
         md: concept-issuing-and-operational-addresses.md
         targets:
             - local
-            - casinocoin.org
+            - stoxum.io
 
     -   name: Reliable Transaction Submission
         category: Tutorials
@@ -214,34 +214,34 @@ pages:
         md: tutorial-reliable-transaction-submission.md
         targets:
             - local
-            - casinocoin.org
+            - stoxum.io
 
-    -   name: CasinoCoinAPI Beginners Guide
+    -   name: StoxumAPI Beginners Guide
         category: Tutorials
-        html: tutorial-casinocoinapi-beginners-guide.html
-        md: tutorial-casinocoinapi-beginners-guide.md
+        html: tutorial-stoxumapi-beginners-guide.html
+        md: tutorial-stoxumapi-beginners-guide.md
         targets:
             - local
-            - casinocoin.org
+            - stoxum.io
 
-    -   name: Install and configure casinocoind
+    -   name: Install and configure stoxumd
 
         category: Tutorials
-        html: tutorial-csc-install-casinocoind.html
-        md: tutorial-csc-install-casinocoind.md
+        html: tutorial-stm-install-stoxumd.html
+        md: tutorial-stm-install-stoxumd.md
         targets:
             - local
-            - casinocoin.org
-            - casinocoind-setup
+            - stoxum.io
+            - stoxumd-setup
 
-    # -   name: casinocoind Setup
+    # -   name: stoxumd Setup
         # category: Tutorials
-        # html: tutorial-casinocoind-setup.html
-        # md: tutorial-casinocoind-setup.md
+        # html: tutorial-stoxumd-setup.html
+        # md: tutorial-stoxumd-setup.md
         # targets:
             # - local
-            # - casinocoin.org
-            # - casinocoind-setup
+            # - stoxum.io
+            # - stoxumd-setup
 
         # The Gateway Guide is also a poor fit for the "tutorials" category
     -   name: Gateway Guide
@@ -250,39 +250,39 @@ pages:
         md: tutorial-gateway-guide.md
         targets:
             - local
-            - casinocoin.org
+            - stoxum.io
 
-# Listing CSC as an Exchange
+# Listing stm as an Exchange
     -   category: Tutorials
-        html: tutorial-listing-csc.html
-        md: tutorial-listing-csc.md
+        html: tutorial-listing-stm.html
+        md: tutorial-listing-stm.md
         targets:
             - local
-            - casinocoin.org
+            - stoxum.io
 
 # Most used commands for an exchange
     - category: Tutorials
-      html: tutorial-csc-implementation-cheat-sheet.html
-      md: tutorial-csc-implementation-cheat-sheet.md
+      html: tutorial-stm-implementation-cheat-sheet.html
+      md: tutorial-stm-implementation-cheat-sheet.md
       targets:
           - local
-          - casinocoin.org
+          - stoxum.io
 
     # -   md: tutorial-escrow.md
     #     html: tutorial-escrow.html
     #     category: Tutorials
     #     targets:
     #         - local
-    #         - casinocoin.org
+    #         - stoxum.io
 
-#Features describe how the CSC Ledger works in a mostly conceptual manner
+#Features describe how the stm Ledger works in a mostly conceptual manner
     -   name: Accounts
         category: Features
         html: concept-accounts.html
         md: concept-accounts.md
         targets:
             - local
-            - casinocoin.org
+            - stoxum.io
 
     -   name: Amendments
         category: Features
@@ -290,7 +290,7 @@ pages:
         md: concept-amendments.md
         targets:
             - local
-            - casinocoin.org
+            - stoxum.io
 
     -   name: Consensus Process
         category: Features
@@ -298,21 +298,21 @@ pages:
         md: concept-consensus.md
         targets:
             - local
-            - casinocoin.org
+            - stoxum.io
 
-    -   name: Reaching Consensus in the CSC Ledger
+    -   name: Reaching Consensus in the STM Ledger
         category: Features
         html: concept-reaching-consensus.html
         md: concept-reaching-consensus.md
         targets:
             - local
-            - casinocoin.org
+            - stoxum.io
 
     # -   md: concept-escrow.md
     #     category: Features
     #     targets:
     #         - local
-    #         - casinocoin.org
+    #         - stoxum.io
 
     -   name: Fee Voting
         category: Features
@@ -320,7 +320,7 @@ pages:
         md: concept-fee-voting.md
         targets:
             - local
-            - casinocoin.org
+            - stoxum.io
 
     -   name: Fees (Disambiguation)
         category: Features
@@ -328,7 +328,7 @@ pages:
         md: concept-fees.md
         targets:
             - local
-            - casinocoin.org
+            - stoxum.io
 
     -   name: Freeze
         category: Features
@@ -336,28 +336,28 @@ pages:
         md: concept-freeze.md
         targets:
             - local
-            - casinocoin.org
+            - stoxum.io
 
     -   md: concept-money.md
         category: Features
         html: concept-money.html
         targets:
             - local
-            - casinocoin.org
+            - stoxum.io
 
     -   md: concept-demurrage.md
         category: Features
         html: concept-demurrage.html
         targets:
             - local
-            - casinocoin.org
+            - stoxum.io
 
     -   md: concept-partial-payments.md
         category: Features
         html: concept-partial-payments.html
         targets:
             - local
-            - casinocoin.org
+            - stoxum.io
 
     -   name: Paths
         category: Features
@@ -365,7 +365,7 @@ pages:
         md: concept-paths.md
         targets:
             - local
-            - casinocoin.org
+            - stoxum.io
 
     -   name: Reserves
         category: Features
@@ -373,7 +373,7 @@ pages:
         md: concept-reserves.md
         targets:
             - local
-            - casinocoin.org
+            - stoxum.io
 
     -   name: Stand-Alone Mode
         category: Features
@@ -381,7 +381,7 @@ pages:
         md: concept-stand-alone-mode.md
         targets:
             - local
-            - casinocoin.org
+            - stoxum.io
 
     -   name: Transaction Cost
         category: Features
@@ -389,7 +389,7 @@ pages:
         md: concept-transaction-cost.md
         targets:
             - local
-            - casinocoin.org
+            - stoxum.io
 
     -   name: Transfer Fees
         category: Features
@@ -397,15 +397,15 @@ pages:
         md: concept-transfer-fees.md
         targets:
             - local
-            - casinocoin.org
+            - stoxum.io
 
-    -   name: Understanding the NoCasinocoin flag
+    -   name: Understanding the NoStoxum flag
         category: Features
-        html: concept-nocasinocoin.html
-        md: concept-nocasinocoin.md
+        html: concept-nostoxumcoin.html
+        md: concept-nostoxumcoin.md
         targets:
             - local
-            - casinocoin.org
+            - stoxum.io
 
     # -   name: "GB-2015-06: Corrections to Autobridging"
     #     category: Gateway Bulletins
@@ -413,7 +413,7 @@ pages:
     #     md: gb-2015-06.md
     #     targets:
     #         - local
-    #         - casinocoin.org
+    #         - stoxum.io
 
     # -   name: "GB-2015-05: Historical Ledger Query Migration"
     #     category: Gateway Bulletins
@@ -421,62 +421,62 @@ pages:
     #     md: gb-2015-05.md
     #     targets:
     #         - local
-    #         - casinocoin.org
+    #         - stoxum.io
 
 # API tools are interactive software for interfacing with real APIs
     -   name: WebSocket API Tool
         category: API Tools
-        html: casinocoin-api-tool.html
+        html: stoxum-api-tool.html
         sidebar: custom
         targets:
             - local
-            - casinocoin.org
-        template: template-casinocoin-api-tool.html
+            - stoxum.io
+        template: template-stoxum-api-tool.html
 
     # -   name: Data API v2 Tool
     #     category: API Tools
     #     html: data-api-v2-tool.html
     #     methods_js: js/apitool-methods-data_v2.js
-    #     rest_host: https://data.casinocoin.org
+    #     rest_host: https://data.stoxum.io
     #     doc_page: reference-data-api.html
     #     sidebar: custom
     #     targets:
     #         - local
-    #         - casinocoin.org
+    #         - stoxum.io
     #     template: template-rest-api-tool.html
 
-    -   name: casinocoind JSON-RPC Tool
+    -   name: stoxumd JSON-RPC Tool
         # This tool requires a local server w/ reverse proxy
         category: API Tools
         html: tool-jsonrpc.html
         methods_js: js/apitool-methods-jsonrpc.js
-        rest_host: http://localhost/casinocoind
-        doc_page: reference-casinocoind.html
+        rest_host: http://localhost/stoxumd
+        doc_page: reference-stoxumd.html
         sidebar: custom
         targets:
             - local
-            - casinocoin.org
+            - stoxum.io
         template: template-rest-api-tool.html
 
     -   name: Page Manifest
-        # Used to inform the casinocoin.org code what pages it should map
+        # Used to inform the stoxum.io code what pages it should map
         html: devportal-manifest.php
         template: template-manifest.php
         targets:
-            - casinocoin.org
+            - stoxum.io
 
 # Link Checker Config ------------------------------------------------------- #
 
 ignore_anchors_in:
     - data-api-v2-tool.html
-    - casinocoin-api-tool.html
+    - stoxum-api-tool.html
     - tool-jsonrpc.html
 
 #Sometimes, a link is not really problematic, but the link checker detects it
 # as such and the easiest solution is to ignore it.
 known_broken_links:
     # Strangely, Python doesn't like the cert here. Firefox is OK with it.
-    - https://validators.casinocoin.org
+    - https://validators.stoxum.io
 
     # These PDFs download OK in a browser
     - http://eur-lex.europa.eu/legal-content/EN/ALL/?uri=CELEX%3A32015R0847

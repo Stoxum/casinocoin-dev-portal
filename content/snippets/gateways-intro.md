@@ -2,4 +2,4 @@ Gateways are businesses that provide a way for money and other forms of value to
 
 * An **Issuing Gateway** receives money (or other assets of value) outside of the CSC Ledger, and creates issuances in the CSC Ledger. This provides a direct way for customers to get money in and out of the CSC Ledger. All currencies in the CSC Ledger, except for CSC, take the form of issuances tied to a specific issuing gateway.
 * A **Private Exchange** holds CSC and lets its customers buy and sell that CSC in its own system. Most cryptocurrencies rely on private exchanges to provide a market for the cryptocurrency, but the CSC Ledger has a currency exchange built into the protocol itself.
-* **Merchants** accept payment within the CSC Ledger in exchange for goods and services in the outside world. Currently, CasinoCoin (the company) does provide support for merchant operations using the CSC Ledger.
+* **Merchants** accept payment within the CSC Ledger in exchange for goods and services in the outside world. Currently, Stoxum (the company) does provide support for merchant operations using the CSC Ledger.

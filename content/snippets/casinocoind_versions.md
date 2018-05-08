@@ -1,1 +1,1 @@
-<!-- casinocoind release notes links -->
+<!-- stoxumd release notes links -->

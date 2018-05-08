@@ -2,10 +2,10 @@
 <html>
 <head>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.15.0/lodash.js"></script>
-  <script src="casinocoin-0.17.7-min.js"></script>
+  <script src="stoxum-0.17.7-min.js"></script>
   <script>
     console.log(ripple);
-    var api = new ripple.RippleAPI({server:'wss://ws01.casinocoin.org/', port: 4443});
+    var api = new ripple.RippleAPI({server:'wss://ws01.stoxum.io/', port: 4443});
     api.connect().then(function() {
         return api.getServerInfo();
     }).then(function(server_info) {

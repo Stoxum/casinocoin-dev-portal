@@ -1,4 +1,4 @@
-# Money in the CSC Ledger
+# Money in the STM Ledger
 
 The CSC Ledger is an advanced blockchain-like system that was designed to let people transact in multiple currencies. Users of the CSC Ledger can seamlessly track, trade, and settle multiple currencies in an exchange that's as decentralized as the network itself. Users can issue their own currency-like digital assets, which may or may not represent obligations owed outside the CSC Ledger. Tying it all together is CSC, the CSC Ledger's native cryptocurrency, which acts as a medium of exchange and serves anti-spam purposes.
 

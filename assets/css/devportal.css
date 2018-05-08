@@ -1,73 +1,73 @@
 .devportal-callout {
-    border-style: solid;
-    border-radius: 5px;
-    border-width: 1px;
-    border-left-width: 4px;
-    padding: 5px;
-    padding-left: 25px;
-    page-break-inside: avoid;
+  border-style: solid;
+  border-radius: 5px;
+  border-width: 1px;
+  border-left-width: 4px;
+  padding: 5px;
+  padding-left: 25px;
+  page-break-inside: avoid;
 }
 
 .devportal-callout > strong:first-child {
-    display: block;
-    page-break-after: avoid;
+  display: block;
+  page-break-after: avoid;
 }
 
 .devportal-callout.tip {
-    border-color: #5cb85c;
+  border-color: #5cb85c;
 }
 .devportal-callout.tip > strong:first-child:before {
-    content: "\f058"; /* fontawesome check-circle icon */
-    font-family: FontAwesome;
-    color: #5cb85c;
-    margin-left: -20px;
-    padding-right: 5px;
+  content: "\f058"; /* fontawesome check-circle icon */
+  font-family: FontAwesome;
+  color: #5cb85c;
+  margin-left: -20px;
+  padding-right: 5px;
 }
 
 .devportal-callout.note {
-    border-color: #5bc0de;
+  border-color: #5bc0de;
 }
 .devportal-callout.note > strong:first-child:before {
-    content: "\f05a"; /* fontawesome (i) info-circle icon */
-    font-family: FontAwesome;
-    color: #5bc0de;
-    margin-left: -20px;
-    padding-right: 5px;
+  content: "\f05a"; /* fontawesome (i) info-circle icon */
+  font-family: FontAwesome;
+  color: #5bc0de;
+  margin-left: -20px;
+  padding-right: 5px;
 }
 
 .devportal-callout.caution {
-    border-color: #f0ad4e;
+  border-color: #f0ad4e;
 }
 .devportal-callout.caution > strong:first-child:before {
-    content: "\f071"; /* fontawesome /!\ exclamation-triangle icon */
-    font-family: FontAwesome;
-    color: #f0ad4e;
-    margin-left: -20px;
-    padding-right: 5px;
+  content: "\f071"; /* fontawesome /!\ exclamation-triangle icon */
+  font-family: FontAwesome;
+  color: #f0ad4e;
+  margin-left: -20px;
+  padding-right: 5px;
 }
 
 .devportal-callout.warning {
-    border-color: #d9534f;
+  border-color: #d9534f;
 }
 .devportal-callout.warning > strong:first-child:before {
-    content: "\f057"; /* fontawesome (x) times-circle icon */
-    font-family: FontAwesome;
-    color: #d9534f;
-    margin-left: -20px;
-    padding-right: 5px;
+  content: "\f057"; /* fontawesome (x) times-circle icon */
+  font-family: FontAwesome;
+  color: #d9534f;
+  margin-left: -20px;
+  padding-right: 5px;
 }
 
 .navbar-header {
-    float: left;
+  float: left;
 }
 
 /* Big draft warning at top of page so it's hard to mix up with the live site */
 .draft-warning {
-    background-color: red;
-    color: white;
-    padding: 10px 20px;
-    margin: 10px;
-    float: right;
+  background-color: red;
+  color: white;
+  padding: 10px 20px;
+  margin: 10px;
+  float: right;
 }
 
 /* Images should occupy the full main column width if possible */
@@ -78,12 +78,12 @@
 
 /* But badge images shouldn't be resized */
 .content img.dactyl_badge {
-    width: initial;
+  width: initial;
 }
 
 /* dev portal content h5 should stand out from paragraph text */
 .content h5 {
-    font-weight: bold;
+  font-weight: bold;
 }
 
 /* Underline links in Dev Portal content */
@@ -120,7 +120,7 @@
   overflow: hidden;
   list-style-type: none;
   margin-right: 5px;
-  border-top: 1px solid #DBDDE2;
+  border-top: 1px solid #dbdde2;
 }
 .page-template-template-dev-portal-php .multicode ul > li:before {
   background: none;
@@ -129,8 +129,8 @@
 .page-template-template-dev-portal-php .multicode a,
 .page-template-template-dev-portal-php a.current {
   color: black;
-  background: #DFE2E7;
-  border: 1px solid #DBDDE2;
+  background: #dfe2e7;
+  border: 1px solid #dbdde2;
   padding: 1em 1em 0 1em;
   margin: 0px;
   text-decoration: none;
@@ -148,7 +148,7 @@
 
 .page-template-template-dev-portal-php .button {
   border-radius: 5px;
-  background-color: #27a2db;
+  background-color: #77ba6e;
   padding: 5px 20px;
   text-align: center;
   cursor: default;
@@ -160,15 +160,15 @@
   display: inline-block;
   vertical-align: middle;
   color: #ffffff;
-  -o-transition: .5s;
-  -webkit-transition: .5s;
-  transition: .5s;
+  -o-transition: 0.5s;
+  -webkit-transition: 0.5s;
+  transition: 0.5s;
 }
 .page-template-template-dev-portal-php .button:hover {
-  background-color: #43bded;
-  -o-transition: .5s;
-  -webkit-transition: .5s;
-  transition: .5s;
+  background-color: #69a561;
+  -o-transition: 0.5s;
+  -webkit-transition: 0.5s;
+  transition: 0.5s;
 }
 .page-template-template-dev-portal-php pre {
   overflow: visible;
@@ -190,10 +190,11 @@
   border-radius: 4px;
 }
 .page-template-template-dev-portal-php .code_sample pre code.expanded {
-  overflow: visible;
+  overflow: auto;
   max-height: none;
   position: absolute;
   min-width: 661px;
+  max-width: 100%;
 }
 .page-template-template-dev-portal-php .code_sample .code_toggler {
   position: absolute;
@@ -220,8 +221,8 @@
 }
 .page-template-template-dev-portal-php .level-1 a {
   color: #000000;
-  font-family: 'open_sansbold', sans-serif;
-  letter-spacing: .04em;
+  font-family: "open_sansbold", sans-serif;
+  letter-spacing: 0.04em;
 }
 .page-template-template-dev-portal-php .level-2 {
   margin-left: 2em;
@@ -268,6 +269,9 @@
   margin-top: -130px;
   height: 130px;
   visibility: hidden;
+}
+#dactyl_toc_sidebar {
+  margin-bottom: 50px;
 }
 @media (max-width: 1200px) {
   .page-template-template-dev-portal-php .dev_nav_wrapper {
@@ -448,7 +452,8 @@
   }
   .page-template-template-dev-portal-php .level-3:before {
     counter-increment: toclevel3;
-    content: counters(toclevel1, ".") "." counters(toclevel2, ".") "." counters(toclevel3, ".") ". " !important;
+    content: counters(toclevel1, ".") "." counters(toclevel2, ".") "."
+      counters(toclevel3, ".") ". " !important;
     display: inline !important;
     background: none !important;
     position: static !important;
@@ -458,50 +463,53 @@
 
 /*------------- Code Tabs -----------------------------------------*/
 .multicode {
-	color: #000;
-	border-bottom: 1px solid #DBDDE2;
-	margin: 12px 0px 0px 0px;
-	padding: 0 0 0 0;
-	z-index: 1;
-	padding-left: 10px;
+  color: #000;
+  border-bottom: 1px solid #dbdde2;
+  margin: 12px 0px 0px 0px;
+  padding: 0 0 0 0;
+  z-index: 1;
+  padding-left: 10px;
 }
 
 .multicode ul {
-    padding-bottom: 0;
+  padding-bottom: 0;
 }
 
 .multicode pre {
-    padding-top: 0;
+  padding-top: 0;
 }
 
 .multicode li {
-	display: inline;
-	overflow: hidden;
-	list-style-type: none;
+  display: inline;
+  overflow: hidden;
+  list-style-type: none;
 }
 
 .multicode ul > li:before {
-    background: none;
-    border: none;
+  background: none;
+  border: none;
 }
 
-.multicode a, a.current {
-	color: black;
-	background: #DFE2E7;
-	border: 1px solid #DBDDE2;
-	padding: 1em 1em 0 1em;
-	margin: 0px;
-	text-decoration: none; }
+.multicode a,
+a.current {
+  color: black;
+  background: #dfe2e7;
+  border: 1px solid #dbdde2;
+  padding: 1em 1em 0 1em;
+  margin: 0px;
+  text-decoration: none;
+}
 
 .multicode a.current {
-	background: #fff;
-	border-bottom: 1px solid #fff;
-    color : black;
+  background: #fff;
+  border-bottom: 1px solid #fff;
+  color: black;
 }
 
 .multicode a:hover {
-	color: black;
-	background: white;
+  color: black;
+  background: white;
 }
 
-.multicode a.current:hover {}
+.multicode a.current:hover {
+}
