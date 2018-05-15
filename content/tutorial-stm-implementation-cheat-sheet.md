@@ -2,13 +2,13 @@
 
 ## Overview
 
-CasinoCoin commands can be executed via the commandline daemon, json-rpc or a websocket connection.
+Stoxum commands can be executed via the commandline daemon, json-rpc or a websocket connection.
 
 **Note:** This document uses examples via the commandline.
 
 ## Important Information
 
-* The public address (account_id) will always starts with a lowercase '`c`' instead of the uppercase '`C`' as used by classic casinocoin.
+* The public address (account_id) will always starts with a lowercase '`c`' instead of the uppercase '`C`' as used by classic stoxum.
 * The daemon is _NOT_ a wallet! So an exchange must safeguard its own private keys per account!
 
 # Most used commands for exchanges
@@ -33,17 +33,17 @@ _Commandline_
 
 ```bash
 #Syntax: account_info account [ledger_index|ledger_hash] [strict]
-casinocoind --conf=/etc/casinocoind/casinocoind.cfg account_info c9Yc5KuDTbS5TrnrzLVR1eXTgy4KuqG23c validated
+stoxumd --conf=/etc/stoxumd/stoxumd.cfg account_info c9Yc5KuDTbS5TrnrzLVR1eXTgy4KuqG23c validated
 ```
 
 <!-- MULTICODE_BLOCK_END -->
 
-[Try it! >](casinocoin-api-tool.html#account_info)
+[Try it! >](stoxum-api-tool.html#account_info)
 
 #### Output
 
 ```json
-Loading: "/etc/casinocoind/casinocoind.cfg"
+Loading: "/etc/stoxumd/stoxumd.cfg"
 2017-Nov-10 15:40:04 HTTPClient:WRN setup_ServerHandlerparse_Portssetup_Clientsetup_Overlay
 2017-Nov-10 15:40:04 HTTPClient:NFO Connecting to 127.0.0.1:5005
 
@@ -81,7 +81,7 @@ _Commandline_
 
 ```bash
 #Syntax: wallet_propose [passphrase]
-casinocoind --conf=/etc/casinocoind/casinocoind.cfg wallet_propose
+stoxumd --conf=/etc/stoxumd/stoxumd.cfg wallet_propose
 ```
 
 <!-- MULTICODE_BLOCK_END -->
@@ -89,7 +89,7 @@ casinocoind --conf=/etc/casinocoind/casinocoind.cfg wallet_propose
 #### Output
 
 ```json
-Loading: "/etc/casinocoind/casinocoind.cfg"
+Loading: "/etc/stoxumd/stoxumd.cfg"
 2017-Nov-10 15:51:08 HTTPClient:WRN setup_ServerHandlerparse_Portssetup_Clientsetup_Overlay 2017-Nov-10 15:51:08 HTTPClient:NFO Connecting to 127.0.0.1:5005
 
 {
@@ -107,7 +107,7 @@ Loading: "/etc/casinocoind/casinocoind.cfg"
 }
 ```
 
-**Tip:** - `account_id` is the public address which always starts with a lowercase '`c`' instead of the uppercase '`C`' for the classic casinocoin<br/> - `master_seed is your secret necesarry to sign a transaction<br/> - running`wallet_propose`with the`master_seed` as input will result in the same output<br/>
+**Tip:** - `account_id` is the public address which always starts with a lowercase '`c`' instead of the uppercase '`C`' for the classic stoxum<br/> - `master_seed is your secret necesarry to sign a transaction<br/> - running`wallet_propose`with the`master_seed` as input will result in the same output<br/>
 
 ## validateaddress
 
@@ -119,17 +119,17 @@ _Commandline_
 
 ```bash
 #Syntax: account_info account [ledger_index|ledger_hash] [strict]
-casinocoind --conf=/etc/casinocoind/casinocoind.cfg account_info c4jZZYa6JY2mzvPn7fpHDBmXNUYmgB6GV8 validated
+stoxumd --conf=/etc/stoxumd/stoxumd.cfg account_info c4jZZYa6JY2mzvPn7fpHDBmXNUYmgB6GV8 validated
 ```
 
 <!-- MULTICODE_BLOCK_END -->
 
-[Try it! >](casinocoin-api-tool.html#account_info)
+[Try it! >](stoxum-api-tool.html#account_info)
 
 #### Output
 
 ```json
-Loading: "/etc/casinocoind/casinocoind.cfg"
+Loading: "/etc/stoxumd/stoxumd.cfg"
 2017-Nov-10 16:16:11 HTTPClient:WRN setup_ServerHandlerparse_Portssetup_Clientsetup_Overlay 2017-Nov-10 16:16:11 HTTPClient:NFO Connecting to 127.0.0.1:5005
 
 {
@@ -152,7 +152,7 @@ Loading: "/etc/casinocoind/casinocoind.cfg"
 }
 ```
 
-**Tip:** - this command does not check the actual correctness of the address. it only shows if an account has been activated on the ledger by sending at least the minimal amount of coins to it. If not it shows `"error" : "actNotFound"`<br> - check the minimal account and fee requirements with the [`server_state`](reference-casinocoind.html#server-state) command -> `"reserve_base" : 1000000000` -> minimal amount of satoshi to activate an account<br> - if an exact check is needed it can be done by using a base58 check like for bitcoin but replacing it with the casinocoin alphabet<br>
+**Tip:** - this command does not check the actual correctness of the address. it only shows if an account has been activated on the ledger by sending at least the minimal amount of coins to it. If not it shows `"error" : "actNotFound"`<br> - check the minimal account and fee requirements with the [`server_state`](reference-stoxumd.html#server-state) command -> `"reserve_base" : 1000000000` -> minimal amount of satoshi to activate an account<br> - if an exact check is needed it can be done by using a base58 check like for bitcoin but replacing it with the stoxum alphabet<br>
 
 ## sendtoaddress
 
@@ -164,19 +164,19 @@ _Commandline_
 
 ```bash
 #Syntax: sign secret tx_json [offline]
-casinocoind --conf=/etc/casinocoind/casinocoind.cfg sign s████████████████████████ '{"TransactionType": "Payment", "Account": "cQsHT9fnGyAWzQKa7urb8FB6B6x9RaeTp2", "Destination": "c9Yc5KuDTbS5TrnrzLVR1eXTgy4KuqG23c", "Amount": "400000000", "Sequence": 1, "Fee": "100000"}' offline
+stoxumd --conf=/etc/stoxumd/stoxumd.cfg sign s████████████████████████ '{"TransactionType": "Payment", "Account": "cQsHT9fnGyAWzQKa7urb8FB6B6x9RaeTp2", "Destination": "c9Yc5KuDTbS5TrnrzLVR1eXTgy4KuqG23c", "Amount": "400000000", "Sequence": 1, "Fee": "100000"}' offline
 ```
 
 <!-- MULTICODE_BLOCK_END -->
 
-[Try it! >](casinocoin-api-tool.html#sign)
+[Try it! >](stoxum-api-tool.html#sign)
 
 **Tip:** - `s████████████████████████` is the master_seed from the wallet_propose command<br/> - all amounts are in satoshis<br/> - the resulting tx_blob contains the binary representation of the fully-qualified, signed transaction, as hex - Next step is submitting the tx_blob:<br/>
-`casinocoind --conf=/etc/casinocoind/casinocoind.cfg submit 1200002280000000240000000361D4838D7EA4C68000000000000000000555344****************`
+`stoxumd --conf=/etc/stoxumd/stoxumd.cfg submit 1200002280000000240000000361D4838D7EA4C68000000000000000000555344****************`
 
 ## settxfee
 
-**Tip:** This command does not exist at server level, if not added to a transaction it will use the blockchains default fee as returned with the [`server_state`](reference-casinocoind.html#server-state) command.
+**Tip:** This command does not exist at server level, if not added to a transaction it will use the blockchains default fee as returned with the [`server_state`](reference-stoxumd.html#server-state) command.
 
 ## gettransaction
 
@@ -190,17 +190,17 @@ _Commandline_
 
 ```bash
 #Syntax: tx transaction [binary]
-casinocoind --conf=/etc/casinocoind/casinocoind.cfg tx 55805B351F9DA423BC91433F65CB072594D26CD7C14C25FFEF729806BFB9E927
+stoxumd --conf=/etc/stoxumd/stoxumd.cfg tx 55805B351F9DA423BC91433F65CB072594D26CD7C14C25FFEF729806BFB9E927
 ```
 
 <!-- MULTICODE_BLOCK_END -->
 
-[Try it! >](casinocoin-api-tool.html#tx)
+[Try it! >](stoxum-api-tool.html#tx)
 
 #### Output
 
 ```json
-Loading: "/etc/casinocoind/casinocoind.cfg"
+Loading: "/etc/stoxumd/stoxumd.cfg"
 2017-Nov-10 16:27:43 HTTPClient:WRN setup_ServerHandlerparse_Portssetup_Clientsetup_Overlay 2017-Nov-10 16:27:43 HTTPClient:NFO Connecting to 127.0.0.1:5005
 
 {
@@ -278,38 +278,38 @@ Loading: "/etc/casinocoind/casinocoind.cfg"
 }
 ```
 
-**Tip:** - command returns full transaction details for the tx from `Account` to `Destination` for `Amount` and `Fee`<br/> - the `TransactionResult` only indicates if a transaction was successfully transmitted to the blockchain<br/> - when `"validated" : true` -> the transaction is final in the ledger -> so there is no need for waiting for extra confirmations as there are no changes possible anymore in the past (no Orphans exist on the new blockchain!)<br/> - please note that the date format differs from the default unix timestamp. It's an unsigned integer with the number of seconds since the CasinoCoin epoch: `January 1st, 2000 (00:00 UTC)`<br/>
+**Tip:** - command returns full transaction details for the tx from `Account` to `Destination` for `Amount` and `Fee`<br/> - the `TransactionResult` only indicates if a transaction was successfully transmitted to the blockchain<br/> - when `"validated" : true` -> the transaction is final in the ledger -> so there is no need for waiting for extra confirmations as there are no changes possible anymore in the past (no Orphans exist on the new blockchain!)<br/> - please note that the date format differs from the default unix timestamp. It's an unsigned integer with the number of seconds since the Stoxum epoch: `January 1st, 2000 (00:00 UTC)`<br/>
 
 #### Helpers
 
 These are the JavaScript helper methods we use to do the conversions:
 
 ```javascript
-static casinocoinToUnixTimestamp(rpepoch: number): number {
+static stoxumToUnixTimestamp(rpepoch: number): number {
     return (rpepoch + 0x386D4380) * 1000
 }
 ```
 
 ```javascript
-static unixToCasinocoinTimestamp(timestamp: number): number {
+static unixToStoxumTimestamp(timestamp: number): number {
     return Math.round(timestamp / 1000) - 0x386D4380
 }
 ```
 
 ```javascript
-static casinocoinTimeToISO8601(casinocoinTime: number): string {
-    return new Date(this.casinocoinToUnixTimestamp(casinocoinTime)).toISOString()
+static stoxumTimeToISO8601(stoxumTime: number): string {
+    return new Date(this.stoxumToUnixTimestamp(stoxumTime)).toISOString()
 }
 ```
 
 ```javascript
-static iso8601ToCasinocoinTime(iso8601: string): number {
-    return this.unixToCasinocoinTimestamp(Date.parse(iso8601))
+static iso8601ToStoxumTime(iso8601: string): number {
+    return this.unixToStoxumTimestamp(Date.parse(iso8601))
 }
 ```
 
 ```javascript
-static casinocoinTimeNow(): number {
-    return this.unixToCasinocoinTimestamp(Date.now());
+static stoxumTimeNow(): number {
+    return this.unixToStoxumTimestamp(Date.now());
 }
 ```

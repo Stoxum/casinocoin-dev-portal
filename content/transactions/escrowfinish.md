@@ -1,10 +1,10 @@
 ## EscrowFinish
 
-[[Source]<br>](https://github.com/casinocoin/casinocoind/blob/develop/src/casinocoin/app/tx/impl/Escrow.cpp "Source")
+[[Source]<br>](https://github.com/stoxum/stoxumd/src/stoxum/app/tx/impl/Escrow.cpp "Source")
 
 _Requires the [Escrow Amendment](reference-amendments.html#escrow)._
 
-Deliver CSC from a held payment to the recipient.
+Deliver STM from a held payment to the recipient.
 
 Example EscrowFinish:
 
@@ -32,4 +32,4 @@ Any account may submit an EscrowFinish transaction.
 - If the held payment has a `Condition`, you cannot execute it unless you provide a matching `Fulfillment` for the condition.
 - You cannot execute a held payment after it has expired. Specifically, if the corresponding [EscrowCreate transaction][] specified a `CancelAfter` time that is before the close time of the most recently-closed ledger, the EscrowFinish transaction fails.
 
-**Note:** The minimum [transaction cost](concept-transaction-cost.html) to submit an EscrowFinish transaction increases if it contains a fulfillment. If the transaction has no fulfillment, the transaction cost is the standard 10 drops. If the transaction contains a fulfillment, the transaction cost is 330 [drops of CSC](reference-casinocoind.html#specifying-currency-amounts) plus another 10 drops for every 16 bytes in size of the preimage.
+**Note:** The minimum [transaction cost](concept-transaction-cost.html) to submit an EscrowFinish transaction increases if it contains a fulfillment. If the transaction has no fulfillment, the transaction cost is the standard 10 drops. If the transaction contains a fulfillment, the transaction cost is 330 [drops of STM](reference-stoxumd.html#specifying-currency-amounts) plus another 10 drops for every 16 bytes in size of the preimage.

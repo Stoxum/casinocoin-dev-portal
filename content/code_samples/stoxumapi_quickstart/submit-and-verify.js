@@ -1,5 +1,5 @@
 'use strict';
-/* import CasinocoinAPI and support libraries */
+/* import StoxumAPI and support libraries */
 const CasinocoinAPI = require('casinocoin-libjs').CasinocoinAPI;
 const assert = require('assert');
 
@@ -16,7 +16,7 @@ const myOrder = {
     'value': '100'
   },
   'totalPrice': {
-    'currency': 'CSC',
+    'currency': 'STM',
     'value': '1000'
   }
 };
@@ -24,13 +24,13 @@ const myOrder = {
 /* Milliseconds to wait between checks for a new ledger. */
 const INTERVAL = 1000;
 /* Instantiate CasinocoinAPI. Uses s2 (full history server) */
-const api = new CasinocoinAPI({server: 'wss://ws01.casinocoin.org', port: 4443});
+const api = new CasinocoinAPI({ server: 'wss://ws01.stoxum.io/', port: 4443 });
 /* Number of ledgers to check for valid transaction before failing */
 const ledgerOffset = 5;
-const myInstructions = {maxLedgerVersionOffset: ledgerOffset};
+const myInstructions = { maxLedgerVersionOffset: ledgerOffset };
 
 
-/* Verify a transaction is in a validated CSC Ledger version */
+/* Verify a transaction is in a validated STM Ledger version */
 function verifyTransaction(hash, options) {
   console.log('Verifing Transaction');
   return api.getTransaction(hash, options).then(data => {
@@ -44,7 +44,7 @@ function verifyTransaction(hash, options) {
     if (error instanceof api.errors.PendingLedgerVersionError) {
       return new Promise((resolve, reject) => {
         setTimeout(() => verifyTransaction(hash, options)
-		.then(resolve, reject), INTERVAL);
+          .then(resolve, reject), INTERVAL);
       });
     }
     return error;
@@ -52,7 +52,7 @@ function verifyTransaction(hash, options) {
 }
 
 
-/* Function to prepare, sign, and submit a transaction to the CSC Ledger. */
+/* Function to prepare, sign, and submit a transaction to the STM Ledger. */
 function submitTransaction(lastClosedLedgerVersion, prepared, secret) {
   const signedData = api.sign(prepared.txJSON, secret);
   return api.submit(signedData.signedTransaction).then(data => {
@@ -69,7 +69,7 @@ function submitTransaction(lastClosedLedgerVersion, prepared, secret) {
     };
     return new Promise((resolve, reject) => {
       setTimeout(() => verifyTransaction(signedData.id, options)
-	.then(resolve, reject), INTERVAL);
+        .then(resolve, reject), INTERVAL);
     });
   });
 }

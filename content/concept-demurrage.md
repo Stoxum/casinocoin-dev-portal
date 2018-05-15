@@ -1,12 +1,12 @@
 # Demurrage
 
-**Warning:** Demurrage is a deprecated feature with no ongoing support. This page describes historical behavior of older versions of CasinoCoin software.
+**Warning:** Demurrage is a deprecated feature with no ongoing support. This page describes historical behavior of older versions of Stoxum software.
 
-[Demurrage](http://en.wikipedia.org/wiki/Demurrage_%28currency%29) is a negative interest rate on assets held that represents the cost of holding those assets. To represent the demurrage on an issued currency in the CSC Ledger, you can track it using a custom [currency code](reference-currency.html#currency-codes) that indicates the demurrage rate. This effectively creates separate versions of the currency for each varying amount of demurrage. Client applications can support this by representing the demurraging currency code with an annual percentage rate alongside the currency code. For example: "XAU (-0.5%pa)".
+[Demurrage](http://en.wikipedia.org/wiki/Demurrage_%28currency%29) is a negative interest rate on assets held that represents the cost of holding those assets. To represent the demurrage on an issued currency in the STM Ledger, you can track it using a custom [currency code](reference-currency.html#currency-codes) that indicates the demurrage rate. This effectively creates separate versions of the currency for each varying amount of demurrage. Client applications can support this by representing the demurraging currency code with an annual percentage rate alongside the currency code. For example: "XAU (-0.5%pa)".
 
 ## Representing Demurraging Currency Amounts
 
-Rather than continuously update all amounts in the CSC Ledger, this approach divides amounts of interest-bearing or demurraging currency into two types of amount: "ledger values" recorded in the CSC Ledger, and "display values" shown to people. The "ledger values" represent the value of the currency at a fixed point, namely the "CasinoCoin Epoch" of midnight January 1, 2000. The "display values" represent the amount at a later point in time (usually the current time) after calculating continuous interest or demurrage from the CasinoCoin Epoch until that time.
+Rather than continuously update all amounts in the STM Ledger, this approach divides amounts of interest-bearing or demurraging currency into two types of amount: "ledger values" recorded in the STM Ledger, and "display values" shown to people. The "ledger values" represent the value of the currency at a fixed point, namely the "Stoxum Epoch" of midnight January 1, 2000. The "display values" represent the amount at a later point in time (usually the current time) after calculating continuous interest or demurrage from the CasinoCoin Epoch until that time.
 
 **Tip:** You can think of demurrage as similar to inflation, where the value of all assets affected by it decreases over time, but the ledger always holds amounts in year-2000 values. This does not reflect actual real-world inflation; demurrage is more like hypothetical inflation at a constant rate.
 
@@ -35,7 +35,7 @@ To convert between display amounts and ledger amounts, you can use the following
 2. Apply it to the amount to convert:
     - To convert ledger values to display values, multiply by the demurrage coefficient.
     - To convert display values to ledger values, divide by the demurrage coefficient.
-3. If necessary, adjust the resulting value so that it can be represented to the desired accuracy. Ledger values are limited to 15 decimal digits of precision, according to the CSC Ledger's [issued currency format](reference-currency.html#issued-currency-precision).
+3. If necessary, adjust the resulting value so that it can be represented to the desired accuracy. Ledger values are limited to 15 decimal digits of precision, according to the STM Ledger's [issued currency format](reference-currency.html#issued-currency-precision).
 
 
 ## Interest-Bearing Currency Code Format
@@ -62,7 +62,7 @@ To calculate an e-folding time for a given rate of annual percent interest:
 3. Take the natural log of that number. For example, **ln(0.995) = -0.005012541823544286**. (This number is positive if the initial interest rate was positive, and negative if the interest rate was negative.)
 4. Take the number of seconds in one year (31536000) and divide by the natural log result from the previous step. For example, **31536000 ÷ -0.005012541823544286 = -6291418827.045599**. This result is the e-folding time in seconds.
 
-**Note:** By convention, CasinoCoin's interest/demurrage rules use a fixed number of seconds per year (31536000), which is not adjusted for leap days or leap seconds.
+**Note:** By convention, Stoxum's interest/demurrage rules use a fixed number of seconds per year (31536000), which is not adjusted for leap days or leap seconds.
 
 ## Client Support
 
@@ -74,11 +74,11 @@ To support interest-bearing and demurraging currencies, client applications must
 
 - Clients must distinguish between currencies that do and do not have interest or demurrage, and among currencies that have different rates of interest or demurrage. Clients should be able to parse the [Interest-Bearing Currency Code Format](#interest-bearing-currency-code-format) into a display such as "XAU (-0.5% pa)".
 
-### casinocoin-libjs Support
+### stoxum-libjs Support
 
-Demurrage was supported in casinocoin-libjs versions **0.7.37** through **0.12.9**. Demurrage is ***not supported*** in [CasinocoinAPI](reference-casinocoinapi.html).
+Demurrage was supported in stoxum-libjs versions **0.7.37** through **0.12.9**. Demurrage is ***not supported*** in [StoxumAPI](reference-casinocoinapi.html).
 
-The following code samples demonstrate how to use compatible versions of casinocoin-libjs to convert between ledger values and display values. 
+The following code samples demonstrate how to use compatible versions of casinocoin-libjs to convert between ledger values and display values.
 
 To convert from a display value to a ledger value, use `Amount.from_human()`:
 

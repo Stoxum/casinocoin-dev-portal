@@ -1,10 +1,10 @@
 ## EscrowCreate
 
-[[Source]<br>](https://github.com/casinocoin/casinocoind/blob/develop/src/casinocoin/app/tx/impl/Escrow.cpp "Source")
+[[Source]<br>](https://github.com/stoxum/stoxumd/src/stoxum/app/tx/impl/Escrow.cpp "Source")
 
 _Requires the [Escrow Amendment](reference-amendments.html#escrow)._
 
-Sequester CSC until the escrow process either finishes or is canceled.
+Sequester STM until the escrow process either finishes or is canceled.
 
 Example EscrowCreate:
 
@@ -24,10 +24,10 @@ Example EscrowCreate:
 
 | Field            | JSON Type | [Internal Type][] | Description               |
 |:-----------------|:----------|:------------------|:--------------------------|
-| `Amount`         | String    | Amount            | Amount of [CSC, in drops][Currency Amount], to deduct from the sender's balance and escrow. Once escrowed, the CSC can either go to the `Destination` address (after the `FinishAfter` time) or returned to the sender (after the `CancelAfter` time). |
-| `Destination`    | String    | AccountID         | Address to receive escrowed CSC. |
-| `CancelAfter`    | Number    | UInt32            | _(Optional)_ The time, in [seconds since the CasinoCoin Epoch](reference-casinocoind.html#specifying-time), when this escrow expires. This value is immutable; the funds can only be returned the sender after this time. |
-| `FinishAfter`    | Number    | UInt32            | _(Optional)_ The time, in [seconds since the CasinoCoin Epoch](reference-casinocoind.html#specifying-time), when the escrowed CSC can be released to the recipient. This value is immutable; the funds cannot move until this time is reached. |
+| `Amount`         | String    | Amount            | Amount of [STM, in drops][Currency Amount], to deduct from the sender's balance and escrow. Once escrowed, the STM can either go to the `Destination` address (after the `FinishAfter` time) or returned to the sender (after the `CancelAfter` time). |
+| `Destination`    | String    | AccountID         | Address to receive escrowed STM. |
+| `CancelAfter`    | Number    | UInt32            | _(Optional)_ The time, in [seconds since the Stoxum Epoch](reference-stoxumd.html#specifying-time), when this escrow expires. This value is immutable; the funds can only be returned the sender after this time. |
+| `FinishAfter`    | Number    | UInt32            | _(Optional)_ The time, in [seconds since the Stoxum Epoch](reference-stoxumd.html#specifying-time), when the escrowed STM can be released to the recipient. This value is immutable; the funds cannot move until this time is reached. |
 | `Condition`      | String    | VariableLength    | _(Optional)_ Hex value representing a [PREIMAGE-SHA-256 crypto-condition](https://tools.ietf.org/html/draft-thomas-crypto-conditions-02#section-8.1). The funds can only be delivered to the recipient if this condition is fulfilled. |
 | `DestinationTag` | Number    | UInt32            | _(Optional)_ Arbitrary tag to further specify the destination for this escrowed payment, such as a hosted recipient at the destination address. |
 | `SourceTag`      | Number    | UInt32            | _(Optional)_ Arbitrary tag to further specify the source for this escrowed payment, such as a hosted sender at the source address. |

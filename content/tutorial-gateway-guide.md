@@ -1,20 +1,20 @@
-# Becoming an CSC Ledger Gateway
+# Becoming an STM Ledger Gateway
 
-**Gateways** are the businesses that link the CSC Ledger to the rest of the world. An existing online financial institution can expand to act as a gateway in the the CSC Ledger. By becoming an CSC Ledger gateway, a financial services business can gain several advantages:
+**Gateways** are the businesses that link the STM Ledger to the rest of the world. An existing online financial institution can expand to act as a gateway in the the STM Ledger. By becoming an STM Ledger gateway, a financial services business can gain several advantages:
 
-* By enabling its customers to send and receive value in the CSC Ledger, the business increases its value proposition to customers.
-* By accepting payments from the CSC Ledger, the business increases the number of ways that customers can fund accounts at its business, even internationally.
-* The business can use CSC Ledger-related services as a new source of revenue.
+* By enabling its customers to send and receive value in the STM Ledger, the business increases its value proposition to customers.
+* By accepting payments from the STM Ledger, the business increases the number of ways that customers can fund accounts at its business, even internationally.
+* The business can use STM Ledger-related services as a new source of revenue.
 
-This document explains the concepts and steps necessary to become an CSC Ledger gateway. In this document, we use a fictional online currency exchange named "ACME" and its customers as examples, to show how ACME can expand its business to include being an CSC Ledger gateway.
+This document explains the concepts and steps necessary to become an STM Ledger gateway. In this document, we use a fictional online currency exchange named "ACME" and its customers as examples, to show how ACME can expand its business to include being an STM Ledger gateway.
 
 
 ## Contact Information
 
-You are not on your own. CasinoCoin wants gateways to succeed, so we are here to help. Please contact us if you need help building and growing your gateway.
+You are not on your own. Stoxum wants gateways to succeed, so we are here to help. Please contact us if you need help building and growing your gateway.
 
-* Contact [partners@casinocoin.org](mailto:partners@casinocoin.org) for enterprise-class integrations, infrastructure advice, and other business development needs.
-* Contact [support@casinocoin.org](mailto:support@casinocoin.org) for technical questions, clarifications, bug reports, and feature requests.
+* Contact [partners@stoxum.org](mailto:partners@stoxum.org) for enterprise-class integrations, infrastructure advice, and other business development needs.
+* Contact [support@stoxum.org](mailto:support@stoxum.org) for technical questions, clarifications, bug reports, and feature requests.
 
 
 ## Gateways Explained
@@ -25,41 +25,41 @@ This guide focuses on running an **issuing gateway**.
 
 ### Trust Lines and Issuances
 
-All assets in the CSC Ledger, except for the native cryptocurrency CSC, are represented as _issuances_, which are digital balances that represent currency or assets of value held by an issuer. Within the CSC Ledger, counterparties can send and trade issuances without requiring intervention from the issuer. Typically, a gateway sends issuances to customers when it receives money in systems and ledgers outside the CSC Ledger, and promises to send money to customers in outside systems in exchange for being repaid in issuances in the CSC Ledger. Issuances get their value from a gateway's agreement to honor the obligation that the issuances represent. No computer system can force an CSC Ledger gateway to honor that obligation.
+All assets in the STM Ledger, except for the native cryptocurrency STM, are represented as _issuances_, which are digital balances that represent currency or assets of value held by an issuer. Within the STM Ledger, counterparties can send and trade issuances without requiring intervention from the issuer. Typically, a gateway sends issuances to customers when it receives money in systems and ledgers outside the STM Ledger, and promises to send money to customers in outside systems in exchange for being repaid in issuances in the STM Ledger. Issuances get their value from a gateway's agreement to honor the obligation that the issuances represent. No computer system can force an STM Ledger gateway to honor that obligation.
 
-The CSC Ledger has a system of directional accounting relationships, called _trust lines_, to make sure that users only hold issuances from counterparties they trust.
+The STM Ledger has a system of directional accounting relationships, called _trust lines_, to make sure that users only hold issuances from counterparties they trust.
 
-A "trust line" is link between two addresses in the CSC Ledger. A trust line represents an explicit statement of willingness to hold gateway debt obligations. When a customer sends money into the CSC Ledger, a gateway takes custody of those assets outside of CasinoCoin, and sends issuances in the CSC Ledger to the customer's address. When a customer sends money out of the CSC Ledger, she makes an CSC Ledger payment to the gateway, and the gateway credits the customer in its own system of record, or in some other account.
+A "trust line" is link between two addresses in the STM Ledger. A trust line represents an explicit statement of willingness to hold gateway debt obligations. When a customer sends money into the STM Ledger, a gateway takes custody of those assets outside of Stoxum, and sends issuances in the STM Ledger to the customer's address. When a customer sends money out of the STM Ledger, she makes an STM Ledger payment to the gateway, and the gateway credits the customer in its own system of record, or in some other account.
 
 
-### CSC
+### STM
 
-**CSC** is the native cryptocurrency of the CSC Ledger. Like issuances, CSC can be freely sent and exchanged among CSC Ledger addresses. Unlike issuances, CSC is not tied to an accounting relationship. CSC can be sent directly from any CSC Ledger address to any other, without going through a gateway or liquidity provider. This helps make CSC a convenient bridge currency. For more information on CSC, see the [CSC Portal](https://ripple.com/xrp-portal/).
+**STM** is the native cryptocurrency of the STM Ledger. Like issuances, STM can be freely sent and exchanged among STM Ledger addresses. Unlike issuances, STM is not tied to an accounting relationship. STM can be sent directly from any STM Ledger address to any other, without going through a gateway or liquidity provider. This helps make STM a convenient bridge currency. For more information on STM, see the [STM Portal](https://ripple.com/xrp-portal/).
 
-CSC also serves other purposes in the CSC Ledger, in particular as a protective measure against spamming the network. All CSC Ledger addresses need a small amount of CSC to pay the costs of maintaining the CSC Ledger. The [transaction cost](concept-transaction-cost.html) and [reserve](concept-reserves.html) are neutral fees denoted in CSC and not paid to any party.
+STM also serves other purposes in the STM Ledger, in particular as a protective measure against spamming the network. All STM Ledger addresses need a small amount of STM to pay the costs of maintaining the STM Ledger. The [transaction cost](concept-transaction-cost.html) and [reserve](concept-reserves.html) are neutral fees denoted in STM and not paid to any party.
 
-Issuing gateways do not need to accumulate or exchange CSC. They must only hold a small balance of CSC to send transactions through the network. The CSC equivalent of $10 USD should be enough for at least one year of transaction costs for a busy gateway.
+Issuing gateways do not need to accumulate or exchange STM. They must only hold a small balance of STM to send transactions through the network. The STM equivalent of $10 USD should be enough for at least one year of transaction costs for a busy gateway.
 
-Private exchanges and liquidity providers may choose to hold additional CSC for trading. CasinoCoin (the company) **does not** promote CSC as a speculative investment.
+Private exchanges and liquidity providers may choose to hold additional STM for trading. Stoxum (the company) **does not** promote STM as a speculative investment.
 
 ### Liquidity and Currency Exchange
 
-The CSC Ledger contains a currency exchange, where any user can place and fulfill bids to exchange CSC and _issuances_ in any combination. Cross-currency payments automatically use the currency exchange to convert currency atomically when the transaction is executed. In this way, users who choose make offers in the distributed exchange provide the liquidity that makes the CSC Ledger useful.
+The STM Ledger contains a currency exchange, where any user can place and fulfill bids to exchange STM and _issuances_ in any combination. Cross-currency payments automatically use the currency exchange to convert currency atomically when the transaction is executed. In this way, users who choose make offers in the distributed exchange provide the liquidity that makes the STM Ledger useful.
 
-Currency traders who hold a gateway's issuances can provide liquidity to other popular currencies, without the gateway needing to float a large reserve in various destination currencies. The gateway also does not need to take on the risk of financial exchange. However, a gateway may still want to provide liquidity to CSC or other popular currencies at a baseline rate, especially when the gateway is new to the exchange. If you do provide liquidity, use a different address for trading than your issuing address.
+Currency traders who hold a gateway's issuances can provide liquidity to other popular currencies, without the gateway needing to float a large reserve in various destination currencies. The gateway also does not need to take on the risk of financial exchange. However, a gateway may still want to provide liquidity to STM or other popular currencies at a baseline rate, especially when the gateway is new to the exchange. If you do provide liquidity, use a different address for trading than your issuing address.
 
-Third-party liquidity providers can use the [`casinocoind` APIs](reference-casinocoind.html), [CasinocoinAPI JavaScript Library](reference-casinocoinapi.html), or a third-party client application to access the distributed exchange. Some client applications look up the addresses associated with a gateway using [casinocoin.txt](#casinocointxt), so it can be helpful to publish a good casinocoin.txt.
+Third-party liquidity providers can use the [`stoxumd` APIs](reference-stoxumd.html), [StoxumAPI JavaScript Library](reference-stoxumapi.html), or a third-party client application to access the distributed exchange. Some client applications look up the addresses associated with a gateway using [stoxum.txt](#stoxumtxt), so it can be helpful to publish a good stoxum.txt.
 
-Contact [partners@casinocoin.org](mailto:partners@casinocoin.org) for help establishing liquidity between your gateway and others.
+Contact [partners@stoxum.org](mailto:partners@stoxum.org) for help establishing liquidity between your gateway and others.
 
 
 ## Suggested Business Practices
 
-The value of a gateway's issuances in the CSC Ledger comes directly from the trust that customers can redeem them with the gateway when needed. We recommend the following precautions to reduce the risk of business interruptions:
+The value of a gateway's issuances in the STM Ledger comes directly from the trust that customers can redeem them with the gateway when needed. We recommend the following precautions to reduce the risk of business interruptions:
 
 * Use separate [Issuing and Operational Addresses](concept-issuing-and-operational-addresses.html) to limit your risk profile on the network.
 * Follow anti-money-laundering regulations for your jurisdiction, such as the [Bank Secrecy Act](http://en.wikipedia.org/wiki/Bank_Secrecy_Act). This usually includes requirements to collect ["Know-Your-Customer" (KYC) information](http://en.wikipedia.org/wiki/Know_your_customer).
-* Read and stay up-to-date with [Gateway Bulletins](#gateway-bulletins), which provide news and suggestions for CSC Ledger gateways.
+* Read and stay up-to-date with [Gateway Bulletins](#gateway-bulletins), which provide news and suggestions for STM Ledger gateways.
 * Publicize all your policies and fees.
 
 
@@ -72,18 +72,18 @@ For more information, see [Issuing and Operational Addresses](concept-issuing-an
 
 ## Fees and Revenue Sources
 
-There are several ways in which a gateway can seek to profit from CSC Ledger integration. These can include:
+There are several ways in which a gateway can seek to profit from STM Ledger integration. These can include:
 
-* Withdrawal and Deposit fees. Gateways typically charge a small fee (such as 1%) for the service of adding or removing money from the CSC Ledger. You have the power to determine the rate you credit people when they move money onto and off of the CSC Ledger through your gateway.
-* Transfer fees. You can set a percentage fee to charge automatically when customers send each other issuances created by your issuing address. This amount is debited from the CSC Ledger, decreasing your obligation each time your issuances change hands. See [TransferRate](#transferrate) for details.
-* Indirect revenue from value added. CSC Ledger integration can provide valuable functionality for your customers that distinguishes your business from your competitors.
-* Interest on CSC Ledger-backed funds. You can keep the collateral for the funds you issue in CSC Ledger in a bank account that earns interest. Make sure you can always access enough funds to service customer withdrawals.
-* [Financial Exchange](#liquidity-and-currency-exchange). A gateway can also make offers to buy and sell its issuances for other issuances in the CSC Ledger, providing liquidity to cross-currency payments and possibly making a profit. (As with all financial exchange, profits are not guaranteed.)
+* Withdrawal and Deposit fees. Gateways typically charge a small fee (such as 1%) for the service of adding or removing money from the STM Ledger. You have the power to determine the rate you credit people when they move money onto and off of the STM Ledger through your gateway.
+* Transfer fees. You can set a percentage fee to charge automatically when customers send each other issuances created by your issuing address. This amount is debited from the STM Ledger, decreasing your obligation each time your issuances change hands. See [TransferRate](#transferrate) for details.
+* Indirect revenue from value added. STM Ledger integration can provide valuable functionality for your customers that distinguishes your business from your competitors.
+* Interest on STM Ledger-backed funds. You can keep the collateral for the funds you issue in STM Ledger in a bank account that earns interest. Make sure you can always access enough funds to service customer withdrawals.
+* [Financial Exchange](#liquidity-and-currency-exchange). A gateway can also make offers to buy and sell its issuances for other issuances in the STM Ledger, providing liquidity to cross-currency payments and possibly making a profit. (As with all financial exchange, profits are not guaranteed.)
 
 
 ### Choosing Fee Rates
 
-Fees imposed by gateways are optional. Higher fees earn more revenue when a gateway's services are used. On the other hand, high fees discourage customers from using your services. Consider the fees that are charged by other gateways, especially ones issuing similar currencies, as well as traditional payment systems outside of the CSC Ledger, such as wire fees. Choosing the right fee structure is a matter of balancing your pricing with what the market is willing to pay.
+Fees imposed by gateways are optional. Higher fees earn more revenue when a gateway's services are used. On the other hand, high fees discourage customers from using your services. Consider the fees that are charged by other gateways, especially ones issuing similar currencies, as well as traditional payment systems outside of the STM Ledger, such as wire fees. Choosing the right fee structure is a matter of balancing your pricing with what the market is willing to pay.
 
 
 ## Gateway Compliance
@@ -199,7 +199,7 @@ See also:
 
 
 
-# CSC Ledger Integration
+# STM Ledger Integration
 
 ## Before Integration
 
@@ -209,65 +209,65 @@ In the following diagram, ACME Exchange starts with €5 on hand, including €1
 
 ![Diagram: Alice sends €5 to ACME. ACME adds her balance to its balance sheet.](img/e2g-01.png)
 
-**Assumptions:** To integrate with the CSC Ledger, we assume that an exchange such as ACME meets the following assumptions:
+**Assumptions:** To integrate with the STM Ledger, we assume that an exchange such as ACME meets the following assumptions:
 
 * ACME already has a system to accept deposits and withdrawals from some outside payment source.
 * ACME waits for deposits to clear before crediting them in ACME's system of record.
 * ACME always keeps enough funds on-hand to pay withdrawals on demand, subject to their terms and conditions.
     * ACME can set fees, minimum withdrawals, and delay times for deposits and withdrawals as their business model demands.
 
-## Sending from Gateway to the CSC Ledger
+## Sending from Gateway to the STM Ledger
 
-CSC Ledger payments can automatically bridge between currencies, but an issuing gateway normally only sends single-currency payments that go directly to customers. This means debiting a customer's current balance in your system, and then sending the equivalent amount of issuances in the CSC Ledger to the customer's CSC Ledger address.
+STM Ledger payments can automatically bridge between currencies, but an issuing gateway normally only sends single-currency payments that go directly to customers. This means debiting a customer's current balance in your system, and then sending the equivalent amount of issuances in the STM Ledger to the customer's STM Ledger address.
 
-An example flow for a payment into the CSC Ledger:
+An example flow for a payment into the STM Ledger:
 
-1. Alice asks to send €3 of her ACME balance into the CSC Ledger.
+1. Alice asks to send €3 of her ACME balance into the STM Ledger.
 2. In its system of record, ACME debits Alice's balance €3.
-3. ACME submits an CSC Ledger transaction, sending €3 to Alice's CSC Ledger address. The €3 is marked in the CSC Ledger as being "issued" by ACME (3 EUR.ACME).
+3. ACME submits an STM Ledger transaction, sending €3 to Alice's STM Ledger address. The €3 is marked in the STM Ledger as being "issued" by ACME (3 EUR.ACME).
 
 **Assumptions:**
 
-* Alice already has an address in the CSC Ledger separate from her ACME account. Alice manages her CSC Ledger address using a third-party client application.
+* Alice already has an address in the STM Ledger separate from her ACME account. Alice manages her STM Ledger address using a third-party client application.
 
-![Diagram: ACME issues 3 EUR.ACME to Alice on the CSC Ledger](img/e2g-02.png)
+![Diagram: ACME issues 3 EUR.ACME to Alice on the STM Ledger](img/e2g-02.png)
 
 
 
-### Requirements for Sending to CSC Ledger
+### Requirements for Sending to STM Ledger
 
 There are several prerequisites that ACME must meet for this to happen:
 
-- ACME sets aside money that is issued in the CSC Ledger. ACME can query the CSC Ledger to see who holds its issuances at any time. There are several ways ACME may do this:
-    - ACME may create a CSC Ledger collateral account in ACME's system of record.
-    - ACME can store the funds allocated to the CSC Ledger in a separate bank account.
-    - If ACME is a cryptocurrency exchange, ACME can create a separate wallet to hold the funds allocated to the CSC Ledger, as publicly-verifiable proof to customers that the gateway is solvent.
-- ACME must control an address in the CSC Ledger. CasinoCoin's best practices recommend using a separate issuing address and operational address. See [Issuing and Operational Addresses](concept-issuing-and-operational-addresses.html) for details.
-    - ACME must enable the [DefaultCasinocoin Flag](#defaultcasinocoin) on its issuing address for customers to send and receive its issuances.
-- Alice must create an accounting relationship (trust line) from her CSC Ledger address to ACME's issuing address. She can do this from any CSC Ledger client application as long as she knows ACME's issuing address.
-    - ACME should publicize its issuing address on its website where customers can find it. It can also use [casinocoin.txt](#casinocointxt) to publish the issuing address to automated systems.
-- ACME must create a user interface for Alice to send funds from ACME into the CSC Ledger.
-    - ACME needs to know Alice's CSC Ledger address. ACME can have Alice input her CSC Ledger addresss as part of the interface, or ACME can require Alice to input and verify her CSC Ledger address in advance.
+- ACME sets aside money that is issued in the STM Ledger. ACME can query the STM Ledger to see who holds its issuances at any time. There are several ways ACME may do this:
+    - ACME may create a STM Ledger collateral account in ACME's system of record.
+    - ACME can store the funds allocated to the STM Ledger in a separate bank account.
+    - If ACME is a cryptocurrency exchange, ACME can create a separate wallet to hold the funds allocated to the STM Ledger, as publicly-verifiable proof to customers that the gateway is solvent.
+- ACME must control an address in the STM Ledger. Stoxum's best practices recommend using a separate issuing address and operational address. See [Issuing and Operational Addresses](concept-issuing-and-operational-addresses.html) for details.
+    - ACME must enable the [DefaultStoxum Flag](#defaultstoxum) on its issuing address for customers to send and receive its issuances.
+- Alice must create an accounting relationship (trust line) from her STM Ledger address to ACME's issuing address. She can do this from any STM Ledger client application as long as she knows ACME's issuing address.
+    - ACME should publicize its issuing address on its website where customers can find it. It can also use [stoxum.txt](#stoxumtxt) to publish the issuing address to automated systems.
+- ACME must create a user interface for Alice to send funds from ACME into the STM Ledger.
+    - ACME needs to know Alice's STM Ledger address. ACME can have Alice input her STM Ledger addresss as part of the interface, or ACME can require Alice to input and verify her STM Ledger address in advance.
 
-See [Sending Payments to Customers](#sending-payments-to-customers) for an example of how to send payments into the CSC Ledger.
+See [Sending Payments to Customers](#sending-payments-to-customers) for an example of how to send payments into the STM Ledger.
 
 
-## Sending from CSC Ledger to Gateway
+## Sending from STM Ledger to Gateway
 
-A payment out of the CSC Ledger means the Gateway receives a payment in the CSC Ledger, and credits a user in the gateway's system of record.
+A payment out of the STM Ledger means the Gateway receives a payment in the STM Ledger, and credits a user in the gateway's system of record.
 
-An example flow of a payment out of the CSC Ledger:
+An example flow of a payment out of the STM Ledger:
 
-1. Bob sends an CSC Ledger transaction of €1 to ACME's issuing address.
+1. Bob sends an STM Ledger transaction of €1 to ACME's issuing address.
 2. In ACME's system of record, ACME credits Bob's balance €1.
 
-Payments going from the CSC Ledger to a gateway can be single-currency or cross-currency payments. The gateway's issuing address can only receive issuances it created (or CSC).
+Payments going from the STM Ledger to a gateway can be single-currency or cross-currency payments. The gateway's issuing address can only receive issuances it created (or STM).
 
-### Requirements for Receiving from CSC Ledger
+### Requirements for Receiving from STM Ledger
 
-In addition to the [requirements for sending into the CSC Ledger](#requirements-for-sending-to-csc-ledger), there are several prerequisites that ACME must meet to process payments coming from the CSC Ledger:
+In addition to the [requirements for sending into the STM Ledger](#requirements-for-sending-to-stm-ledger), there are several prerequisites that ACME must meet to process payments coming from the STM Ledger:
 
-- ACME must monitor its CSC Ledger addresses for incoming payments.
+- ACME must monitor its STM Ledger addresses for incoming payments.
 - ACME must know which user to credit in its system of record for the incoming payments.
     - We recommend that ACME should [bounce any unrecognized incoming payments](#bouncing-payments) back to their sender.
     - Typically, the preferred method of recognizing incoming payments is through [destination tags](#source-and-destination-tags).
@@ -275,34 +275,34 @@ In addition to the [requirements for sending into the CSC Ledger](#requirements-
 
 ## Precautions
 
-Processing payments to and from the CSC Ledger naturally comes with some risks, so a gateway should be sure to take care in implementing these processes. We recommend the following precautions:
+Processing payments to and from the STM Ledger naturally comes with some risks, so a gateway should be sure to take care in implementing these processes. We recommend the following precautions:
 
-- Protect yourself against reversible deposits. CSC Ledger payments are irreversible, but many electronic money systems like credit cards or PayPal are not. Scammers can abuse this to take their fiat money back by canceling a deposit after receiving CasinoCoin issuances.
-- When sending into the CSC Ledger, specify the issuing address as the issuer of the currency. Otherwise, you might accidentally use paths that deliver the same currency issued by other addresses.
-- Before sending a payment into the CSC Ledger, double check the cost of the payment. A payment from your operational address to a customer should not cost more than the destination amount plus any [transfer fee](#transferrate) you have set.
-- Before processing a payment out of CasinoCoin, make sure you know the customer's identity. This makes it harder for anonymous attackers to scam you. Most anti-money-laundering regulations require this anyway. This is especially important because the users sending money from the CSC Ledger could be different than the ones that initially received the money in the CSC Ledger.
-- Follow the guidelines for [reliable transaction submission](#reliable-transaction-submission) when sending CSC Ledger transactions.
+- Protect yourself against reversible deposits. STM Ledger payments are irreversible, but many electronic money systems like credit cards or PayPal are not. Scammers can abuse this to take their fiat money back by canceling a deposit after receiving Stoxum issuances.
+- When sending into the STM Ledger, specify the issuing address as the issuer of the currency. Otherwise, you might accidentally use paths that deliver the same currency issued by other addresses.
+- Before sending a payment into the STM Ledger, double check the cost of the payment. A payment from your operational address to a customer should not cost more than the destination amount plus any [transfer fee](#transferrate) you have set.
+- Before processing a payment out of Stoxum, make sure you know the customer's identity. This makes it harder for anonymous attackers to scam you. Most anti-money-laundering regulations require this anyway. This is especially important because the users sending money from the STM Ledger could be different than the ones that initially received the money in the STM Ledger.
+- Follow the guidelines for [reliable transaction submission](#reliable-transaction-submission) when sending STM Ledger transactions.
 - [Robustly monitor for incoming payments](#robustly-monitoring-for-payments), and read the correct amount. Don't mistakenly credit someone the full amount if they only sent a [partial payment](reference-transaction-format.html#partial-payments).
-- Track your obligations and balances within the CSC Ledger, and compare with the assets in your collateral account. If they do not match up, stop processing withdrawals and deposits until you resolve the discrepancy.
+- Track your obligations and balances within the STM Ledger, and compare with the assets in your collateral account. If they do not match up, stop processing withdrawals and deposits until you resolve the discrepancy.
 - Avoid ambiguous situations. We recommend the following:
-    - Enable the [`DisallowCSC` flag](#disallowcsc) for the issuing address and all operational addresses, so customers do not accidentally send you CSC. (Private exchanges should *not* set this flag, since they trade CSC normally.)
+    - Enable the [`DisallowSTM` flag](#disallowSTM) for the issuing address and all operational addresses, so customers do not accidentally send you STM. (Private exchanges should *not* set this flag, since they trade STM normally.)
     - Enable the [`RequireDest` flag](#requiredest) for the issuing address and all operational addresses, so customers do not accidentally send a payment without the destination tag to indicate who should be credited.
     - Enable the [`RequireAuth` flag](#requireauth) on all operational addresses so they cannot issue currency by accident.
-- Monitor for suspicious or abusive behavior. For example, a user could repeatedly send funds into and out of the CSC Ledger, as a denial of service attack that effectively empties an operational address's balance. Suspend customers whose addresses are involved in suspicious behavior by not processing their CSC Ledger payments.
+- Monitor for suspicious or abusive behavior. For example, a user could repeatedly send funds into and out of the STM Ledger, as a denial of service attack that effectively empties an operational address's balance. Suspend customers whose addresses are involved in suspicious behavior by not processing their STM Ledger payments.
 
 
-## Trading on CasinoCoin
+## Trading on Stoxum
 
-After the issuances have been created in the CSC Ledger, they can be freely transferred and traded by CSC Ledger users. There are several consequences of this situation:
+After the issuances have been created in the STM Ledger, they can be freely transferred and traded by STM Ledger users. There are several consequences of this situation:
 
-- Anyone can buy/sell EUR.ACME on CasinoCoin. If ACME issues multiple currencies on CasinoCoin, a separate trust line is necessary for each.
-    - This includes CSC Ledger users who do not have an account in ACME Exchange's systems. To withdraw the funds successfully from ACME, users still have to register with ACME.
-    - Optionally, ACME uses the [Authorized Accounts](#authorized-accounts) feature to limit who can hold EUR.ACME in the CSC Ledger.
-    - If ACME determines that a customer has acted in bad faith, ACME can [Freeze](#freeze) that user's accounting relationships to ACME in the CSC Ledger, so that the user can no longer trade in the gateway's issuances.
-- CSC Ledger users trading and sending EUR.ACME to one another requires no intervention by ACME.
-- All exchanges and balances in the CSC Ledger are publicly viewable.
+- Anyone can buy/sell EUR.ACME on Stoxum. If ACME issues multiple currencies on Stoxum, a separate trust line is necessary for each.
+    - This includes STM Ledger users who do not have an account in ACME Exchange's systems. To withdraw the funds successfully from ACME, users still have to register with ACME.
+    - Optionally, ACME uses the [Authorized Accounts](#authorized-accounts) feature to limit who can hold EUR.ACME in the STM Ledger.
+    - If ACME determines that a customer has acted in bad faith, ACME can [Freeze](#freeze) that user's accounting relationships to ACME in the STM Ledger, so that the user can no longer trade in the gateway's issuances.
+- STM Ledger users trading and sending EUR.ACME to one another requires no intervention by ACME.
+- All exchanges and balances in the STM Ledger are publicly viewable.
 
-The following diagram depicts an CSC Ledger payment sending 2EUR.ACME from Alice to Charlie. ACME can query the CSC Ledger to see updates to its balances any time after the transaction has occurred:
+The following diagram depicts an STM Ledger payment sending 2EUR.ACME from Alice to Charlie. ACME can query the STM Ledger to see updates to its balances any time after the transaction has occurred:
 
 ![Diagram: Alice's sends 2 EUR.ACME from her trust line to Charlie's](img/e2g-03.png)
 
@@ -310,7 +310,7 @@ The following diagram depicts an CSC Ledger payment sending 2EUR.ACME from Alice
 
 ## Freeze
 
-A gateway can freeze accounting relationships in the CSC Ledger to meet regulatory requirements:
+A gateway can freeze accounting relationships in the STM Ledger to meet regulatory requirements:
 
 * Gateways can freeze individual accounting relationships, in case a customer address shows suspicious activity or violates a gateway's terms of use.
 * Gateways can freeze all accounting relationships to their issuing address, in case of a major security compromise or for migrating to a new issuing address.
@@ -321,14 +321,14 @@ For more information, see the [Freeze article](concept-freeze.html).
 
 ## Authorized Accounts
 
-The CSC Ledger's Authorized Accounts feature enables a gateway to limit who can hold that gateway's issuances, so that unknown CSC Ledger addresses cannot hold the currency the gateway issues. CasinoCoin feels this is *not necessary* in most cases, since gateways have full control over the process of redeeming CasinoCoin balances for value in the outside world. (You can collect customer information and impose limits on withdrawals at that stage without worrying about what happens within the CSC Ledger.)
+The STM Ledger's Authorized Accounts feature enables a gateway to limit who can hold that gateway's issuances, so that unknown STM Ledger addresses cannot hold the currency the gateway issues. Stoxum feels this is *not necessary* in most cases, since gateways have full control over the process of redeeming Stoxum balances for value in the outside world. (You can collect customer information and impose limits on withdrawals at that stage without worrying about what happens within the STM Ledger.)
 
 To use the Authorized Accounts feature, a gateway enables the `RequireAuth` flag for its issuing address, and then individually approves each accounting relationship. An address can only hold funds issued by a gateway after its accounting relationship with that gateway is approved.
 
-The transaction to authorize an accounting relationship must be signed by the issuing address, which unfortunately means an increased risk exposure for that address. The process for sending funds into the CSC Ledger with RequireAuth enabled looks like the following:
+The transaction to authorize an accounting relationship must be signed by the issuing address, which unfortunately means an increased risk exposure for that address. The process for sending funds into the STM Ledger with RequireAuth enabled looks like the following:
 
 1. ACME publishes its issuing address to customers.
-2. Alice creates an accounting relationship from her CSC Ledger address to ACME's issuing address, indicating that she is willing to hold ACME's issuances.
+2. Alice creates an accounting relationship from her STM Ledger address to ACME's issuing address, indicating that she is willing to hold ACME's issuances.
 3. ACME's issuing address sends a transaction authorizing Alice's accounting relationship.
 
 See [RequireAuth](#requireauth) for technical details on how to use Authorized Accounts.
@@ -336,7 +336,7 @@ See [RequireAuth](#requireauth) for technical details on how to use Authorized A
 
 ## Source and Destination Tags
 
-*Destination Tags* are a feature of CSC Ledger payments can be used to indicate the beneficiary or destination for a payment. For example, an CSC Ledger payment to a gateway may include a destination tag to indicate which customer should be credited for the payment. A gateway should keep a mapping of destination tags to accounts in the gateway's system of record.
+*Destination Tags* are a feature of STM Ledger payments can be used to indicate the beneficiary or destination for a payment. For example, an STM Ledger payment to a gateway may include a destination tag to indicate which customer should be credited for the payment. A gateway should keep a mapping of destination tags to accounts in the gateway's system of record.
 
 Similarly, *Source Tags* indicate the originator or source of a payment. Most commonly, a Source Tag is included so that the recipient of the payment knows where to bounce the payment. When you bounce an incoming payment, use the Source Tag from the incoming payment as the Destination Tag of the outgoing (bounce) payment.
 
@@ -352,13 +352,13 @@ See [Generating Source and Destination Tags](#generating-source-and-destination-
 
 ## Gateway Bulletins
 
-Historically, CasinoCoin (the company) issued gateway bulletins to introduce new features or discuss topics related to compliance and risk. Gateway Bulletins are listed here in reverse chronological order.
+Historically, Stoxum (the company) issued gateway bulletins to introduce new features or discuss topics related to compliance and risk. Gateway Bulletins are listed here in reverse chronological order.
 
 - May 13, 2015 - [GB-2015-06 Gateway Bulletin: Corrections to Autobridging](gb-2015-06.html)
 - April 17, 2015 - [GB-2015-05 Historical Ledger Query Migration](gb-2015-05.html)
-- March 13, 2015 - [GB-2015-04 Action Required: Default CasinoCoin Flag (PDF)](https://ripple.com/files/GB-2015-04.pdf)
+- March 13, 2015 - [GB-2015-04 Action Required: Default Stoxum Flag (PDF)](https://ripple.com/files/GB-2015-04.pdf)
 - March 3, 2015 - [GB-2015-03 Gateway Advisory: FinCEN Ruling on MoneyGram Compliance Program (PDF)](https://ripple.com/files/GB-2015-03.pdf)
-- March 2, 2015 (Updated) - [GB-2015-02 New Standards: How to be Featured on CasinoCoin Trade and CasinoCoin Charts (PDF)](https://ripple.com/files/GB-2015-02.pdf)
+- March 2, 2015 (Updated) - [GB-2015-02 New Standards: How to be Featured on Stoxum Trade and Stoxum Charts (PDF)](https://ripple.com/files/GB-2015-02.pdf)
 - January 5, 2015 - [GB-2015-01 Gateway Advisory: Reliable Transaction Submission (PDF)](https://ripple.com/files/GB-2015-01.pdf)
 - December 18, 2014 - [GB-2014-08 Gateway Advisory: Recent FinCEN Rulings (PDF)](https://ripple.com/files/GB-2014-08.pdf)
 - November 4, 2014 -[GB-2014-07 Gateway Advisory: FATF Standards (PDF)](https://ripple.com/files/GB-2014-07.pdf)
@@ -367,39 +367,39 @@ Historically, CasinoCoin (the company) issued gateway bulletins to introduce new
 - September 11, 2014 - [GB-2014-04 Gateway Advisory: CFPB Opinion on Virtual Currency (PDF)](https://ripple.com/files/GB-2014-04.pdf)
 - August 19, 2014 - [GB-2014-03 Updated Feature: Trust Lines UI (PDF)](https://ripple.com/files/GB-2014-03.pdf)
 - August 1, 2014 - [GB-2014-02 New Feature: Balance Freeze (PDF)](https://ripple.com/files/GB-2014-02.pdf)
-- April 23, 2014, Updated August 14, 2014 -[GB-2014-01 New Feature: CasinoCoin Names (PDF)](https://ripple.com/files/GB-2014-01.pdf)
+- April 23, 2014, Updated August 14, 2014 -[GB-2014-01 New Feature: Stoxum Names (PDF)](https://ripple.com/files/GB-2014-01.pdf)
 
 
 # Technical Details
 
 ## Infrastructure
 
-For the gateway's own security as well as the stability of the network, CasinoCoin recommends that each gateway run its own `casinocoind` servers. CasinoCoin provides detailed and individualized recommendations to businesses interested in running a significant CSC-based business.
+For the gateway's own security as well as the stability of the network, Stoxum recommends that each gateway run its own `stoxumd` servers. Stoxum provides detailed and individualized recommendations to businesses interested in running a significant STM-based business.
 
-Contact [partners@casinocoin.org](mailto:partners@casinocoin.org) to see how CasinoCoin can help.
+Contact [partners@stoxum.org](mailto:partners@stoxum.org) to see how Stoxum can help.
 
 ### APIs and Middleware
 
-There are several interfaces you can use to connect to the CSC Ledger, depending on your needs and your existing software:
+There are several interfaces you can use to connect to the STM Ledger, depending on your needs and your existing software:
 
-* [`casinocoind`](reference-casinocoind.html) provides JSON-RPC and WebSocket APIs that can be used as a low-level interface to all core CSC Ledger functionality.
-* [CasinocoinAPI](reference-casinocoinapi.html) provides a simplified API for JavaScript applications.
+* [`stoxumd`](reference-stoxumd.html) provides JSON-RPC and WebSocket APIs that can be used as a low-level interface to all core STM Ledger functionality.
+* [StoxumAPI](reference-stoxumapi.html) provides a simplified API for JavaScript applications.
 
 
 ## Tool Security
 
-Any time you submit an CSC Ledger transaction, it must be signed using your secret key. The secret key gives full control over your CSC Ledger address. **Never** send your secret key to a server operated by someone else. Either use your own `casinocoind` server, or sign the transactions locally before sending them to a `casinocoind` server.
+Any time you submit an STM Ledger transaction, it must be signed using your secret key. The secret key gives full control over your STM Ledger address. **Never** send your secret key to a server operated by someone else. Either use your own `stoxumd` server, or sign the transactions locally before sending them to a `stoxumd` server.
 
-The examples in this document show API methods that include a secret key. This is only safe if you control `casinocoind` server yourself, *and* you connect to it over a connection that is secure from outside listeners. (For example, you could connect over a loopback (localhost) network, a private subnet, or an encrypted VPN.) Alternatively, you could use [CasinocoinAPI](reference-casinocoinapi.html) to sign transactions locally before submitting them to a third-party server.
+The examples in this document show API methods that include a secret key. This is only safe if you control `stoxumd` server yourself, *and* you connect to it over a connection that is secure from outside listeners. (For example, you could connect over a loopback (localhost) network, a private subnet, or an encrypted VPN.) Alternatively, you could use [StoxumAPI](reference-stoxumapi.html) to sign transactions locally before submitting them to a third-party server.
 
 
-## DefaultCasinocoin
+## DefaultStoxum
 
-The DefaultCasinocoin flag controls whether the balances in an accounting relationship [allowed to casinocoin](concept-nocasinocoin.html) by default. Rippling is what allows customers to trade issuances, so a gateway must allow rippling on all the accounting relationships to its issuing address.
+The DefaultStoxum flag controls whether the balances in an accounting relationship [allowed to stoxum](concept-nostoxumcoin.html) by default. Rippling is what allows customers to trade issuances, so a gateway must allow rippling on all the accounting relationships to its issuing address.
 
-Before asking customers to create accounting relationships to its issuing address, a gateway should enable the DefaultCasinocoin flag on that address. Otherwise, the gateway must individually disable the NoCasinocoin flag for each accounting relationship that other addresses have created.
+Before asking customers to create accounting relationships to its issuing address, a gateway should enable the DefaultStoxumflag on that address. Otherwise, the gateway must individually disable the NoStoxumcoin flag for each accounting relationship that other addresses have created.
 
-The following is an example of using a locally-hosted `casinocoind`'s [`submit` command](reference-casinocoind.html#submit) to send an AccountSet transaction to enable the DefaultCasinocoin flag:
+The following is an example of using a locally-hosted `stoxumd`'s [`submit` command](reference-stoxumd.html#submit) to send an AccountSet transaction to enable the DefaultStoxum flag:
 
 Request:
 
@@ -449,7 +449,7 @@ Response:
 }
 ```
 
-To confirm that an address has DefaultCasinocoin enabled, look up the address using the [account_info command](reference-casinocoind.html#account-info), specifying a validated ledger version. Use [a bitwise-AND operator](https://en.wikipedia.org/wiki/Bitwise_operation#AND) to compare the `Flags` field with 0x00800000 (the [ledger flag lsfDefaultCasinocoin](reference-ledger-format.html#accountroot-flags)). If the result of the bitwise-AND operation is nonzero, then the address has DefaultCasinocoin enabled.
+To confirm that an address has DefaultStoxum enabled, look up the address using the [account_info command](reference-stoxumd.html#account-info), specifying a validated ledger version. Use [a bitwise-AND operator](https://en.wikipedia.org/wiki/Bitwise_operation#AND) to compare the `Flags` field with 0x00800000 (the [ledger flag lsfDefaultStoxum](reference-ledger-format.html#accountroot-flags)). If the result of the bitwise-AND operation is nonzero, then the address has DefaultStoxum enabled.
 
 
 ## Generating Source and Destination Tags
@@ -462,16 +462,16 @@ After passing the internal numbers through your hash function, you can use the r
 
 We recommend making a user interface to generate a destination tag on-demand when a customer intends to send money to the gateway. Then, consider that destination tag valid only for a payment with the expected amount. Later, bounce any other transactions that reuse the same destination tag.
 
-Enable the [RequireDest](#requiredest) flag on your issuing and operational addresses so that customers must use a destination tag to indicate where funds should go when they send CSC Ledger payments to your gateway.
+Enable the [RequireDest](#requiredest) flag on your issuing and operational addresses so that customers must use a destination tag to indicate where funds should go when they send STM Ledger payments to your gateway.
 
 
-## DisallowCSC
+## DisallowSTM
 
-The DisallowCSC setting (`disallowIncomingCSC` in CasinocoinAPI) is designed to discourage CSC Ledger users from sending CSC to an address by accident. This reduces the costs and effort of bouncing undesired payments, if your gateway does not trade CSC. The DisallowCSC flag is not strictly enforced, because doing so could allow addresses to become permanently unusable if they run out of CSC. Client applications should honor the DisallowCSC flag by default.
+The DisallowSTM setting (`disallowIncomingSTM` in StoxumAPI) is designed to discourage STM Ledger users from sending STM to an address by accident. This reduces the costs and effort of bouncing undesired payments, if your gateway does not trade STM. The DisallowSTM flag is not strictly enforced, because doing so could allow addresses to become permanently unusable if they run out of STM. Client applications should honor the DisallowSTM flag by default.
 
-An issuing gateway that does not trade CSC should enable the DisallowCSC flag on the gateway's issuing and operational addresses. A private exchange that trades in CSC should only enable the DisallowCSC flag on addresses that are not expected to receive CSC.
+An issuing gateway that does not trade STM should enable the DisallowSTM flag on the gateway's issuing and operational addresses. A private exchange that trades in STM should only enable the DisallowSTM flag on addresses that are not expected to receive STM.
 
-The following is an example of using a locally-hosted `casinocoind`'s [`submit` command](reference-casinocoind.html#submit) to send an AccountSet transaction to enable the DisallowCSC flag:
+The following is an example of using a locally-hosted `stoxumd`'s [`submit` command](reference-stoxumd.html#submit) to send an AccountSet transaction to enable the DisallowSTM flag:
 
 Request:
 
@@ -524,11 +524,11 @@ Response:
 
 ## RequireDest
 
-The `RequireDest` setting (`requireDestinationTag` in CasinocoinAPI) is designed to prevent customers from sending payments to your address while accidentally forgetting the [destination tag](#source-and-destination-tags) that identifies who should be credited for the payment. When enabled, the CSC Ledger rejects any payment to your address that does not specify a destination tag.
+The `RequireDest` setting (`requireDestinationTag` in StoxumAPI) is designed to prevent customers from sending payments to your address while accidentally forgetting the [destination tag](#source-and-destination-tags) that identifies who should be credited for the payment. When enabled, the STM Ledger rejects any payment to your address that does not specify a destination tag.
 
 We recommend enabling the `RequireDest` flag on all gateway issuing and operational addresses.
 
-The following is an example of using a locally-hosted `casinocoind`'s [`submit` command](reference-casinocoind.html#submit) to send an AccountSet transaction to enable the `RequireDest` flag:
+The following is an example of using a locally-hosted `stoxumd`'s [`submit` command](reference-stoxumd.html#submit) to send an AccountSet transaction to enable the `RequireDest` flag:
 
 Request:
 
@@ -582,17 +582,17 @@ Response:
 
 ## RequireAuth
 
-The `RequireAuth` setting (`requireAuthorization` in CasinocoinAPI) prevents all counterparties from holding balances issued by an address unless the address has specifically approved an accounting relationship with that counterparty.
+The `RequireAuth` setting (`requireAuthorization` in StoxumAPI) prevents all counterparties from holding balances issued by an address unless the address has specifically approved an accounting relationship with that counterparty.
 
 We recommend always [enabling `RequireAuth`](#enabling-requireauth) for operational addresses and standby addresses, and then never approving any accounting relationships. This prevents operational addresses from creating issuances even by accident. This is a purely precautionary measure, and does not stop those addresses from transferring issuances created by the issuing address, as they are intended to do.
 
 If you want to use the [Authorized Accounts](#authorized-accounts) feature, you must also enable `RequireAuth` on your issuing address. When using Authorized Accounts, your issuing address must [submit a `TrustSet` transaction to approve each accounting relationship](#authorizing-trust-lines) that customers create with your issuing address.
 
-You can only enable `RequireAuth` if the address owns no accounting relationships (trust lines) and no offers in the CSC Ledger, so you must decide whether or not to use it before you start doing business in the CSC Ledger.
+You can only enable `RequireAuth` if the address owns no accounting relationships (trust lines) and no offers in the STM Ledger, so you must decide whether or not to use it before you start doing business in the STM Ledger.
 
 ### Enabling RequireAuth
 
-The following is an example of using a locally-hosted `casinocoind`'s [`submit` command](reference-casinocoind.html#submit) to send an AccountSet transaction to enable the RequireAuth flag: (This method works the same way regardless of whether the address is an issuing address, operational address, or standby address.)
+The following is an example of using a locally-hosted `stoxumd`'s [`submit` command](reference-stoxumd.html#submit) to send an AccountSet transaction to enable the RequireAuth flag: (This method works the same way regardless of whether the address is an issuing address, operational address, or standby address.)
 
 Request:
 
@@ -619,11 +619,11 @@ POST http://localhost:5005/
 
 ### Authorizing Trust Lines
 
-If you are using the [Authorized Accounts](#authorized-accounts) feature, customers cannot hold balances you issue unless you first authorize their accounting relationships to you in the CSC Ledger.
+If you are using the [Authorized Accounts](#authorized-accounts) feature, customers cannot hold balances you issue unless you first authorize their accounting relationships to you in the STM Ledger.
 
 To authorize an accounting relationship, submit a TrustSet transaction from your issuing address, with the user to trust as the `issuer` of the `LimitAmount`. Leave the `value` (the amount to trust them for) as **0**, and enable the [tfSetfAuth](reference-transaction-format.html#trustset-flags) flag for the transaction.
 
-The following is an example of using a locally-hosted `casinocoind`'s [`submit` command](reference-casinocoind.html#submit) to send a TrustSet transaction authorizing the customer address cDarPNJEpCnpBZSfmcquydockkePkjPGA2 to hold issuances of USD from the issuing address csA2LpzuawewSBQXkiju3YQTMzW13pAAdW:
+The following is an example of using a locally-hosted `stoxumd`'s [`submit` command](reference-stoxumd.html#submit) to send a TrustSet transaction authorizing the customer address cDarPNJEpCnpBZSfmcquydockkePkjPGA2 to hold issuances of USD from the issuing address csA2LpzuawewSBQXkiju3YQTMzW13pAAdW:
 
 Request:
 
@@ -658,25 +658,25 @@ POST http://localhost:8088/
 To robustly check for incoming payments, gateways should do the following:
 
 * Keep a record of the most-recently-processed transaction and ledger. That way, if you temporarily lose connectivity, you know how far to go back.
-* Check the result code of every incoming payment. Some payments go into the ledger to charge an anti-spam fee, even though they failed. Only transactions with the result code `tesSUCCESS` can change non-CSC balances. Only transactions from a validated ledger are final.
+* Check the result code of every incoming payment. Some payments go into the ledger to charge an anti-spam fee, even though they failed. Only transactions with the result code `tesSUCCESS` can change non-STM balances. Only transactions from a validated ledger are final.
 * [Look out for Partial Payments](https://ripple.com/files/GB-2014-06.pdf "Partial Payment Flag Gateway Bulletin"). Payments with the partial-payment flag enabled can be considered "successful" if any non-zero amount is delivered, even miniscule amounts.
-    * In `casinocoind`, check the transaction for a `meta.delivered_amount` field. If present, that field indicates how much money *actually* got delivered to the `Destination` address.
-    * In CasinocoinAPI, you can search the `outcome.BalanceChanges` field to see how much the destination address received. In some cases, this can be divided into multiple parts on different trust lines.
+    * In `stoxumd`, check the transaction for a `meta.delivered_amount` field. If present, that field indicates how much money *actually* got delivered to the `Destination` address.
+    * In StoxumAPI, you can search the `outcome.BalanceChanges` field to see how much the destination address received. In some cases, this can be divided into multiple parts on different trust lines.
 * Some transactions change your balances without being payments directly to or from one of your addresses. For example, if ACME sets a nonzero [TransferRate](#transferrate), then ACME's issuing address's outstanding obligations decrease each time Bob and Charlie exchange ACME issuances. See [TransferRate](#transferrate) for more information.
 
 To make things simpler for your customers, we recommend accepting payments to either operational addresses and issuing addresses.
 
-As an added precaution, we recommend comparing the balances of your issuing address with the collateral funds in your internal accounting system as of each new CSC Ledger ledger version. The issuing address's negative balances should match the assets you have allocated to CSC Ledger outside the network. If the two do not match up, then you should suspend processing payments into and out of the CSC Ledger until you have resolved the discrepancy.
+As an added precaution, we recommend comparing the balances of your issuing address with the collateral funds in your internal accounting system as of each new STM Ledger ledger version. The issuing address's negative balances should match the assets you have allocated to STM Ledger outside the network. If the two do not match up, then you should suspend processing payments into and out of the STM Ledger until you have resolved the discrepancy.
 
-* Use [`casinocoind`'s `gateway_balances` command](reference-casinocoind.html#gateway-balances) or [CasinocoinAPI's `getTrustlines` method](reference-casinocoinapi.html#gettrustlines) to check your balances.
-* If you have a [TransferRate](#transferrate) set, then your obligations within the CSC Ledger decrease slightly whenever other CSC Ledger addresses transfer your issuances among themselves.
+* Use [`stoxumdd`'s `gateway_balances` command](reference-stoxumd.html#gateway-balances) or [StoxumAPI's `getTrustlines` method](reference-stoxumdapi.html#gettrustlines) to check your balances.
+* If you have a [TransferRate](#transferrate) set, then your obligations within the STM Ledger decrease slightly whenever other STM Ledger addresses transfer your issuances among themselves.
 
 
 ## TransferRate
 
-The *TransferRate* setting (`transferRate` in CasinocoinAPI) defines a fee to charge for transferring issuances from one CSC Ledger address to another. See [Transfer Fees](concept-transfer-fees.html) for more information.
+The *TransferRate* setting (`transferRate` in StoxumAPI) defines a fee to charge for transferring issuances from one STM Ledger address to another. See [Transfer Fees](concept-transfer-fees.html) for more information.
 
-The following is an example of using a locally-hosted `casinocoind`'s [`submit` command](reference-casinocoind.html#submit) to send an AccountSet transaction for the issuing address csA2LpzuawewSBQXkiju3YQTMzW13pAAdW, setting the TransferRate to charge a fee of 0.5%.
+The following is an example of using a locally-hosted `stoxumd`'s [`submit` command](reference-stoxumd.html#submit) to send an AccountSet transaction for the issuing address csA2LpzuawewSBQXkiju3YQTMzW13pAAdW, setting the TransferRate to charge a fee of 0.5%.
 
 Request:
 
@@ -726,23 +726,23 @@ Response:
 
 ### TransferRate with Operational and Standby Addresses
 
-All CSC Ledger addresses, including operational and standby addresses, are subject to the transfer fee. If you set a nonzero transfer fee, then you must send extra (to pay the TransferRate) when making payments from your operational address or standby address. In other words, your addresses must pay back a little of the balance your issuing address created, each time you make a payment.
+All STM Ledger addresses, including operational and standby addresses, are subject to the transfer fee. If you set a nonzero transfer fee, then you must send extra (to pay the TransferRate) when making payments from your operational address or standby address. In other words, your addresses must pay back a little of the balance your issuing address created, each time you make a payment.
 
-* In `casinocoind`'s APIs, you should set the [`SendMax` transaction parameter](reference-transaction-format.html#payment) higher than the destination `Amount` parameter.
-* In CasinocoinAPI, you should set the `source.maxAmount` parameter higher than the `destination.amount` parameter; or, set the `source.amount` parameter higher than the `destination.minAmount` parameter.
+* In `stoxumd`'s APIs, you should set the [`SendMax` transaction parameter](reference-transaction-format.html#payment) higher than the destination `Amount` parameter.
+* In StoxumAPI, you should set the `source.maxAmount` parameter higher than the `destination.amount` parameter; or, set the `source.amount` parameter higher than the `destination.minAmount` parameter.
 
-**Note:** The TransferRate does not apply when sending issuances directly to the issuing address. The issuing address must always accept its issuances at face value in the CSC Ledger. This means that customers don't have to pay the TransferRate if they send payments to the issuing address directly, but they do when sending to an operational address. If you accept payments at both addresses, you may want to adjust the amount you credit customers in your system of record when customers send payments to the operational address, to compensate for the TransferRate the customer pays.
+**Note:** The TransferRate does not apply when sending issuances directly to the issuing address. The issuing address must always accept its issuances at face value in the STM Ledger. This means that customers don't have to pay the TransferRate if they send payments to the issuing address directly, but they do when sending to an operational address. If you accept payments at both addresses, you may want to adjust the amount you credit customers in your system of record when customers send payments to the operational address, to compensate for the TransferRate the customer pays.
 
-For example: If ACME sets a transfer fee of 1%, an CSC Ledger payment to deliver 5 EUR.ACME from a customer address to ACME's issuing address would cost exactly 5 EUR.ACME. However, the customer would need to send 5.05 EUR.ACME to deliver 5 EUR.ACME to ACME's operational address. (The issuing address's total obligations in the CSC Ledger decrease by 0.05 EUR.ACME.) When ACME credits customers for payments to ACME's operational address, ACME credits the customer for the amount delivered to the operational address _and_ the transfer fee, giving the customer €5,05 in ACME's systems.
+For example: If ACME sets a transfer fee of 1%, an STM Ledger payment to deliver 5 EUR.ACME from a customer address to ACME's issuing address would cost exactly 5 EUR.ACME. However, the customer would need to send 5.05 EUR.ACME to deliver 5 EUR.ACME to ACME's operational address. (The issuing address's total obligations in the STM Ledger decrease by 0.05 EUR.ACME.) When ACME credits customers for payments to ACME's operational address, ACME credits the customer for the amount delivered to the operational address _and_ the transfer fee, giving the customer €5,05 in ACME's systems.
 
 
 ## Sending Payments to Customers
 
-When you build an automated system to send payments into the CSC Ledger for your customers, you must make sure that it constructs payments carefully. Malicious actors are constantly trying to find ways to trick a system into paying them more money than it should.
+When you build an automated system to send payments into the STM Ledger for your customers, you must make sure that it constructs payments carefully. Malicious actors are constantly trying to find ways to trick a system into paying them more money than it should.
 
-One common pitfall is performing pathfinding before sending sending a payment to customers in the CSC Ledger. If you specify the issuers correctly, the [default paths](concept-paths.html#default-paths) can deliver the currency as intended.
+One common pitfall is performing pathfinding before sending sending a payment to customers in the STM Ledger. If you specify the issuers correctly, the [default paths](concept-paths.html#default-paths) can deliver the currency as intended.
 
-The following is an example of using a locally-hosted `casinocoind`'s [`submit` command](reference-casinocoind.html#submit) to send a payment from the operational address cDarPNJEpCnpBZSfmcquydockkePkjPGA2 to the customer address caKEEVSGnKSD9Zyvxu4z6Pqpm4ABH8FS6n, sending and delivering funds issued by the issuing address csA2LpzuawewSBQXkiju3YQTMzW13pAAdW.
+The following is an example of using a locally-hosted `stoxumd`'s [`submit` command](reference-stoxumd.html#submit) to send a payment from the operational address cDarPNJEpCnpBZSfmcquydockkePkjPGA2 to the customer address caKEEVSGnKSD9Zyvxu4z6Pqpm4ABH8FS6n, sending and delivering funds issued by the issuing address csA2LpzuawewSBQXkiju3YQTMzW13pAAdW.
 
 Request:
 
@@ -821,12 +821,12 @@ When one of your addresses receives a payment whose purpose is unclear, we recom
 
 The first requirement to bouncing payments is [robustly monitoring for incoming payments](#robustly-monitoring-for-payments). You do not want to accidentally refund a customer for more than they sent you! (This is particularly important if your bounce process is automated.) The [Partial Payment Flag Gateway Bulletin (PDF)](https://ripple.com/files/GB-2014-06.pdf) explains how to avoid a common problem.
 
-Second, you should send bounced payments as Partial Payments. Since third parties can manipulate the cost of pathways between addresses, Partial Payments allow you to divest yourself of the full amount without being concerned about exchange rates within the CSC Ledger. You should publicize your bounced payments policy as part of your terms of use. Send the bounced payment from either an operational address or a standby address.
+Second, you should send bounced payments as Partial Payments. Since third parties can manipulate the cost of pathways between addresses, Partial Payments allow you to divest yourself of the full amount without being concerned about exchange rates within the STM Ledger. You should publicize your bounced payments policy as part of your terms of use. Send the bounced payment from either an operational address or a standby address.
 
-* To send a Partial Payment using `casinocoind`, enable the [tfPartialPayment flag](reference-transaction-format.html#payment-flags) on the transaction. Set the `Amount` field to the amount you received and omit the `SendMax` field.
-* To send a Partial Payment using CasinocoinAPI, set the `allowPartialPayment` field of the [Payment object](reference-casinocoinapi.html#payment) to `true`. Set the `source.maxAmount` and `destination.amount` both equal to the amount you received.
+* To send a Partial Payment using `stoxumd`, enable the [tfPartialPayment flag](reference-transaction-format.html#payment-flags) on the transaction. Set the `Amount` field to the amount you received and omit the `SendMax` field.
+* To send a Partial Payment using StoxumAPI, set the `allowPartialPayment` field of the [Payment object](reference-stoxumapi.html#payment) to `true`. Set the `source.maxAmount` and `destination.amount` both equal to the amount you received.
 
-You should use the `SourceTag` value (`source.tag` in CasinocoinAPI) from the incoming payment as the `DestinationTag` value (`destination.tag` in CasinocoinAPI) for the return payment.
+You should use the `SourceTag` value (`source.tag` in StoxumAPI) from the incoming payment as the `DestinationTag` value (`destination.tag` in StoxumAPI) for the return payment.
 
 To prevent two systems from bouncing payments back and forth indefinitely, you can set a new Source Tag for the outgoing return payment. If you receive an unexpected payment whose Destination Tag matches the Source Tag of a return you sent, then do not bounce it back again.
 
@@ -841,16 +841,16 @@ The goal of reliably submitting transactions is to achieve the following two pro
 To submit transactions reliably, follow these guidelines:
 
 * Persist details of the transaction before submitting it.
-* Use the `LastLedgerSequence` parameter. (CasinocoinAPI does this by default.)
+* Use the `LastLedgerSequence` parameter. (StoxumAPI does this by default.)
 * Resubmit a transaction if it has not appeared in a validated ledger whose sequence number is less than or equal to the transaction's `LastLedgerSequence` parameter.
 
 For more information, see [Reliable Transaction Submission](tutorial-reliable-transaction-submission.html).
 
 
-## casinocoin.txt
+## stoxum.txt
 
-The [casinocoin.txt](https://wiki.casinocoin.com/Casinocoin.txt) standard provides a way to publish information about your gateway so that automated tools and applications can read and understand it.
+The [stoxum.txt](https://wiki.stoxun.com/Stoxum.txt) standard provides a way to publish information about your gateway so that automated tools and applications can read and understand it.
 
-For example, if you run a validating `casinocoind` server, you can use casinocoin.txt to publish the public key of your validating server. You can also publish information about what currencies your gateway issues, and which CSC Ledger addresses you control, to protect against impostors or confusion.
+For example, if you run a validating `stoxumd` server, you can use stoxum.txt to publish the public key of your validating server. You can also publish information about what currencies your gateway issues, and which STM Ledger addresses you control, to protect against impostors or confusion.
 
 <!-- STYLE_OVERRIDE: gateway, gateways -->

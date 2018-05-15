@@ -1,6 +1,6 @@
 # Escrow Tutorials
 
-The CSC Ledger supports held payments, or _escrows_, that can be executed only after a certain time has passed or a cryptographic condition has been fulfilled. Escrows can only send CSC, not issued currencies. You can use these features to build publicly-provable smart contracts. This article explains basic tasks relating to held payments.
+The STM Ledger supports held payments, or _escrows_, that can be executed only after a certain time has passed or a cryptographic condition has been fulfilled. Escrows can only send STM, not issued currencies. You can use these features to build publicly-provable smart contracts. This article explains basic tasks relating to held payments.
 
 - [Send a time-held escrow](#send-a-time-held-escrow)
 - [Send a conditionally-held escrow](#send-a-conditionally-held-escrow)
@@ -14,7 +14,7 @@ The [EscrowCreate transaction][] type can create an escrow whose only condition 
 
 ### 1. Calculate release time
 
-You must [specify the time](reference-casinocoind.html#specifying-time) as whole **seconds since the CasinoCoin Epoch**, which is 946684800 seconds after the UNIX epoch. For example, to release funds at midnight UTC on November 13, 2017:
+You must [specify the time](reference-stoxumd.html#specifying-time) as whole **seconds since the Stoxum Epoch**, which is 946684800 seconds after the UNIX epoch. For example, to release funds at midnight UTC on November 13, 2017:
 
 <!-- MULTICODE_BLOCK_START -->
 
@@ -23,8 +23,8 @@ You must [specify the time](reference-casinocoind.html#specifying-time) as whole
 ```js
 // JavaScript Date() is natively expressed in milliseconds; convert to seconds
 const release_date_unix = Math.floor( new Date("2017-11-13T00:00:00Z") / 1000 );
-const release_date_casinocoin = release_date_unix - 946684800;
-console.log(release_date_casinocoin);
+const release_date_stoxum = release_date_unix - 946684800;
+console.log(release_date_stoxum);
 // 563846400
 ```
 
@@ -34,8 +34,8 @@ console.log(release_date_casinocoin);
 ```python
 import datetime
 release_date_utc = datetime.datetime(2017,11,13,0,0,0,tzinfo=datetime.timezone.utc)
-release_date_casinocoin = int(release_date_utc.timestamp()) - 946684800
-print(release_date_casinocoin)
+stoxum = int(release_date_utc.timestamp()) - 946684800
+print(release_date_stoxum)
 # 563846400
 ```
 
@@ -43,11 +43,11 @@ print(release_date_casinocoin)
 
 <!-- MULTICODE_BLOCK_END -->
 
-**Warning:** If you use a UNIX time in the `FinishAfter` field without converting to the equivalent CasinoCoin time first, that sets the unlock time to an extra **30 years** in the future!
+**Warning:** If you use a UNIX time in the `FinishAfter` field without converting to the equivalent Stoxum time first, that sets the unlock time to an extra **30 years** in the future!
 
 ### 2. Submit EscrowCreate transaction
 
-[Sign and submit](reference-transaction-format.html#signing-and-submitting-transactions) an [EscrowCreate transaction][]. Set the `FinishAfter` field of the transaction to the time when the held payment should be released. Omit the `Condition` field to make time the only condition for releasing the held payment. Set the `Destination` to the recipient, which may be the same address as the sender. Set the `Amount` to the total amount of [CSC, in drops](reference-casinocoind.html#specifying-currency-amounts), to escrow.
+[Sign and submit](reference-transaction-format.html#signing-and-submitting-transactions) an [EscrowCreate transaction][]. Set the `FinishAfter` field of the transaction to the time when the held payment should be released. Omit the `Condition` field to make time the only condition for releasing the held payment. Set the `Destination` to the recipient, which may be the same address as the sender. Set the `Amount` to the total amount of [STM, in drops](reference-stoxum.html#specifying-currency-amounts), to escrow.
 
 {% include 'snippets/secret-key-warning.md' %}
 
@@ -84,7 +84,7 @@ Take note of the transaction's identifying `hash` value so you can check its fin
 
 ### 4. Confirm that the escrow was created
 
-Use the [`tx` command](reference-casinocoind.html#tx) with the transaction's identifying hash to check its final status. Look for a `CreatedNode` in the transaction metadata to indicate that it created an [Escrow ledger object](reference-ledger-format.html#escrow).
+Use the [`tx` command](reference-stoxumd.html#tx) with the transaction's identifying hash to check its final status. Look for a `CreatedNode` in the transaction metadata to indicate that it created an [Escrow ledger object](reference-ledger-format.html#escrow).
 
 Request:
 
@@ -114,7 +114,7 @@ Response:
 
 Held payments with a `FinishAfter` time cannot be finished until a ledger has already closed with a [`close_time` header field](reference-ledger-format.html#header-format) that is later than the Escrow node's `FinishAfter` time.
 
-You can check the close time of the most recently-validated ledger with the [`ledger` command](reference-casinocoind.html#ledger):
+You can check the close time of the most recently-validated ledger with the [`ledger` command](reference-stoxumd.html#ledger):
 
 Request:
 
@@ -145,7 +145,7 @@ Response:
 
 [Sign and submit](reference-transaction-format.html#signing-and-submitting-transactions) an [EscrowFinish transaction][] to execute the release of the funds after the `FinishAfter` time has passed. Set the `Owner` field of the transaction to the `Account` address from the EscrowCreate transaction, and the `OfferSequence` to the `Sequence` number from the EscrowCreate transaction. For an escrow held only by time, omit the `Condition` and `Fulfillment` fields.
 
-**Tip:** The EscrowFinish transaction is necessary because the CSC Ledger's state can only be modified by transactions. The sender of this transaction may be the recipient of the escrow, the original sender of the escrow, or any other CSC Ledger address.
+**Tip:** The EscrowFinish transaction is necessary because the STM Ledger's state can only be modified by transactions. The sender of this transaction may be the recipient of the escrow, the original sender of the escrow, or any other STM Ledger address.
 
 If the escrow has expired, you can only [cancel the escrow](#cancel-an-expired-escrow) instead.
 
@@ -183,7 +183,7 @@ Take note of the transaction's identifying `hash` value so you can check its fin
 
 ### 8. Confirm final result
 
-Use the [`tx` command](reference-casinocoind.html#tx) with the EscrowFinish transaction's identifying hash to check its final status. In particular, look in the transaction metadata for a `ModifiedNode` of type `AccountRoot` for the destination of the escrowed payment. The `FinalFields` of the object should show the increase in CSC in the `Balance` field.
+Use the [`tx` command](reference-stoxumd.html#tx) with the EscrowFinish transaction's identifying hash to check its final status. In particular, look in the transaction metadata for a `ModifiedNode` of type `AccountRoot` for the destination of the escrowed payment. The `FinalFields` of the object should show the increase in STM in the `Balance` field.
 
 Request:
 
@@ -214,7 +214,7 @@ Response:
 
 ### 1. Generate condition and fulfillment
 
-CSC Ledger escrows require PREIMAGE-SHA-256 [Crypto-Conditions](https://tools.ietf.org/html/draft-thomas-crypto-conditions-03). To calculate a condition and fulfillment in the proper format, you should use a Crypto-Conditions library such as [five-bells-condition](https://github.com/interledgerjs/five-bells-condition). For fulfillments, CasinoCoin recommends using one of the following methods to generate the fulfillment:
+STM Ledger escrows require PREIMAGE-SHA-256 [Crypto-Conditions](https://tools.ietf.org/html/draft-thomas-crypto-conditions-03). To calculate a condition and fulfillment in the proper format, you should use a Crypto-Conditions library such as [five-bells-condition](https://github.com/interledgerjs/five-bells-condition). For fulfillments, Stoxum recommends using one of the following methods to generate the fulfillment:
 
 - Use a cryptographically secure source of randomness to generate at least 32 random bytes.
 - Follow Interledger Protocol's [PSK specification](https://github.com/interledger/rfcs/blob/master/0016-pre-shared-key/0016-pre-shared-key.md) and use an HMAC-SHA-256 of the ILP packet as the fulfillment.
@@ -238,7 +238,7 @@ Save the condition and the fulfillment for later. Be sure to keep the fulfillmen
 
 ### 2. Calculate release or cancel time
 
-A Conditional `Escrow` transaction must contain either a `CancelAfter` or `FinishAfter` field, or both. The `CancelAfter` field lets the CSC revert to the sender if the condition is not fulfilled before the specified time. The `FinishAfter` field specifies a time before which the escrow cannot execute, even if someone sends the correct fulfillment. Whichever field you provide, the time it specifies must be in the future.
+A Conditional `Escrow` transaction must contain either a `CancelAfter` or `FinishAfter` field, or both. The `CancelAfter` field lets the STM revert to the sender if the condition is not fulfilled before the specified time. The `FinishAfter` field specifies a time before which the escrow cannot execute, even if someone sends the correct fulfillment. Whichever field you provide, the time it specifies must be in the future.
 
 Example for setting a `CancelAfter` time of 24 hours in the future:
 
@@ -247,8 +247,8 @@ Example for setting a `CancelAfter` time of 24 hours in the future:
 _JavaScript_
 
 ```js
-const casinocoinOffset = 946684800;
-const CancelAfter = Math.floor(Date.now() / 1000) + (24*60*60) - casinocoinOffset;
+const stoxumOffset = 946684800;
+const CancelAfter = Math.floor(Date.now() / 1000) + (24*60*60) - stoxumOffset;
 console.log(CancelAfter);
 // Example: 556927412
 ```
@@ -258,7 +258,7 @@ _Python 2/3_
 
 ```python
 from time import time
-casinocoin_offset = 946684800
+stoxum_offset = 946684800
 cancel_after = int(time()) + (24*60*60) - 946684800
 print(cancel_after)
 # Example: 556927412
@@ -268,11 +268,11 @@ print(cancel_after)
 
 <!-- MULTICODE_BLOCK_END -->
 
-**Warning:** In the CSC Ledger, you must specify time as **seconds since the CasinoCoin Epoch** (2000-01-01T00:00:00Z). If you use a UNIX time in the `CancelAfter` or `FinishAfter` field without converting to the equivalent CasinoCoin time first, that sets the unlock time to an extra **30 years** in the future!
+**Warning:** In the STM Ledger, you must specify time as **seconds since the Stoxum Epoch** (2000-01-01T00:00:00Z). If you use a UNIX time in the `CancelAfter` or `FinishAfter` field without converting to the equivalent Stoxum time first, that sets the unlock time to an extra **30 years** in the future!
 
 ### 3. Submit EscrowCreate transaction
 
-[Sign and submit](reference-transaction-format.html#signing-and-submitting-transactions) an [EscrowCreate transaction][]. Set the `Condition` field of the transaction to the time when the held payment should be released. Set the `Destination` to the recipient, which can be the same address as the sender. Include the `CancelAfter` or `FinishAfter` time you calculated in the previous step. Set the `Amount` to the total amount of [CSC, in drops](reference-casinocoind.html#specifying-currency-amounts), to escrow.
+[Sign and submit](reference-transaction-format.html#signing-and-submitting-transactions) an [EscrowCreate transaction][]. Set the `Condition` field of the transaction to the time when the held payment should be released. Set the `Destination` to the recipient, which can be the same address as the sender. Include the `CancelAfter` or `FinishAfter` time you calculated in the previous step. Set the `Amount` to the total amount of [STM, in drops](reference-stoxumd.html#specifying-currency-amounts), to escrow.
 
 {% include 'snippets/secret-key-warning.md' %}
 
@@ -306,7 +306,7 @@ Response:
 
 ### 5. Confirm that the escrow was created
 
-Use the [`tx` command](reference-casinocoind.html#tx) with the transaction's identifying hash to check its final status. In particular, look for a `CreatedNode` in the transaction metadata to indicate that it created an [Escrow ledger object](reference-ledger-format.html#escrow).
+Use the [`tx` command](reference-stoxumd.html#tx) with the transaction's identifying hash to check its final status. In particular, look for a `CreatedNode` in the transaction metadata to indicate that it created an [Escrow ledger object](reference-ledger-format.html#escrow).
 
 Request:
 
@@ -334,7 +334,7 @@ Response:
 
 ### 6. Submit EscrowFinish transaction
 
-[Sign and submit](reference-transaction-format.html#signing-and-submitting-transactions) an [EscrowFinish transaction][] to execute the release of the funds after the `FinishAfter` time has passed. Set the `Owner` field of the transaction to the `Account` address from the EscrowCreate transaction, and the `OfferSequence` to the `Sequence` number from the EscrowCreate transaction. Set the `Condition` and `Fulfillment` fields to the condition and fulfillment values, in hexadecimal, that you generated in step 1. Set the `Fee` ([transaction cost](concept-transaction-cost.html)) value based on the size of the fulfillment in bytes: a conditional EscrowFinish requires at least 330 drops of CSC plus 10 drops per 16 bytes in the size of the fulfillment.
+[Sign and submit](reference-transaction-format.html#signing-and-submitting-transactions) an [EscrowFinish transaction][] to execute the release of the funds after the `FinishAfter` time has passed. Set the `Owner` field of the transaction to the `Account` address from the EscrowCreate transaction, and the `OfferSequence` to the `Sequence` number from the EscrowCreate transaction. Set the `Condition` and `Fulfillment` fields to the condition and fulfillment values, in hexadecimal, that you generated in step 1. Set the `Fee` ([transaction cost](concept-transaction-cost.html)) value based on the size of the fulfillment in bytes: a conditional EscrowFinish requires at least 330 drops of STM plus 10 drops per 16 bytes in the size of the fulfillment.
 
 **Note:** If you included a `FinishAfter` field in the EscrowCreate transaction, you cannot execute it before that time has passed, even if you provide the correct fulfillment for the Escrow's condition. The EscrowFinish transaction fails with the [result code](reference-transaction-format.html#transaction-results) `tecNO_PERMISSION` if the previously-closed ledger's close time is before the `FinishAfter` time.
 
@@ -372,7 +372,7 @@ Take note of the transaction's identifying `hash` value so you can check its fin
 
 ### 8. Confirm final result
 
-Use the [`tx` command](reference-casinocoind.html#tx) with the EscrowFinish transaction's identifying hash to check its final status. In particular, look in the transaction metadata for a `ModifiedNode` of type `AccountRoot` for the destination of the escrowed payment. The `FinalFields` of the object should show the increase in CSC in the `Balance` field.
+Use the [`tx` command](reference-stoxumd.html#tx) with the EscrowFinish transaction's identifying hash to check its final status. In particular, look in the transaction metadata for a `ModifiedNode` of type `AccountRoot` for the destination of the escrowed payment. The `FinalFields` of the object should show the increase in STM in the `Balance` field.
 
 Request:
 
@@ -390,7 +390,7 @@ Response:
 
 ### 1. Confirm the expired escrow
 
-An escrow in the CSC Ledger is expired when its `CancelAfter` time is lower than the `close_time` of a validated ledger version. (If the escrow does not have a `CancelAfter` time, it never expires.) You can look up the close time of the latest validated ledger with the [`ledger` command](reference-casinocoind.html#ledger):
+An escrow in the STM Ledger is expired when its `CancelAfter` time is lower than the `close_time` of a validated ledger version. (If the escrow does not have a `CancelAfter` time, it never expires.) You can look up the close time of the latest validated ledger with the [`ledger` command](reference-stoxumd.html#ledger):
 
 Request:
 
@@ -417,7 +417,7 @@ _Websocket_
 <!-- MULTICODE_BLOCK_END -->
 
 
-You can look up the escrow and compare to the `CancelAfter` time using the [`account_objects` command](reference-casinocoind.html#account-objects):
+You can look up the escrow and compare to the `CancelAfter` time using the [`account_objects` command](reference-stoxumd.html#account-objects):
 
 Request:
 
@@ -445,7 +445,7 @@ _Websocket_
 
 ### 2. Submit EscrowCancel transaction
 
-***Anyone*** can cancel an expired escrow in the CSC Ledger by [signing and submitting](reference-transaction-format.html#signing-and-submitting-transactions) an [EscrowCancel transaction][]. Set the `Owner` field of the transaction to the `Account` of the `EscrowCreate` transaction that created this escrow. Set the `OfferSequence` field to the `Sequence` of the `EscrowCreate` transaction.
+***Anyone*** can cancel an expired escrow in the STM Ledger by [signing and submitting](reference-transaction-format.html#signing-and-submitting-transactions) an [EscrowCancel transaction][]. Set the `Owner` field of the transaction to the `Account` of the `EscrowCreate` transaction that created this escrow. Set the `OfferSequence` field to the `Sequence` of the `EscrowCreate` transaction.
 
 {% include 'snippets/secret-key-warning.md' %}
 
@@ -481,7 +481,7 @@ Take note of the transaction's identifying `hash` value so you can check its fin
 
 ### 4. Confirm final result
 
-Use the [`tx` command](reference-casinocoind.html#tx) with the EscrowCancel transaction's identifying hash to check its final status. Look in the transaction metadata for a `DeletedNode` with `LedgerEntryType` of `Escrow`. Also look for a `ModifiedNode` of type `AccountRoot` for the sender of the escrowed payment. The `FinalFields` of the object should show the increase in CSC in the `Balance` field for the returned CSC.
+Use the [`tx` command](reference-stoxumd.html#tx) with the EscrowCancel transaction's identifying hash to check its final status. Look in the transaction metadata for a `DeletedNode` with `LedgerEntryType` of `Escrow`. Also look for a `ModifiedNode` of type `AccountRoot` for the sender of the escrowed payment. The `FinalFields` of the object should show the increase in STM in the `Balance` field for the returned STM.
 
 Request:
 
@@ -508,19 +508,19 @@ _Websocket_
 
 <!-- MULTICODE_BLOCK_END -->
 
-In the above example, `c3wN3v2vTUkr5qd6daqDc2xE4LSysdVjkT` is the sender of the escrow, and the increase in `Balance` from 99999**8**9990 drops to 99999**9**9990 drops represents the return of the escrowed 10,000 drops of CSC (0.000001 CSC).
+In the above example, `c3wN3v2vTUkr5qd6daqDc2xE4LSysdVjkT` is the sender of the escrow, and the increase in `Balance` from 99999**8**9990 drops to 99999**9**9990 drops represents the return of the escrowed 10,000 drops of STM (0.000001 STM).
 
-**Tip:** If you don't know what `OfferSequence` to use in the [EscrowFinish transaction][] to execute an escrow, use the [`tx` method](reference-casinocoind.html) to look up the transaction that created the escrow, using the identifying hash of the transaction in the Escrow's `PreviousTxnID` field. Use the `Sequence` value of that transaction as the `OfferSequence` value when finishing the escrow.
+**Tip:** If you don't know what `OfferSequence` to use in the [EscrowFinish transaction][] to execute an escrow, use the [`tx` method](reference-stoxumd.html) to look up the transaction that created the escrow, using the identifying hash of the transaction in the Escrow's `PreviousTxnID` field. Use the `Sequence` value of that transaction as the `OfferSequence` value when finishing the escrow.
 
 ## Look up escrows
 
 All pending escrows are stored in the ledger as [Escrow objects](reference-ledger-format.html#escrow).
 
-You can look up escrow objects by the [sender's address](#look-up-escrows-by-sender-address) or the [destination address](#look-up-escrows-by-destination-address) using the [`account_objects`](reference-casinocoind.html#account-objects) method.
+You can look up escrow objects by the [sender's address](#look-up-escrows-by-sender-address) or the [destination address](#look-up-escrows-by-destination-address) using the [`account_objects`](reference-stoxumd.html#account-objects) method.
 
 ### Look up escrows by sender address
 
-You can use the [`account_objects`](reference-casinocoind.html#account-objects) method to look up escrow objects by sender address.
+You can use the [`account_objects`](reference-stoxumd.html#account-objects) method to look up escrow objects by sender address.
 
 Let's say that you want to look up all pending escrow objects with a sender address of `cfztBskAVszuS3s5Kq7zDS74QtHrw893fm`. You can do this using the following example request, where the sender address is the `account` value.
 
@@ -555,7 +555,7 @@ _Websocket_
 
 ### Look up escrows by destination address
 
-You can use the [`account_objects`](reference-casinocoind.html#account-objects) method to look up escrow objects by destination address.
+You can use the [`account_objects`](reference-stoxumd.html#account-objects) method to look up escrow objects by destination address.
 
 **Note:** You can only look up pending escrow objects by destination address if those escrows were created after the [fix1523 amendment](reference-amendments.html#fix1523) was enabled on 2017-11-14.
 

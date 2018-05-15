@@ -1,10 +1,10 @@
 ## EscrowCancel
 
-[[Source]<br>](https://github.com/casinocoin/casinocoind/blob/develop/src/casinocoin/app/tx/impl/Escrow.cpp "Source")
+[[Source]<br>](https://github.com/stoxum/stoxumd/src/stoxum/app/tx/impl/Escrow.cpp "Source")
 
 _Requires the [Escrow Amendment](reference-amendments.html#escrow)._
 
-Return escrowed CSC to the sender.
+Return escrowed STM to the sender.
 
 Example EscrowCancel:
 

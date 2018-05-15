@@ -4,19 +4,19 @@
 
 ## Funds Lifecycle
 
-All non-CSC currency balances (issuances) in the CSC Ledger are tied to accounting relationships between two CSC Ledger addresses. When a financial institution uses CasinoCoin's recommended separation of roles, funds relating to that institution tend to flow in a cycle.
+All non-STM currency balances (issuances) in the STM Ledger are tied to accounting relationships between two STM Ledger addresses. When a financial institution uses Stoxum's recommended separation of roles, funds relating to that institution tend to flow in a cycle.
 
 [![Diagram: Funds flow from the issuing address to standby addresses, to operational addresses, to customer and partner addresses, and finally back to the issuing address.](img/funds_flow_diagram.png)](img/funds_flow_diagram.png)
 
-When the issuing address sends payments, it creates balances in the accounting relationships in the CSC Ledger. Within the CSC Ledger, users can exchange balances across different accounting relationships, so we use the term _issuances_ to describe any non-CSC balance. Issuances have negative value from the perspective of the issuing address, since they represent obligations. The same issuances have positive value from the perspective of the issuing address's counterparties. When the issuing address receives a payment, this reduces its obligations, erasing the issuances that were sent.
+When the issuing address sends payments, it creates balances in the accounting relationships in the STM Ledger. Within the STM Ledger, users can exchange balances across different accounting relationships, so we use the term _issuances_ to describe any non-STM balance. Issuances have negative value from the perspective of the issuing address, since they represent obligations. The same issuances have positive value from the perspective of the issuing address's counterparties. When the issuing address receives a payment, this reduces its obligations, erasing the issuances that were sent.
 
-The issuing address sends issuances to a standby address, or directly to an operational address. The standby addresses send those issuances to operational addresses. Operational addresses send payments to other counterparties, such as liquidity providers, partners, and other customers. Because all issuances are tied to accounting relationships with the issuing address, payments and exchanges of issuances "casinocoin through" the issuing address. The payment debits the sender's balance in its accounting relationship with the issuing address and credits the recipient's balance in the recipient's accounting relationship with the issuing address. The CSC Ledger also supports more complicated [paths](concept-paths.html) that connect multiple issuers through order books and [liquidity providers who allow their funds to casinocoin](concept-nocasinocoin.html).
+The issuing address sends issuances to a standby address, or directly to an operational address. The standby addresses send those issuances to operational addresses. Operational addresses send payments to other counterparties, such as liquidity providers, partners, and other customers. Because all issuances are tied to accounting relationships with the issuing address, payments and exchanges of issuances "stoxum through" the issuing address. The payment debits the sender's balance in its accounting relationship with the issuing address and credits the recipient's balance in the recipient's accounting relationship with the issuing address. The STM Ledger also supports more complicated [paths](concept-paths.html) that connect multiple issuers through order books and [liquidity providers who allow their funds to stoxum](concept-nostoxumcoin.html).
 
 ## Issuing Address
 
 The issuing address is like a vault. Partners, customers, and operational addresses create accounting relationships (trust lines) to the issuing address, but this address sends as few transactions as possible. Periodically, a human operator creates and signs a transaction from the issuing address to refill the balances of a standby or operational address. Ideally, the secret key used to sign these transactions should never be accessible from any internet-connected computer.
 
-Unlike a vault, the issuing address can receive payments directly from customers and partners. Since all transactions in the CSC Ledger are public, automated systems can monitor for payments to the issuing address without needing a secret key.
+Unlike a vault, the issuing address can receive payments directly from customers and partners. Since all transactions in the STM Ledger are public, automated systems can monitor for payments to the issuing address without needing a secret key.
 
 ### Issuing Address Compromise
 
@@ -24,7 +24,7 @@ If a malicious actor learns the secret key behind a institution's issuing addres
 
 ### Multiple Issuing Addresses
 
-A financial institution can issue more than one currency in the CSC Ledger from a single issuing address. However, there are some settings that apply equally to all currencies issued from an address, including the percentage for [transfer fees](concept-transfer-fees.html) and the [global freeze](concept-freeze.html) status. If the financial institution wants the flexibility to manage settings differently for each currency, the institution must use a different issuing address for each currency.
+A financial institution can issue more than one currency in the STM Ledger from a single issuing address. However, there are some settings that apply equally to all currencies issued from an address, including the percentage for [transfer fees](concept-transfer-fees.html) and the [global freeze](concept-freeze.html) status. If the financial institution wants the flexibility to manage settings differently for each currency, the institution must use a different issuing address for each currency.
 
 
 ## Operational Addresses
@@ -40,7 +40,7 @@ If a malicious actor learns the secret key behind an operational address, the fi
 
 ## Standby Addresses
 
-Another optional step that an institution can take to balance risk and convenience is to use "standby addresses" as an intermediate step between the issuing address and operational addresses. The institution can fund additional CSC Ledger addresses as standby addresses, whose keys are not stored online, but are entrusted to different trusted users.
+Another optional step that an institution can take to balance risk and convenience is to use "standby addresses" as an intermediate step between the issuing address and operational addresses. The institution can fund additional STM Ledger addresses as standby addresses, whose keys are not stored online, but are entrusted to different trusted users.
 
 When an operational address is running low on funds, a trusted user can use a standby address to refill the operational address's balance. When a standby addresses run low on funds, the institution can use the issuing address to send more currency to a standby address in a single transaction, and the standby addresses can distribute that currency among themselves if necessary. This improves security of the issuing address, allowing it to make fewer total transactions, without leaving too much money in the control of a single automated system.
 

@@ -1,8 +1,8 @@
 ## AccountSet
 
-[[Source]<br>](https://github.com/casinocoin/casinocoind/blob/4.0.1/src/casinocoin/app/transactors/SetAccount.cpp "Source")
+[[Source]<br>](https://github.com/stoxum/stoxumd/src/stoxum/app/transactors/SetAccount.cpp "Source")
 
-An AccountSet transaction modifies the properties of an [account in the CSC Ledger](reference-ledger-format.html#accountroot).
+An AccountSet transaction modifies the properties of an [account in the STM Ledger](reference-ledger-format.html#accountroot).
 
 Example AccountSet:
 
@@ -58,7 +58,7 @@ The available AccountSet flags are:
 | :------------------- | :------------ | :------------------------ | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | asfRequireDest       | 1             | lsfRequireDestTag         | Require a destination tag to send transactions to this account.                                                                                                                                 |
 | asfRequireAuth       | 2             | lsfRequireAuth            | Require authorization for users to hold balances issued by this address. Can only be enabled if the address has no trust lines connected to it.                                                 |
-| asfDisallowCSC       | 3             | lsfDisallowCSC            | CSC should not be sent to this account. (Enforced by client applications, not by `stoxumd`)                                                                                                     |
+| asfDisallowSTM       | 3             | lsfDisallowSTM            | STM should not be sent to this account. (Enforced by client applications, not by `stoxumd`)                                                                                                     |
 | asfDisableMaster     | 4             | lsfDisableMaster          | Disallow use of the master key. Can only be enabled if the account has configured another way to sign transactions, such as a [Regular Key](#setregularkey) or a [Signer List](#signerlistset). |
 | asfAccountTxnID      | 5             | (None)                    | Track the ID of this account's most recent transaction. Required for [AccountTxnID](#accounttxnid)                                                                                              |
 | asfNoFreeze          | 6             | lsfNoFreeze               | Permanently give up the ability to [freeze individual trust lines or disable Global Freeze](concept-freeze.html). This flag can never be disabled after being enabled.                          |
@@ -75,16 +75,16 @@ The following [Transaction flags](#flags), specific to the AccountSet transactio
 | tfOptionalDestTag | 0x00020000 | 131072        | asfRequireDest (ClearFlag)  |
 | tfRequireAuth     | 0x00040000 | 262144        | asfRequireAuth (SetFlag)    |
 | tfOptionalAuth    | 0x00080000 | 524288        | asfRequireAuth (ClearFlag)  |
-| tfDisallowCSC     | 0x00100000 | 1048576       | asfDisallowCSC (SetFlag)    |
-| tfAllowCSC        | 0x00200000 | 2097152       | asfDisallowCSC (ClearFlag)  |
+| tfDisallowSTM     | 0x00100000 | 1048576       | asfDisallowSTM (SetFlag)    |
+| tfAllowSTM        | 0x00200000 | 2097152       | asfDisallowSTM (ClearFlag)  |
 
 #### Blocking Incoming Transactions
 
-Incoming transactions with unclear purposes may be an inconvenience for financial institutions, who would have to recognize when a customer made a mistake, and then potentially refund accounts or adjust balances depending on the mistake. The `asfRequireDest` and `asfDisallowCSC` flags are intended to protect users from accidentally sending funds in a way that is unclear about the reason the funds were sent.
+Incoming transactions with unclear purposes may be an inconvenience for financial institutions, who would have to recognize when a customer made a mistake, and then potentially refund accounts or adjust balances depending on the mistake. The `asfRequireDest` and `asfDisallowSTM` flags are intended to protect users from accidentally sending funds in a way that is unclear about the reason the funds were sent.
 
 For example, a destination tag is typically used to identify which hosted balance should be credited when a financial institution receives a payment. If the destination tag is omitted, it may be unclear which account should be credited, creating a need for refunds, among other problems. By using the `asfRequireDest` tag, you can ensure that every incoming payment has a destination tag, which makes it harder for others to send you an ambiguous payment by accident.
 
-You can protect against unwanted incoming payments for non-CSC currencies by not creating trust lines in those currencies. Since CSC does not require trust, the `asfDisallowCSC` flag is used to discourage users from sending CSC to an account. However, this flag is not enforced in `stoxumcoind` because it could potentially cause accounts to become unusable. (If an account did not have enough CSC to send a transaction that disabled the flag, the account would be completely unusable.) Instead, client applications should disallow or discourage CSC payments to accounts with the `asfDisallowCSC` flag enabled.
+You can protect against unwanted incoming payments for non-STM currencies by not creating trust lines in those currencies. Since STM does not require trust, the `asfDisallowSTM` flag is used to discourage users from sending STM to an account. However, this flag is not enforced in `stoxumcoind` because it could potentially cause accounts to become unusable. (If an account did not have enough STM to send a transaction that disabled the flag, the account would be completely unusable.) Instead, client applications should disallow or discourage STM payments to accounts with the `asfDisallowSTM` flag enabled.
 
 ### TransferRate
 

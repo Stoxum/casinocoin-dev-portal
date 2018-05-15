@@ -1,10 +1,10 @@
-# CSC Ledger Data Format
+# STM Ledger Data Format
 
-The CSC Ledger is a shared, global ledger that is open to all. Individual participants can trust the integrity of the ledger without having to trust any single institution to manage it. The `casinocoind` server software accomplishes this by managing a ledger database that can only be updated according to very specific rules. Each instance of `casinocoind` keeps a full copy of the ledger, and the peer-to-peer network of `casinocoind` servers distributes candidate transactions among themselves. The consensus process determines which transactions get applied to each new version of the ledger. See also: [The Consensus Process](https://casinocoin.org/build/casinocoin-ledger-consensus-process/).
+The STM Ledger is a shared, global ledger that is open to all. Individual participants can trust the integrity of the ledger without having to trust any single institution to manage it. The `stoxumd` server software accomplishes this by managing a ledger database that can only be updated according to very specific rules. Each instance of `stoxumd` keeps a full copy of the ledger, and the peer-to-peer network of `stoxumd` servers distributes candidate transactions among themselves. The consensus process determines which transactions get applied to each new version of the ledger. See also: [The Consensus Process](https://stoxum.org/build/stoxum-ledger-consensus-process/).
 
 ![Diagram: Each ledger is the result of applying transactions to the previous ledger version.](img/ledger-process.png)
 
-The shared global ledger is actually a series of individual ledgers, or ledger versions, which `casinocoind` keeps in its internal database. Every ledger version has a [ledger index](#ledger-index) which identifies the order in which ledgers occur. Each closed ledger version also has an identifying hash value, which uniquely identifies the contents of that ledger. At any given time, a `casinocoind` instance has an in-progress "current" open ledger, plus some number of closed ledgers that have not yet been approved by consensus, and any number of historical ledgers that have been validated by consensus. Only the validated ledgers are certain to be correct and immutable.
+The shared global ledger is actually a series of individual ledgers, or ledger versions, which `stoxum` keeps in its internal database. Every ledger version has a [ledger index](#ledger-index) which identifies the order in which ledgers occur. Each closed ledger version also has an identifying hash value, which uniquely identifies the contents of that ledger. At any given time, a `stoxumd` instance has an in-progress "current" open ledger, plus some number of closed ledgers that have not yet been approved by consensus, and any number of historical ledgers that have been validated by consensus. Only the validated ledgers are certain to be correct and immutable.
 
 A single ledger version consists of several parts:
 
@@ -26,35 +26,35 @@ In the case of transactions, the identifying hash is based on the signed transac
 ## Object IDs
 <a id="sha512half"></a>
 
-All objects in a ledger' state tree have a unique ID. This field is returned as the `index` field in JSON, at the same level as the object's contents. The ID is derived by hashing important contents of the object, along with a [namespace identifier](https://github.com/casinocoin/casinocoind/blob/master/src/casinocoin/protocol/LedgerFormats.h#L97). The ledger object type determines which namespace identifier to use and which contents to include in the hash. This ensures every ID is unique. To calculate the hash, `casinocoind` uses SHA-512 and then truncates the result to the first 256 bytes. This algorithm, informally called **SHA-512Half**, provides an output that has comparable security to SHA-256, but runs faster on 64-bit processors.
+All objects in a ledger' state tree have a unique ID. This field is returned as the `index` field in JSON, at the same level as the object's contents. The ID is derived by hashing important contents of the object, along with a [namespace identifier](https://github.com/stoxum/stoxumd/src/stoxum/protocol/LedgerFormats.h#L97). The ledger object type determines which namespace identifier to use and which contents to include in the hash. This ensures every ID is unique. To calculate the hash, `stoxumd` uses SHA-512 and then truncates the result to the first 256 bytes. This algorithm, informally called **SHA-512Half**, provides an output that has comparable security to SHA-256, but runs faster on 64-bit processors.
 
-![Diagram: casinocoind uses SHA-512Half to generate IDs for ledger objects. The space key prevents IDs for different object types from colliding.](img/ledger-indexes.png)
+![Diagram: stoxumd uses SHA-512Half to generate IDs for ledger objects. The space key prevents IDs for different object types from colliding.](img/ledger-indexes.png)
 
 
 ## Header Format
-[[Source]<br>](https://github.com/casinocoin/casinocoind/blob/master/src/casinocoin/ledger/ReadView.h#L71 "Source")
+[[Source]<br>](https://github.com/stoxum/stoxumd/src/stoxum/ledger/ReadView.h#L71 "Source")
 
-Every ledger version has a unique header that describes the contents. You can look up a ledger's header information with the [`ledger` command](reference-casinocoind.html#ledger). The contents of the ledger header are as follows:
+Every ledger version has a unique header that describes the contents. You can look up a ledger's header information with the [`ledger` command](reference-stoxumd.html#ledger). The contents of the ledger header are as follows:
 
 | Field           | JSON Type | [Internal Type][] | Description |
 |-----------------|-----------|-------------------|-------------|
 | [`ledger_index`](#ledger-index)   | String    | UInt32            | The sequence number of the ledger. Some API methods display this as a quoted integer; some display it as a native JSON number. |
 | `ledger_hash`    | String    | Hash256           | The [SHA-512Half](#sha512half) of the ledger header, excluding the `ledger_hash` itself. This serves as a unique identifier for this ledger and all its contents. |
 | `account_hash`   | String    | Hash256           | The [SHA-512Half](#sha512half) of this ledger's state tree information. |
-| `close_time`     | Number    | UInt32            | The approximate time this ledger closed, as the number of seconds since the CasinoCoin Epoch of 2000-01-01 00:00:00. This value is rounded based on the `close_time_resolution`, so later ledgers can have the same value. |
+| `close_time`     | Number    | UInt32            | The approximate time this ledger closed, as the number of seconds since the Stoxum Epoch of 2000-01-01 00:00:00. This value is rounded based on the `close_time_resolution`, so later ledgers can have the same value. |
 | `closed`          | Boolean   | bool              | If true, this ledger version is no longer accepting new transactions. (However, unless this ledger version is validated, it might be replaced by a different ledger version with a different set of transactions.) |
 | `parent_hash`    | String    | Hash256           | The `ledger_hash` value of the previous ledger that was used to build this one. If there are different versions of the previous ledger index, this indicates from which one the ledger was derived. |
-| `total_coins`    | String    | UInt64            | The total number of [drops of CSC][CSC, in drops] owned by accounts in the ledger. This omits CSC that has been destroyed by transaction fees. The actual amount of CSC in circulation is lower because some accounts are "black holes" whose keys are not known by anyone. |
+| `total_coins`    | String    | UInt64            | The total number of [drops of STM][STM, in drops] owned by accounts in the ledger. This omits STM that has been destroyed by transaction fees. The actual amount of STM in circulation is lower because some accounts are "black holes" whose keys are not known by anyone. |
 | `transaction_hash` | String  | Hash256           | The [SHA-512Half](#sha512half) of the transactions included in this ledger. |
 | `close_time_resolution` | Number | Uint8        | An integer in the range \[2,120\] indicating the maximum number of seconds by which the `close_time` could be rounded. |
 | [`closeFlags`](#close-flags) | (Omitted) | UInt8             | A bit-map of flags relating to the closing of this ledger. |
 
-[Internal Type]: https://github.com/casinocoin/casinocoind/blob/master/src/casinocoin/protocol/impl/SField.cpp
+[Internal Type]: https://github.com/stoxum/stoxumd/src/stoxum/protocol/impl/SField.cpp
 
 
 ### Ledger Index
 {% include 'data_types/ledger_index.md' %}
-[Hash]: reference-casinocoind.html#hashes
+[Hash]: reference-stoxumd.html#hashes
 
 ### Close Flags
 
@@ -68,21 +68,21 @@ The `closeFlags` field is not included in any JSON representations of a ledger, 
 
 There are several different kinds of objects that can appear in the ledger's state tree:
 
-* [**AccountRoot** - The settings, CSC balance, and other metadata for one account.](#accountroot)
+* [**AccountRoot** - The settings, STM balance, and other metadata for one account.](#accountroot)
 * [**Amendments** - Singleton object with status of enabled and pending amendments.](#amendments)
 * [**DirectoryNode** - Contains links to other objects.](#directorynode)
-* [**Escrow** - Contains CSC held for a conditional payment.](#escrow)
+* [**Escrow** - Contains STM held for a conditional payment.](#escrow)
 * [**FeeSettings** - Singleton object with consensus-approved base transaction cost and reserve requirements.](#feesettings)
 * [**LedgerHashes** - Lists of prior ledger versions' hashes for history lookup.](#ledgerhashes)
 * [**Offer** - An offer to exchange currencies, known in finance as an _order_.](#offer)
-* [**PayChannel** - A channel for asynchronous CSC payments.](#paychannel)
-* [**CasinocoinState** - Links two accounts, tracking the balance of one currency between them. The concept of a _trust line_ is really an abstraction of this object type.](#casinocoinstate)
+* [**PayChannel** - A channel for asynchronous STM payments.](#paychannel)
+* [**StoxumState** - Links two accounts, tracking the balance of one currency between them. The concept of a _trust line_ is really an abstraction of this object type.](#stoxumstate)
 * [**SignerList** - A list of addresses for multi-signing transactions.](#signerlist)
 
-Each ledger object consists of several fields. In the peer protocol that `casinocoind` servers use to communicate with each other, ledger objects are represented in their raw binary format. In other [`casinocoind` APIs](reference-casinocoind.html), ledger objects are represented as JSON objects.
+Each ledger object consists of several fields. In the peer protocol that `stoxumd` servers use to communicate with each other, ledger objects are represented in their raw binary format. In other [`stoxumd` APIs](reference-stoxumd.html), ledger objects are represented as JSON objects.
 
 ## AccountRoot
-[[Source]<br>](https://github.com/casinocoin/casinocoind/blob/4.0.1/src/casinocoin/protocol/impl/LedgerFormats.cpp#L27 "Source")
+[[Source]<br>](https://github.com/stoxum/stoxumd/src/stoxum/protocol/impl/LedgerFormats.cpp#L27 "Source")
 
 The `AccountRoot` object type describes a single _account_ object. Example `AccountRoot` object:
 
@@ -113,7 +113,7 @@ The `AccountRoot` object has the following fields:
 | `Account`         | String | AccountID | The identifying address of this account, such as cDarPNJEpCnpBZSfmcquydockkePkjPGA2. |
 | [Flags](#accountroot-flags) | Number | UInt32 | A bit-map of boolean flags enabled for this account. |
 | `Sequence`        | Number | UInt32 | The sequence number of the next valid transaction for this account. (Each account starts with Sequence = 1 and increases each time a transaction is made.) |
-| `Balance`         | String | Amount | The account's current [CSC balance in drops][CSC, in drops], represented as a string. |
+| `Balance`         | String | Amount | The account's current [STM balance in drops][STM, in drops], represented as a string. |
 | `OwnerCount`      | Number | UInt32 | The number of objects this account owns in the ledger, which contributes to its owner reserve. |
 | `PreviousTxnID`   | String | Hash256 | The identifying hash of the transaction that most recently modified this object. |
 | `PreviousTxnLgrSeq` | Number | UInt32 | The [index of the ledger](#ledger-index) that contains the transaction that most recently modified this object. |
@@ -138,11 +138,11 @@ AccountRoot objects can have the following flag values:
 | lsfPasswordSpent | 0x00010000 | 65536 | Indicates that the account has used its free SetRegularKey transaction. | (None) |
 | lsfRequireDestTag | 0x00020000 | 131072 | Requires incoming payments to specify a Destination Tag. | asfRequireDest |
 | lsfRequireAuth | 0x00040000 | 262144 | This account must individually approve other users for those users to hold this account's issuances. | asfRequireAuth |
-| lsfDisallowCSC | 0x00080000 | 524288 | Client applications should not send CSC to this account. Not enforced by `casinocoind`. | asfDisallowCSC |
+| lsfDisallowSTM | 0x00080000 | 524288 | Client applications should not send STM to this account. Not enforced by `stoxumd`. | asfDisallowSTM |
 | lsfDisableMaster | 0x00100000 | 1048576 | Disallows use of the master key to sign transactions for this account. | asfDisableMaster |
 | lsfNoFreeze | 0x00200000 | 2097152 | This address cannot freeze trust lines connected to it. Once enabled, cannot be disabled. | asfNoFreeze |
 | lsfGlobalFreeze | 0x00400000 | 4194304 |　All assets issued by this address are frozen. | asfGlobalFreeze |
-| lsfDefaultCasinocoin | 0x00800000 | 8388608 | Enable [rippling](concept-nocasinocoin.html) on this addresses's trust lines by default. Required for issuing addresses; discouraged for others. | asfDefaultCasinocoin |
+| lsfDefaultStoxum | 0x00800000 | 8388608 | Enable [rippling](concept-nostoxumcoin.html) on this addresses's trust lines by default. Required for issuing addresses; discouraged for others. | asfDefaultStoxum |
 
 ### AccountRoot ID Format
 
@@ -153,7 +153,7 @@ The ID of an AccountRoot object is the [SHA-512Half](#sha512half) of the followi
 
 
 ## Amendments
-[[Source]<br>](https://github.com/casinocoin/casinocoind/blob/develop/src/casinocoin/protocol/impl/LedgerFormats.cpp#L110-L113 "Source")
+[[Source]<br>](https://github.com/stoxum/stoxumd/src/stxum/protocol/impl/LedgerFormats.cpp#L110-L113 "Source")
 
 The `Amendments` object type contains a list of [Amendments](concept-amendments.html) that are currently active. Each ledger version contains **at most one** `Amendments` object.
 
@@ -186,7 +186,7 @@ Example `Amendments` object:
 | `Amendments`      | Array     | STI_VECTOR256     | _(Optional)_ Array of 256-bit [amendment IDs](concept-amendments.html#about-amendments) for all currently-enabled amendments. If omitted, there are no enabled amendments. |
 | `Majorities`      | Array     | STI_ARRAY | _(Optional)_ Array of objects describing the status of amendments that have majority support but are not yet enabled. If omitted, there are no pending amendments with majority support. |
 | `Flags`           | Number    | UInt32    | Not used. |
-| `LedgerEntryType` | String    | UInt16    |  The value `0x0066`, mapped to the string `Amendments`, indicates that this is object describes status of amendments to the CSC Ledger. |
+| `LedgerEntryType` | String    | UInt16    |  The value `0x0066`, mapped to the string `Amendments`, indicates that this is object describes status of amendments to the STM Ledger. |
 
 Each member of the `Majorities` field, if it is present, is an object with a one field, `Majority`, whose contents are a nested object with the following fields:
 
@@ -211,13 +211,13 @@ The `Amendments` object ID is the hash of the `Amendments` space key (`0x0066`) 
 
 
 ## DirectoryNode
-[[Source]<br>](https://github.com/casinocoin/casinocoind/blob/4.0.1/src/casinocoin/protocol/impl/LedgerFormats.cpp#L44 "Source")
+[[Source]<br>](https://github.com/stoxum/stoxumd/src/stoxum/protocol/impl/LedgerFormats.cpp#L44 "Source")
 
 The `DirectoryNode` object type provides a list of links to other objects in the ledger's state tree. A single conceptual _Directory_　takes the form of a doubly linked list, with one or more DirectoryNode objects each containing up to 32 [IDs](#tree-format) of other objects. The first object is called the root of the directory, and all objects other than the root object can be added or deleted as necessary.
 
 There are two kinds of Directories:
 
-* **Owner directories** list other objects owned by an account, such as `CasinocoinState` or `Offer` objects.
+* **Owner directories** list other objects owned by an account, such as `Stoxumtate` or `Offer` objects.
 * **Offer directories** list the offers available in the distributed exchange. A single Offer directory contains all the offers that have the same exchange rate for the same issuances.
 
 Example Directories:
@@ -297,7 +297,7 @@ There are three different formulas for creating the ID of a DirectoryNode, depen
 * The AccountID from the `TakerPaysIssuer`
 * The AccountID from the `TakerGetsIssuer`
 
-The lower 64 bits of an Offer Directory's ID represent the TakerPays amount divided by TakerGets amount from the offer(s) in that directory as a 64-bit number in the CSC Ledger's internal amount format.
+The lower 64 bits of an Offer Directory's ID represent the TakerPays amount divided by TakerGets amount from the offer(s) in that directory as a 64-bit number in the STM Ledger's internal amount format.
 
 **If the DirectoryNode is not the first page in the Directory** (regardless of whether it is an Owner Directory or an Offer Directory), then it has an ID that is the [SHA-512Half](#sha512half) of the following values put together:
 
@@ -307,16 +307,16 @@ The lower 64 bits of an Offer Directory's ID represent the TakerPays amount divi
 
 
 ## Escrow
-[[Source]<br>](https://github.com/casinocoin/casinocoind/blob/4.0.1/src/casinocoin/protocol/impl/LedgerFormats.cpp#L90-L101 "Source")
+[[Source]<br>](https://github.com/stoxum/stoxumd/src/stoxum/protocol/impl/LedgerFormats.cpp#L90-L101 "Source")
 
 _(Requires the [Escrow Amendment](reference-amendments.html#escrow).)_
 
-The `Escrow` object type represents a held payment of CSC waiting to be executed or canceled. An [EscrowCreate transaction][] creates an `Escrow` object in the ledger. A successful [EscrowFinish][] or [EscrowCancel][] transaction deletes the object. If the ``Escrow`` object has a [_crypto-condition_](https://tools.ietf.org/html/draft-thomas-crypto-conditions-02), the payment can only succeed if an EscrowFinish transaction provides the corresponding _fulfillment_ that satisfies the condition. (The only supported crypto-condition type is [PREIMAGE-SHA-256](https://tools.ietf.org/html/draft-thomas-crypto-conditions-02#section-8.1).) If the `Escrow` object has a `FinishAfter` time, the held payment can only execute after that time.
+The `Escrow` object type represents a held payment of STM waiting to be executed or canceled. An [EscrowCreate transaction][] creates an `Escrow` object in the ledger. A successful [EscrowFinish][] or [EscrowCancel][] transaction deletes the object. If the ``Escrow`` object has a [_crypto-condition_](https://tools.ietf.org/html/draft-thomas-crypto-conditions-02), the payment can only succeed if an EscrowFinish transaction provides the corresponding _fulfillment_ that satisfies the condition. (The only supported crypto-condition type is [PREIMAGE-SHA-256](https://tools.ietf.org/html/draft-thomas-crypto-conditions-02#section-8.1).) If the `Escrow` object has a `FinishAfter` time, the held payment can only execute after that time.
 
 An `Escrow` object is associated with two addresses:
 
-- The owner, who provides the CSC when creating the `Escrow` object. If the held payment is canceled, the CSC returns to the owner.
-- The destination, where the CSC is paid when the held payment succeeds. The destination can be the same as the owner.
+- The owner, who provides the STM when creating the `Escrow` object. If the held payment is canceled, the STM returns to the owner.
+- The destination, where the STM is paid when the held payment succeeds. The destination can be the same as the owner.
 
 Example `Escrow` object:
 
@@ -345,12 +345,12 @@ An `Escrow` object has the following fields:
 | Name              | JSON Type | [Internal Type][] | Description |
 |-------------------|-----------|---------------|-------------|
 | `LedgerEntryType`   | String    | UInt16    | The value `0x0075`, mapped to the string `Escrow`, indicates that this object is an `Escrow` object. |
-| `Account`           | String | AccountID | The address of the owner (sender) of this held payment. This is the account that provided the CSC, and gets it back if the held payment is canceled. |
-| `Destination`       | String | AccountID | The destination address where the CSC is paid if the held payment is successful. |
-| `Amount`            | String | Amount    | The amount of CSC, in drops, to be delivered by the held payment. |
+| `Account`           | String | AccountID | The address of the owner (sender) of this held payment. This is the account that provided the STM, and gets it back if the held payment is canceled. |
+| `Destination`       | String | AccountID | The destination address where the STM is paid if the held payment is successful. |
+| `Amount`            | String | Amount    | The amount of STM, in drops, to be delivered by the held payment. |
 | `Condition`         | String | VariableLength | _(Optional)_ A [PREIMAGE-SHA-256 crypto-condition](https://tools.ietf.org/html/draft-thomas-crypto-conditions-02#section-8.1), as hexadecimal. If present, the [EscrowFinish transaction][] must contain a fulfillment that satisfies this condition. |
-| `CancelAfter`       | Number | UInt32 | _(Optional)_ The held payment can be canceled if and only if this field is present _and_ the time it specifies has passed. Specifically, this is specified as [seconds since the CasinoCoin Epoch](reference-casinocoind.html#specifying-time) and it "has passed" if it's earlier than the close time of the previous validated ledger. |
-| `FinishAfter`       | Number | UInt32 | _(Optional)_ The time, in [seconds since the CasinoCoin Epoch](reference-casinocoind.html#specifying-time), after which this held payment can be finished. Any [EscrowFinish transaction][] before this time fails. (Specifically, this is compared with the close time of the previous validated ledger.) |
+| `CancelAfter`       | Number | UInt32 | _(Optional)_ The held payment can be canceled if and only if this field is present _and_ the time it specifies has passed. Specifically, this is specified as [seconds since the Stoxum Epoch](reference-stoxumd.html#specifying-time) and it "has passed" if it's earlier than the close time of the previous validated ledger. |
+| `FinishAfter`       | Number | UInt32 | _(Optional)_ The time, in [seconds since the Stoxum Epoch](reference-stoxumd.html#specifying-time), after which this held payment can be finished. Any [EscrowFinish transaction][] before this time fails. (Specifically, this is compared with the close time of the previous validated ledger.) |
 | `SourceTag`         | Number | UInt32 | _(Optional)_ An arbitrary tag to further specify the source for this held payment, such as a hosted recipient at the owner's address. |
 | `DestinationTag`    | Number | UInt32 | _(Optional)_ An arbitrary tag to further specify the destination for this held payment, such as a hosted recipient at the destination address. |
 | `OwnerNode`         | String    | UInt64    | A hint indicating which page of the owner directory links to this object, in case the directory consists of multiple pages. **Note:** The object does not contain a direct link to the owner directory containing it, since that value can be derived from the `Account`. |
@@ -368,7 +368,7 @@ The ID of an `Escrow` object is the [SHA-512Half](#sha512half) of the following 
 * The Sequence number of the [EscrowCreate transaction][] that created the `Escrow` object
 
 ## FeeSettings
-[[Source]<br>](https://github.com/casinocoin/casinocoind/blob/master/src/casinocoin/protocol/impl/LedgerFormats.cpp#L115-L120 "Source")
+[[Source]<br>](https://github.com/stoxum/stoxumd/src/stoxum/protocol/impl/LedgerFormats.cpp#L115-L120 "Source")
 
 The `FeeSettings` object type contains the current base [transaction cost](concept-transaction-cost.html) and [reserve amounts](concept-reserves.html) as determined by [fee voting](concept-fee-voting.html). Each ledger version contains **at most one** `FeeSettings` object.
 
@@ -391,13 +391,13 @@ The `FeeSettings` object has the following fields:
 | Name                | JSON Type | [Internal Type][] | Description            |
 |:--------------------|:----------|:------------------|:-----------------------|
 | `LedgerEntryType`   | String    | UInt16            | The value `0x0073`, mapped to the string `FeeSettings`, indicates that this object contains the ledger's fee settings. |
-| `BaseFee`           | String    | UInt64            | The [transaction cost](concept-transaction-cost.html) of the "reference transaction" in drops of CSC as hexadecimal. |
+| `BaseFee`           | String    | UInt64            | The [transaction cost](concept-transaction-cost.html) of the "reference transaction" in drops of STM as hexadecimal. |
 | `ReferenceFeeUnits` | Number    | UInt32            | The `BaseFee` translated into "fee units". |
-| `ReserveBase`       | Number    | UInt32            | The [base reserve](concept-reserves.html#base-reserve-and-owner-reserve) for an account in the CSC Ledger, as drops of CSC. |
-| `ReserveIncrement`  | Number    | UInt32            | The incremental [owner reserve](concept-reserves.html#base-reserve-and-owner-reserve) for owning objects, as drops of CSC. |
+| `ReserveBase`       | Number    | UInt32            | The [base reserve](concept-reserves.html#base-reserve-and-owner-reserve) for an account in the STM Ledger, as drops of STM. |
+| `ReserveIncrement`  | Number    | UInt32            | The incremental [owner reserve](concept-reserves.html#base-reserve-and-owner-reserve) for owning objects, as drops of STM. |
 | `Flags`             | Number    | UInt32            | A bit-map of boolean flags for this object. No flags are defined for this type. |
 
-**Warning:** The JSON format for this ledger object type is unusual. The `BaseFee`, `ReserveBase`, and `ReserveIncrement` indicate drops of CSC but ***not*** in the usual format for [specifying CSC](reference-casinocoind.html#specifying-currency-amounts).
+**Warning:** The JSON format for this ledger object type is unusual. The `BaseFee`, `ReserveBase`, and `ReserveIncrement` indicate drops of STM but ***not*** in the usual format for [specifying STM](reference-stoxumd.html#specifying-currency-amounts).
 
 ### FeeSettings ID Format
 
@@ -409,7 +409,7 @@ The `FeeSettings` object ID is the hash of the `FeeSettings` space key (`0x0065`
 
 
 ## LedgerHashes
-[[Source]<br>](https://github.com/casinocoin/casinocoind/blob/master/src/casinocoin/protocol/impl/LedgerFormats.cpp#L104-L107 "Source")
+[[Source]<br>](https://github.com/stoxum/stoxumd/src/stoxum/protocol/impl/LedgerFormats.cpp#L104-L107 "Source")
 
 (Not to be confused with the ["ledger hash" string data type][Hash], which uniquely identifies a ledger version. This section describes the `LedgerHashes` ledger object type.)
 
@@ -418,7 +418,7 @@ The `LedgerHashes` object type contains a history of prior ledgers that led up t
 There are two kinds of `LedgerHashes` object. Both types have the same fields. Each ledger version contains:
 
 - Exactly one "recent history" `LedgerHashes` object
-- A number of "previous history" `LedgerHashes` objects based on the current ledger index (that is, the length of the ledger history). Specifically, the CSC Ledger adds a new "previous history" object every 65536 ledger versions.
+- A number of "previous history" `LedgerHashes` objects based on the current ledger index (that is, the length of the ledger history). Specifically, the STM Ledger adds a new "previous history" object every 65536 ledger versions.
 
 **Note:** As an exception, a new genesis ledger has no `LedgerHashes` objects at all, because it has no ledger history.
 
@@ -447,7 +447,7 @@ A `LedgerHashes` object has the following fields:
 | Name              | JSON Type | [Internal Type][] | Description |
 |-------------------|-----------|-------------------|-------------|
 | `LedgerEntryType` | String    | UInt16    | The value `0x0068`, mapped to the string `LedgerHashes`, indicates that this object is a list of ledger hashes. |
-| `FirstLedgerSequence` | Number | UInt32   | **DEPRECATED** Do not use. (The "recent hashes" object of the production CSC Ledger has the value `2` in this field as a result of a previous `casinocoind` software. That value gets carried forward as the "recent hashes" object is updated. New "previous history" objects do not have this field, nor do "recent hashes" objects in [parallel networks](tutorial-casinocoind-setup.html#parallel-networks) started with more recent versions of `casinocoind`.) |
+| `FirstLedgerSequence` | Number | UInt32   | **DEPRECATED** Do not use. (The "recent hashes" object of the production STM Ledger has the value `2` in this field as a result of a previous `stoxumd` software. That value gets carried forward as the "recent hashes" object is updated. New "previous history" objects do not have this field, nor do "recent hashes" objects in [parallel networks](tutorial-stoxumd-setup.html#parallel-networks) started with more recent versions of `stoxumd`.) |
 | `LastLedgerSequence` | Number | UInt32 | The [ledger index](#ledger-index) of the last entry in this object's `Hashes` array. |
 | `Hashes` | Array of Strings | STI_VECTOR256 | An array of up to 256 ledger hashes. The contents depend on which sub-type of `LedgerHashes` object this is. |
 | `Flags`             | Number    | UInt32    | A bit-map of boolean flags for this object. No flags are defined for this type. |
@@ -460,14 +460,14 @@ Using the "recent history" `LedgerHashes` object of a given ledger, you can get 
 
 ### Previous History LedgerHashes
 
-The "previous history" `LedgerHashes` entries collectively contain the hash of every 256th ledger version (also called "flag ledgers") in the full history of the ledger. When the child of a flag ledger closes, the flag ledger's hash is added to the `Hashes` array of the newest "previous history" `LedgerHashes` object. Every 65536 ledgers, `casinocoind` creates a new `LedgerHashes` object, so that each "previous history" object has the hashes of 256 flag ledgers.
+The "previous history" `LedgerHashes` entries collectively contain the hash of every 256th ledger version (also called "flag ledgers") in the full history of the ledger. When the child of a flag ledger closes, the flag ledger's hash is added to the `Hashes` array of the newest "previous history" `LedgerHashes` object. Every 65536 ledgers, `stoxumd` creates a new `LedgerHashes` object, so that each "previous history" object has the hashes of 256 flag ledgers.
 
 **Note:** The oldest "previous history" `LedgerHashes` object contains only 255 entries because the genesis ledger has ledger index 1, not 0.
 
 The "previous history" `LedgerHashes` objects act as a [skip list](https://en.wikipedia.org/wiki/Skip_list) so you can get the hash of any historical flag ledger from its index. From there, you can use that flag ledger's "recent history" object to get the hash of any other ledger.
 
 ### LedgerHashes ID Formats
-[[Source]<br>](https://github.com/casinocoin/casinocoind/blob/develop/src/casinocoin/protocol/impl/Indexes.cpp#L28-L43)
+[[Source]<br>](https://github.com/stoxum/stoxumd/src/stoxum/protocol/impl/Indexes.cpp#L28-L43)
 
 There are two formats for `LedgerHashes` object IDs, depending on whether the object is a "recent history" sub-type or a "previous history" sub-type.
 
@@ -482,11 +482,11 @@ The **"previous history"** `LedgerHashes` objects have an ID that is the [SHA-51
 
 
 ## Offer
-[[Source]<br>](https://github.com/casinocoin/casinocoind/blob/4.0.1/src/casinocoin/protocol/impl/LedgerFormats.cpp#L57 "Source")
+[[Source]<br>](https://github.com/stoxum/stoxumd/src/stoxum/protocol/impl/LedgerFormats.cpp#L57 "Source")
 
-The `Offer` object type describes an offer to exchange currencies, more traditionally known as an _order_, in the CSC Ledger's distributed exchange. An [OfferCreate transaction][] only creates an `Offer` object in the ledger when the offer cannot be fully executed immediately by consuming other offers already in the ledger.
+The `Offer` object type describes an offer to exchange currencies, more traditionally known as an _order_, in the STM Ledger's distributed exchange. An [OfferCreate transaction][] only creates an `Offer` object in the ledger when the offer cannot be fully executed immediately by consuming other offers already in the ledger.
 
-An offer can become unfunded through other activities in the network, while remaining in the ledger. However, `casinocoind` automatically prunes any unfunded offers it happens across in the course of transaction processing (and _only_ transaction processing, because the ledger state must only be changed by transactions). For more information, see [lifecycle of an offer](reference-transaction-format.html#lifecycle-of-an-offer).
+An offer can become unfunded through other activities in the network, while remaining in the ledger. However, `stoxumd` automatically prunes any unfunded offers it happens across in the course of transaction processing (and _only_ transaction processing, because the ledger state must only be changed by transactions). For more information, see [lifecycle of an offer](reference-transaction-format.html#lifecycle-of-an-offer).
 
 Example `Offer` object:
 
@@ -526,7 +526,7 @@ An `Offer` object has the following fields:
 | `OwnerNode`         | String    | UInt64    | A hint indicating which page of the owner directory links to this object, in case the directory consists of multiple pages. **Note:** The offer does not contain a direct link to the owner directory containing it, since that value can be derived from the `Account`. |
 | `PreviousTxnID`     | String | Hash256 | The identifying hash of the transaction that most recently modified this object. |
 | `PreviousTxnLgrSeq` | Number | UInt32 | The [index of the ledger](#ledger-index) that contains the transaction that most recently modified this object. |
-| `Expiration`        | Number    | UInt32    | (Optional) Indicates the time after which this offer is considered unfunded. See [Specifying Time](reference-casinocoind.html#specifying-time) for details. |
+| `Expiration`        | Number    | UInt32    | (Optional) Indicates the time after which this offer is considered unfunded. See [Specifying Time](reference-stoxumd.html#specifying-time) for details. |
 
 ### Offer Flags
 
@@ -550,15 +550,15 @@ The ID of an `Offer` object is the [SHA-512Half](#sha512half) of the following v
 
 
 ## PayChannel
-[[Source]<br>](https://github.com/casinocoin/casinocoind/blob/develop/src/casinocoin/protocol/impl/LedgerFormats.cpp#L134 "Source")
+[[Source]<br>](https://github.com/stoxum/stoxumd/src/stoxum/protocol/impl/LedgerFormats.cpp#L134 "Source")
 
 _(Requires the [PayChan Amendment](reference-amendments.html#paychan).)_
 
-The `PayChannel` object type represents a payment channel. Payment channels enable small, rapid off-ledger payments of CSC that can be later reconciled with the consensus ledger. A payment channel holds a balance of CSC that can only be paid out to a specific destination address until the channel is closed. Any unspent CSC is returned to the channel's owner (the source address that created and funded it) when the channel closes.
+The `PayChannel` object type represents a payment channel. Payment channels enable small, rapid off-ledger payments of STM that can be later reconciled with the consensus ledger. A payment channel holds a balance of STM that can only be paid out to a specific destination address until the channel is closed. Any unspent STM is returned to the channel's owner (the source address that created and funded it) when the channel closes.
 
 The [PaymentChannelCreate transaction][] type creates a `PayChannel` object. The [PaymentChannelFund][] and [PaymentChannelClaim transaction][] types modify existing `PayChannel` objects.
 
-When a payment channel expires, at first it remains on the ledger, because only new transactions can modify ledger contents. Transaction processing automatically closes a payment channel when any transaction accesses it after the expiration. To close an expired channel and return the unspent CSC to the owner, some address must send a new PaymentChannelClaim or PaymentChannelFund transaction accessing the channel.
+When a payment channel expires, at first it remains on the ledger, because only new transactions can modify ledger contents. Transaction processing automatically closes a payment channel when any transaction accesses it after the expiration. To close an expired channel and return the unspent STM to the owner, some address must send a new PaymentChannelClaim or PaymentChannelFund transaction accessing the channel.
 
 For an example of using payment channels, see the [Payment Channels Tutorial](tutorial-paychan.html).
 
@@ -593,21 +593,21 @@ A `PayChannel` object has the following fields:
 |:--------------------|:----------|:------------------|:-----------------------|
 | `LedgerEntryType`   | String    | UInt16            | The value `0x0078`, mapped to the string `PayChannel`, indicates that this object is a payment channel object. |
 | `Account`           | String    | AccountID         | The source address that owns this payment channel. This comes from the sending address of the transaction that created the channel. |
-| `Destination`       | String    | AccountID         | The destination address for this payment channel. While the payment channel is open, this address is the only one that can receive CSC from the channel. This comes from the `Destination` field of the transaction that created the channel. |
-| `Amount`            | String    | Amount            | Total [CSC, in drops][], that has been allocated to this channel. This includes CSC that has been paid to the destination address. This is initially set by the transaction that created the channel and can be increased if the source address sends a PaymentChannelFund transaction. |
-| `Balance`           | String    | Amount            | Total [CSC, in drops][], already paid out by the channel. The difference between this value and the `Amount` field is how much CSC can still be paid to the destination address with PaymentChannelClaim transactions. If the channel closes, the remaining difference is returned to the source address. |
-| `PublicKey`         | String    | PubKey            | Public key, in hexadecimal, of the key pair that can be used to sign claims against this channel. This can be any valid secp256k1 or Ed25519 public key. This is set by the transaction that created the channel and must match the public key used in claims against the channel. The channel source address can also send CSC from this channel to the destination without signed claims. |
-| `SettleDelay`       | Number    | UInt32            | Number of seconds the source address must wait to close the channel if it still has any CSC in it. Smaller values mean that the destination address has less time to redeem any outstanding claims after the source address requests to close the channel. Can be any value that fits in a 32-bit unsigned integer (0 to 2^32-1). This is set by the transaction that creates the channel. |
+| `Destination`       | String    | AccountID         | The destination address for this payment channel. While the payment channel is open, this address is the only one that can receive STM from the channel. This comes from the `Destination` field of the transaction that created the channel. |
+| `Amount`            | String    | Amount            | Total [STM, in drops][], that has been allocated to this channel. This includes STM that has been paid to the destination address. This is initially set by the transaction that created the channel and can be increased if the source address sends a PaymentChannelFund transaction. |
+| `Balance`           | String    | Amount            | Total [STM, in drops][], already paid out by the channel. The difference between this value and the `Amount` field is how much STM can still be paid to the destination address with PaymentChannelClaim transactions. If the channel closes, the remaining difference is returned to the source address. |
+| `PublicKey`         | String    | PubKey            | Public key, in hexadecimal, of the key pair that can be used to sign claims against this channel. This can be any valid secp256k1 or Ed25519 public key. This is set by the transaction that created the channel and must match the public key used in claims against the channel. The channel source address can also send STM from this channel to the destination without signed claims. |
+| `SettleDelay`       | Number    | UInt32            | Number of seconds the source address must wait to close the channel if it still has any STM in it. Smaller values mean that the destination address has less time to redeem any outstanding claims after the source address requests to close the channel. Can be any value that fits in a 32-bit unsigned integer (0 to 2^32-1). This is set by the transaction that creates the channel. |
 | `OwnerNode`         | String    | UInt64            | A hint indicating which page of the source address's owner directory links to this object, in case the directory consists of multiple pages. |
 | `PreviousTxnID`     | String    | Hash256           | The identifying hash of the transaction that most recently modified this object. |
 | `PreviousTxnLgrSeq` | Number    | UInt32            | The [index of the ledger](#ledger-index) that contains the transaction that most recently modified this object. |
 | `Flags`             | Number    | UInt32            | A bit-map of boolean flags enabled for this payment channel. Currently, the protocol defines no flags for `PayChannel` objects. |
-| `Expiration`        | Number    | UInt32            | _(Optional)_ The mutable expiration time for this payment channel, in [seconds since the CasinoCoin Epoch](reference-casinocoind.html#specifying-time). The channel is expired if this value is present and smaller than the previous ledger's [`close_time` field](#header-format). See [Setting Channel Expiration](#setting-channel-expiration) for more details. |
-| `CancelAfter`       | Number    | UInt32            | _(Optional)_ The immutable expiration time for this payment channel, in [seconds since the CasinoCoin Epoch](reference-casinocoind.html#specifying-time). This channel is expired if this value is present and smaller than the previous ledger's [`close_time` field](#header-format). This is optionally set by the transaction that created the channel, and cannot be changed. |
+| `Expiration`        | Number    | UInt32            | _(Optional)_ The mutable expiration time for this payment channel, in [seconds since the Stoxum Epoch](reference-stoxumd.html#specifying-time). The channel is expired if this value is present and smaller than the previous ledger's [`close_time` field](#header-format). See [Setting Channel Expiration](#setting-channel-expiration) for more details. |
+| `CancelAfter`       | Number    | UInt32            | _(Optional)_ The immutable expiration time for this payment channel, in [seconds since the Stoxum Epoch](reference-stoxumd.html#specifying-time). This channel is expired if this value is present and smaller than the previous ledger's [`close_time` field](#header-format). This is optionally set by the transaction that created the channel, and cannot be changed. |
 | `SourceTag`           | Number    | UInt32            | _(Optional)_ An arbitrary tag to further specify the source for this payment channel, such as a hosted recipient at the owner's address. |
 | `DestinationTag`      | Number    | UInt32            | _(Optional)_ An arbitrary tag to further specify the destination for this payment channel, such as a hosted recipient at the destination address. |
 
-[CSC, in drops]: reference-casinocoind.html#specifying-currency-amounts
+[STM, in drops]: reference-stoxumd.html#specifying-currency-amounts
 
 ### Setting Channel Expiration
 
@@ -649,14 +649,14 @@ The ID of a `PayChannel` object is the [SHA-512Half](#sha512half) of the followi
 
 
 
-## CasinocoinState
-[[Source]<br>](https://github.com/casinocoin/casinocoind/blob/4.0.1/src/casinocoin/protocol/impl/LedgerFormats.cpp#L70 "Source")
+## StoxumState
+[[Source]<br>](https://github.com/stoxum/stoxumd/src/stoxum/protocol/impl/LedgerFormats.cpp#L70 "Source")
 
-The `CasinocoinState` object type connects two accounts in a single currency. Conceptually, a `CasinocoinState` object represents two _trust lines_ between the accounts, one from each side. Each account can change the settings for its side of the `CasinocoinState` object, but the balance is a single shared value. A trust line that is entirely in its default state is considered the same as trust line that does not exist, so `casinocoind` deletes `CasinocoinState` objects when their properties are entirely default.
+The `StoxumState` object type connects two accounts in a single currency. Conceptually, a `StoxumState` object represents two _trust lines_ between the accounts, one from each side. Each account can change the settings for its side of the `StoxumState` object, but the balance is a single shared value. A trust line that is entirely in its default state is considered the same as trust line that does not exist, so `stoxumd` deletes `StoxumState` objects when their properties are entirely default.
 
-Since no account is privileged in the CSC Ledger, a `CasinocoinState` object sorts their account addresses numerically, to ensure a canonical form. Whichever address is numerically lower is deemed the "low account" and the other is the "high account".
+Since no account is privileged in the STM Ledger, a `StoxumState` object sorts their account addresses numerically, to ensure a canonical form. Whichever address is numerically lower is deemed the "low account" and the other is the "high account".
 
-Example `CasinocoinState` object:
+Example `StoxumState` object:
 
 ```json
 {
@@ -672,7 +672,7 @@ Example `CasinocoinState` object:
         "value": "110"
     },
     "HighNode": "0000000000000000",
-    "LedgerEntryType": "CasinocoinState",
+    "LedgerEntryType": "StoxumState",
     "LowLimit": {
         "currency": "USD",
         "issuer": "csA2LpzuawewSBQXkiju3YQTMzW13pAAdW",
@@ -685,11 +685,11 @@ Example `CasinocoinState` object:
 }
 ```
 
-A CasinocoinState object has the following fields:
+A StoxumState object has the following fields:
 
 | Name            | JSON Type | Internal Type | Description |
 |-----------------|-----------|---------------|-------------|
-| `LedgerEntryType` | String    | UInt16 | The value `0x0072`, mapped to the string `CasinocoinState`, indicates that this object is a CasinocoinState object. |
+| `LedgerEntryType` | String    | UInt16 | The value `0x0072`, mapped to the string `StoxumState`, indicates that this object is a StoxumState object. |
 | `Flags`           | Number    | UInt32 | A bit-map of boolean options enabled for this object. |
 | `Balance`         | Object    | Amount | The balance of the trust line, from the perspective of the low account. A negative balance indicates that the low account has issued currency to the high account. The issuer in this is always set to the neutral value [ACCOUNT_ONE](concept-accounts.html#special-addresses). |
 | `LowLimit`        | Object    | Amount | The limit that the low account has set on the trust line. The `issuer` is the address of the low account that set this limit. |
@@ -703,26 +703,26 @@ A CasinocoinState object has the following fields:
 | `HighQualityIn`   | Number    | UInt32 | (Optional) The inbound quality set by the high account, as an integer in the implied ratio HighQualityIn:1,000,000,000. The value 0 is equivalent to 1 billion, or face value. |
 | `HighQualityOut`  | Number    | UInt32 | (Optional) The outbound quality set by the high account, as an integer in the implied ratio HighQualityOut:1,000,000,000. The value 0 is equivalent to 1 billion, or face value. |
 
-### CasinocoinState Flags
+### StoxumState Flags
 
 There are several options which can be either enabled or disabled for a trust line. These options can be changed with a [TrustSet transaction](reference-transaction-format.html#trustset). In the ledger, flags are represented as binary values that can be combined with bitwise-or operations. The bit values for the flags in the ledger are different than the values used to enable or disable those flags in a transaction. Ledger flags have names that begin with _lsf_.
 
-CasinocoinState objects can have the following flag values:
+StoxumState objects can have the following flag values:
 
 | Flag Name | Hex Value | Decimal Value | Description | Corresponding [TrustSet Flag](reference-transaction-format.html#trustset-flags) |
 |-----------|-----------|---------------|-------------|------------------------|
-| lsfLowReserve | 0x00010000 | 65536 | This CasinocoinState object [contributes to the low account's owner reserve](#contributing-to-the-owner-reserve). | (None) |
-| lsfHighReserve | 0x00020000 |131072 | This CasinocoinState object [contributes to the high account's owner reserve](#contributing-to-the-owner-reserve). | (None) |
+| lsfLowReserve | 0x00010000 | 65536 | This StoxumState object [contributes to the low account's owner reserve](#contributing-to-the-owner-reserve). | (None) |
+| lsfHighReserve | 0x00020000 |131072 | This StoxumState object [contributes to the high account's owner reserve](#contributing-to-the-owner-reserve). | (None) |
 | lsfLowAuth | 0x00040000 | 262144 | The low account has authorized the high account to hold the low account's issuances. | tfSetAuth |
 | lsfHighAuth | 0x00080000 | 524288 |  The high account has authorized the low account to hold the high account's issuances. | tfSetAuth |
-| lsfLowNoCasinocoin | 0x00100000 | 1048576 | The low account [has disabled rippling](concept-nocasinocoin.html) from this trust line to other trust lines with the same account's NoCasinocoin flag set. | tfSetNoCasinocoin |
-| lsfHighNoCasinocoin | 0x00200000 | 2097152 | The high account [has disabled rippling](concept-nocasinocoin.html) from this trust line to other trust lines with the same account's NoCasinocoin flag set. | tfSetNoCasinocoin |
+| lsfLowNoStoxum | 0x00100000 | 1048576 | The low account [has disabled rippling](concept-nostoxumcoin.html) from this trust line to other trust lines with the same account's NoStoxumcoin flag set. | tfSetNoStoxumcoin |
+| lsfHighNoStoxumcoin | 0x00200000 | 2097152 | The high account [has disabled rippling](concept-nostoxumcoin.html) from this trust line to other trust lines with the same account's NoStoxumcoin flag set. | tfSetNoStoxumcoin |
 | lsfLowFreeze | 0x00400000 | 4194304 | The low account has frozen the trust line, preventing the high account from transferring the asset. | tfSetFreeze |
 | lsfHighFreeze | 0x00800000 | 8388608 | The high account has frozen the trust line, preventing the low account from transferring the asset. | tfSetFreeze |
 
 ### Contributing to the Owner Reserve
 
-If an account modifies a trust line to put it in a non-default state, then that trust line counts towards the account's [owner reserve](concept-reserves.html#owner-reserves). In a CasinocoinState object, the `lsfLowReserve` and `lsfHighReserve` flags indicate which account(s) are responsible for the owner reserve. The `casinocoind` server automatically sets these flags when it modifies a trust line.
+If an account modifies a trust line to put it in a non-default state, then that trust line counts towards the account's [owner reserve](concept-reserves.html#owner-reserves). In a StoxumState object, the `lsfLowReserve` and `lsfHighReserve` flags indicate which account(s) are responsible for the owner reserve. The `stoxumd` server automatically sets these flags when it modifies a trust line.
 
 The values that count towards a trust line's non-default state are as follows:
 
@@ -732,29 +732,29 @@ The values that count towards a trust line's non-default state are as follows:
 | `HighLimit` is not `0` | `LowLimit` is not `0`  |
 | `LowQualityIn` is not `0` and not `1000000000` | `HighQualityIn` is not `0` and not `1000000000` |
 | `LowQualityOut` is not `0` and not `1000000000` | `HighQualityOut` is not `0` and not `1000000000` |
-| **lsfHighNoCasinocoin** flag is not in its default state | **lsfLowNoCasinocoin** flag is not in its default state |
+| **lsfHighNoStoxumcoin** flag is not in its default state | **lsfLowNoStocumcoin** flag is not in its default state |
 | **lsfHighFreeze** flag is enabled | **lsfLowFreeze** flag is enabled |
 
 The **lsfLowAuth** and **lsfHighAuth** flags do not count against the default state, because they cannot be disabled.
 
-The default state of the two NoCasinocoin flags depends on the state of the [lsfDefaultCasinocoin flag](#accountroot-flags) in their corresponding AccountRoot objects. If DefaultCasinocoin is disabled (the default), then the default state of the lsfNoCasinocoin flag is _enabled_ for all of an account's trust lines. If an account enables DefaultCasinocoin, then the lsfNoCasinocoin flag is _disabled_ (rippling is enabled) for an account's trust lines by default.
+The default state of the two NoStoxumcoin flags depends on the state of the [lsfDefaultStoxum flag](#accountroot-flags) in their corresponding AccountRoot objects. If DefaultStoxum is disabled (the default), then the default state of the lsfNoStoxumcoin flag is _enabled_ for all of an account's trust lines. If an account enables DefaultStoxum, then the lsfNoStoxumcoin flag is _disabled_ (rippling is enabled) for an account's trust lines by default.
 
-**Note:** Prior to the introduction of the DefaultCasinocoin flags in `casinocoind` version 0.27.3 (March 10, 2015), the default state for all trust lines was with both NoCasinocoin flags disabled (rippling enabled).
+**Note:** Prior to the introduction of the DefaultStoxumcoin flags in `stoxumd` version 0.27.3 (March 10, 2015), the default state for all trust lines was with both NoStoxumcoin flags disabled (rippling enabled).
 
-Fortunately, `casinocoind` uses lazy evaluation to calculate the owner reserve. This means that even if an account changes the default state of all its trust lines by changing the DefaultCasinocoin flag, that account's reserve stays the same initially. If an account modifies a trust line, `casinocoind` re-evaluates whether that individual trust line is in its default state and should contribute the owner reserve.
+Fortunately, `stoxumd` uses lazy evaluation to calculate the owner reserve. This means that even if an account changes the default state of all its trust lines by changing the DefaultStoxum flag, that account's reserve stays the same initially. If an account modifies a trust line, `stoxumd` re-evaluates whether that individual trust line is in its default state and should contribute the owner reserve.
 
-### CasinocoinState ID Format
+### StoxumState ID Format
 
-The ID of a CasinocoinState object is the [SHA-512Half](#sha512half) of the following values put together:
+The ID of a StoxumState object is the [SHA-512Half](#sha512half) of the following values put together:
 
-* The CasinocoinState space key (`0x0072`)
+* The StoxumState space key (`0x0072`)
 * The AccountID of the low account
 * The AccountID of the high account
 * The 160-bit currency code of the trust line(s)
 
 
 ## SignerList
-[[Source]<br>](https://github.com/casinocoin/casinocoind/blob/4.0.1/src/casinocoin/protocol/impl/LedgerFormats.cpp#L127 "Source")
+[[Source]<br>](https://github.com/stoxum/stoxumd/src/stoxum/protocol/impl/LedgerFormats.cpp#L127 "Source")
 
 The `SignerList` object type represents a list of parties that, as a group, are authorized to sign a transaction in place of an individual account. You can create, replace, or remove a SignerList using the [SignerListSet transaction type](reference-transaction-format.html#signerlistset). This object type is introduced by the [MultiSign amendment](reference-amendments.html#multisign).
 
@@ -813,23 +813,23 @@ Each member of the `SignerEntries` field is an object that describes that signer
 
 | Name            | JSON Type | Internal Type | Description |
 |-----------------|-----------|---------------|-------------|
-| `Account`         | String    | AccountID     | An CSC Ledger address whose signature contributes to the multi-signature. It does not need to be a funded address in the ledger. |
+| `Account`         | String    | AccountID     | An STM Ledger address whose signature contributes to the multi-signature. It does not need to be a funded address in the ledger. |
 | `SignerWeight`    | Number    | UInt16        | The weight of a signature from this signer. A multi-signature is only valid if the sum weight of the signatures provided meets or exceeds the SignerList's `SignerQuorum` value. |
 
 When processing a multi-signed transaction, the server dereferences the `Account` values with respect to the ledger at the time of transaction execution. If the address _does not_ correspond to a funded [AccountRoot object](#accountroot), then only the master secret associated with that address can be used to produce a valid signature. If the account _does_ exist in the ledger, then it depends on the state of that account. If the account has a Regular Key configured, the Regular Key can be used. The account's master key can only be used if it is not disabled. A multi-signature cannot be used as part of another multi-signature.
 
 ### SignerLists and Reserves
 
-A SignerList contributes to its owner's [reserve requirement](concept-reserves.html). The SignerList itself counts as two objects, and each member of the list counts as one. As a result, the total owner reserve associated with a SignerList is anywhere from 3 times to 10 times the reserve required by a single trust line ([CasinocoinState](#casinocoinstate)) or [Offer](#offer) object in the ledger.
+A SignerList contributes to its owner's [reserve requirement](concept-reserves.html). The SignerList itself counts as two objects, and each member of the list counts as one. As a result, the total owner reserve associated with a SignerList is anywhere from 3 times to 10 times the reserve required by a single trust line ([StoxumState](#stoxumstate)) or [Offer](#offer) object in the ledger.
 
 ### SignerList ID Format
 
 The ID of a SignerList object is the SHA-512Half of the following values put together:
 
-* The CasinocoinState space key (`0x0053`)
+* The StoxumState space key (`0x0053`)
 * The AccountID of the owner of the SignerList
 * The SignerListID (currently always `0`)
 
 
-{% include 'snippets/casinocoind_versions.md' %}
+{% include 'snippets/stoxumd_versions.md' %}
 {% include 'snippets/tx-type-links.md' %}

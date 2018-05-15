@@ -20,7 +20,7 @@ const currentTime = new Date()
 const myEscrow = {
   "destination": "rf1BiGeXwwQoi8Z2ueFYTEXSwuJYfV2Jpn", // Destination can be same as source
   "destinationTag": 2017,
-  "amount": "0.1113", //decimal CSC
+  "amount": "0.1113", //decimal STM
   "condition": conditionHex,
   "allowExecuteAfter": currentTime.toISOString() // can be executed right away if the condition is met
 }
@@ -29,7 +29,7 @@ const myInstructions = {
 }
 
 // Connect and submit
-const api = new CasinocoinAPI({server: 'wss://ws01.casinocoin.org', port: 4443})
+const api = new CasinocoinAPI({ server: 'wss://ws01.stoxum.io/', port: 4443 })
 
 function submitTransaction(lastClosedLedgerVersion, prepared, secret) {
   const signedData = api.sign(prepared.txJSON, secret)

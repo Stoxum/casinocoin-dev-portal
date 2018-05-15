@@ -66,7 +66,7 @@ Request('Get Exchanges', {
     link: "#get-exchanges",
     params: {
         "{:base}": "USD+rMwjYedjc7qqtKYVLiAccJSmCwih4LnE2q",
-        "{:counter}": "CSC",
+        "{:counter}": "STM",
         "{:query_params}": "descending=true&limit=3&result=tesSUCCESS&type=OfferCreate"
     }
 });
@@ -78,7 +78,7 @@ Request('Get Exchange Rates', {
     link: "#get-exchange-rates",
     params: {
         "{:base}": "USD+rMwjYedjc7qqtKYVLiAccJSmCwih4LnE2q",
-        "{:counter}": "CSC",
+        "{:counter}": "STM",
         "{:query_params}": "date=2015-11-13T00:00:00Z"
     }
 });
@@ -89,7 +89,7 @@ Request('Normalize', {
     description: "Convert an amount from one currency and issuer to another, using the network exchange rates.",
     link: "#normalize",
     params: {
-        "{:query_params}": "amount=100&currency=CSC&exchange_currency=USD&exchange_issuer=rMwjYedjc7qqtKYVLiAccJSmCwih4LnE2q"
+        "{:query_params}": "amount=100&currency=STM&exchange_currency=USD&exchange_issuer=rMwjYedjc7qqtKYVLiAccJSmCwih4LnE2q"
     }
 });
 
@@ -132,7 +132,7 @@ Request('Get Active Accounts', {
     link: "#get-active-accounts",
     params: {
         "{:base}": "USD+rMwjYedjc7qqtKYVLiAccJSmCwih4LnE2q",
-        "{:counter}": "CSC",
+        "{:counter}": "STM",
         "{:query_params}": "period=7day"
     }
 });
@@ -168,10 +168,10 @@ Request('Get Issued Value', {
 });
 
 
-Request('Get CSC Distribution', {
+Request('Get STM Distribution', {
     method: GET,
     path: "/v2/network/xrp_distribution?{:query_params}",
-    description: "Get info on how much CSC is available and how much has been distributed outside of Ripple (the company).",
+    description: "Get info on how much STM is available and how much has been distributed outside of Ripple (the company).",
     link: "#get-xrp-distribution",
     params: {
         "{:query_params}": "limit=3&descending=true"
@@ -300,7 +300,7 @@ Request('Get Account Exchanges - Single Currency Pair', {
     params: {
         "{:address}": KRW_TRADER_ADDRESS,
         "{:base}": "KRW+rUkMKjQitpgAM5WTGk79xpjT38DEJY283d",
-        "{:counter}": "CSC",
+        "{:counter}": "STM",
         "{:query_params}": "start=2015-08-08T00:00:00Z&end=2015-08-31T00:00:00Z&limit=2"
     }
 });

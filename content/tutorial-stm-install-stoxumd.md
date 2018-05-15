@@ -1,20 +1,20 @@
-# Install and configure casinocoind
+# Install and configure stoxumd
 
 Ubuntu 16.04 is recommended and can be downloaded from: [https://www.ubuntu.com/download/server](https://www.ubuntu.com/download/server)
 
 ## Secure WebSockets
 Secure WebSockets should be used for the production wallet server. This will require a SSL certificate. In this example we are using Let's Encrypt, but other SSL certificates will also work. They should be placed in
 ```
-ssl_key = /etc/casinocoind/ssl/privkey.pem
-ssl_cert = /etc/casinocoind/ssl/cert.pem
-ssl_chain = /etc/casinocoind/ssl/fullchain.pem
+ssl_key = /etc/stoxumd/ssl/privkey.pem
+ssl_cert = /etc/stoxumd/ssl/cert.pem
+ssl_chain = /etc/stoxumd/ssl/fullchain.pem
 ```
 The location can be changed, but changes need to be reflected in the config file.
 
 
 ## Important Information
 - The daemon is _NOT_ a wallet<br>
-- Configuration takes place in `/etc/casinocoind/casinocoind.cfg`<br>
+- Configuration takes place in `/etc/stoxumd/stoxumd.cfg`<br>
 - Servers should be secured by setting strict firewall rules and allow SSH key-based authentication only<br>
 
 
@@ -37,26 +37,26 @@ sudo apt-get install htop -y
 mkdir $HOME/src
 cd $HOME/src
 sudo apt install python-software-properties curl git scons ctags cmake pkg-config protobuf-compiler libprotobuf-dev libssl-dev python-software-properties libboost-all-dev -y
-sudo git clone https://github.com/casinocoin/casinocoind.git
-cd casinocoind
+sudo git clone https://github.com/stoxum/stoxumd.git
+cd stoxumd
 sudo scons
-sudo strip build/casinocoind
-sudo cp build/casinocoind /usr/bin
-sudo mkdir /var/log/casinocoind
-sudo mkdir /etc/casinocoind
-sudo mkdir -p /var/lib/casinocoind/db
-sudo adduser casinocoin
-sudo groupadd casinocoin
-sudo chown ubuntu:casinocoin /var/log/casinocoind
-sudo chown -R ubuntu:casinocoin /var/lib/casinocoind
-sudo chown ubuntu:casinocoin /var/log/casinocoind
-sudo cp $HOME/src/casinocoind/doc/casinocoind-example.cfg /etc/casinocoind/casinocoind.cfg
-sudo cp $HOME/src/casinocoind/doc/validators-example.txt /etc/casinocoind/validators.txt
-sudo cp $HOME/src/casinocoind/doc/casinocoind-example.service /etc/systemd/system/casinocoind.service
+sudo strip build/stoxumd
+sudo cp build/stoxumd /usr/bin
+sudo mkdir /var/log/stoxumd
+sudo mkdir /etc/stoxumd
+sudo mkdir -p /var/lib/stoxumd/db
+sudo adduser stoxum
+sudo groupadd stoxum
+sudo chown ubuntu:stoxum /var/log/stoxumd
+sudo chown -R ubuntu:stoxum /var/lib/stoxumd
+sudo chown ubuntu:stoxum /var/log/stoxumd
+sudo cp $HOME/src/stoxumd/doc/stoxumd-example.cfg /etc/stoxumd/stoxumd.cfg
+sudo cp $HOME/src/stoxumd/doc/validators-example.txt /etc/stoxumd/validators.txt
+sudo cp $HOME/src/stoxumd/doc/stoxumd-example.service /etc/systemd/system/stoxumd.service
 sleep 10
-sudo usermod -aG casinocoin ubuntu
-sudo usermod -aG casinocoin casinocoin
-sudo chown -R ubuntu:casinocoin /var/lib/casinocoind/db
-sudo chmod -R 774 /var/lib/casinocoind/db
-sudo systemctl enable casinocoind.service
+sudo usermod -aG stoxum ubuntu
+sudo usermod -aG stoxum stoxum
+sudo chown -R ubuntu:stoxum /var/lib/stoxumd/db
+sudo chmod -R 774 /var/lib/stoxumd/db
+sudo systemctl enable stoxumd.service
 ```

@@ -1,13 +1,13 @@
 Freeze Features
 ===============
 
-The CSC Ledger gives addresses the ability to freeze non-CSC balances, which can be useful to meet regulatory requirements, or while investigating suspicious activity. There are three settings related to freezes:
+The STM Ledger gives addresses the ability to freeze non-STM balances, which can be useful to meet regulatory requirements, or while investigating suspicious activity. There are three settings related to freezes:
 
 * [**Individual Freeze**](#individual-freeze) - Freeze one counterparty.
 * [**Global Freeze**](#global-freeze) - Freeze all counterparties.
 * [**No Freeze**](#no-freeze) - Permanently give up the ability to freeze individual counterparties, as well as the ability to end a global freeze.
 
-Because no party has a privileged place in the CSC Ledger, the freeze feature cannot prevent a counterparty from conducting transactions in CSC or funds issued by other counterparties. No one can freeze CSC.
+Because no party has a privileged place in the STM Ledger, the freeze feature cannot prevent a counterparty from conducting transactions in STM or funds issued by other counterparties. No one can freeze STM.
 
 All freeze settings can be enacted regardless of whether the balance(s) to be frozen are positive or negative. Either the currency issuer or the currency holder can freeze a trust line; however, the effect of a currency holder freezing an issuer is minimal.
 
@@ -22,7 +22,7 @@ The **Individual Freeze** feature is a setting on a trust line. When an issuing 
 * The counterparty can still receive payments from others on the frozen trust line.
 * The counterparty's offers to sell the currency issued on the frozen trust line are [considered unfunded](reference-transaction-format.html#lifecycle-of-an-offer).
 
-A financial institution can freeze the trust line linking it to a counterparty if that counterparty shows suspicious activity or violates the financial institution's terms of use. The financial institution should also freeze the counterparty in any other systems the financial institution operates that are connected to the CSC Ledger. (Otherwise, an address might still be able to engage in undesired activity by sending payments through the financial institution.)
+A financial institution can freeze the trust line linking it to a counterparty if that counterparty shows suspicious activity or violates the financial institution's terms of use. The financial institution should also freeze the counterparty in any other systems the financial institution operates that are connected to the STM Ledger. (Otherwise, an address might still be able to engage in undesired activity by sending payments through the financial institution.)
 
 An individual address can freeze its trust line to a financial institution. This has no effect on transactions between the institution and other users. It does, however, prevent other addresses, including [operational addresses](concept-issuing-and-operational-addresses.html), from sending that financial institution's issuances to the individual address. This type of individual freeze has no effect on offers.
 
@@ -40,7 +40,7 @@ The **Global Freeze** feature is a setting on an address. When an issuing addres
 * Counterparties of the frozen issuing address can still send and receive payments directly to and from the issuing address.
 * All offers to sell currencies issued by the frozen address are [considered unfunded](reference-transaction-format.html#lifecycle-of-an-offer).
 
-It can be useful to enable Global Freeze on a financial institution's [issuing address](concept-issuing-and-operational-addresses.html) if the secret key to an operational address is compromised, even after regaining control of a such an address. This stops the flow of funds, preventing attackers from getting away with any more money or at least making it easier to track what happened. Besides enacting a Global Freeze in the CSC Ledger, a financial institution should also suspend activities in its connectors to outside systems.
+It can be useful to enable Global Freeze on a financial institution's [issuing address](concept-issuing-and-operational-addresses.html) if the secret key to an operational address is compromised, even after regaining control of a such an address. This stops the flow of funds, preventing attackers from getting away with any more money or at least making it easier to track what happened. Besides enacting a Global Freeze in the STM Ledger, a financial institution should also suspend activities in its connectors to outside systems.
 
 It can also be useful to enable Global Freeze if a financial institution intends to migrate to a new [issuing address](concept-issuing-and-operational-addresses.html), or if the financial institution intends to cease doing business. This locks the funds at a specific point in time, so users cannot trade them away for other currencies.
 
@@ -57,7 +57,7 @@ The **No Freeze** feature is a setting on an address that permanently gives up t
 * The issuing address can no longer enable Individual Freeze on trust lines to any counterparty.
 * The issuing address can still enable Global Freeze to enact a global freeze, but the address cannot _disable_ Global Freeze.
 
-The CSC Ledger cannot force a financial institution to honor the obligations that its issued funds represent, so giving up the ability to enable a Global Freeze cannot protect customers. However, giving up the ability to _disable_ a Global Freeze ensures that the Global Freeze feature is not used unfairly against some customers.
+The STM Ledger cannot force a financial institution to honor the obligations that its issued funds represent, so giving up the ability to enable a Global Freeze cannot protect customers. However, giving up the ability to _disable_ a Global Freeze ensures that the Global Freeze feature is not used unfairly against some customers.
 
 The No Freeze setting applies to all currencies issued to and from an address. If you want to be able to freeze some currencies but not others, you should use different addresses for each currency.
 
@@ -68,23 +68,23 @@ You can only enable the No Freeze setting with a transaction signed by your addr
 
 ## Enabling or Disabling Individual Freeze ##
 
-### Using `casinocoind` ###
+### Using `stoxumd` ###
 
 To enable or disable Individual Freeze on a specific trust line, send a `TrustSet` transaction. Use the [`tfSetFreeze` flag](reference-transaction-format.html#trustset-flags) to enable a freeze, and the `tfClearFreeze` flag to disable it. The fields of the transaction should be as follows:
 
 | Field                | Value  | Description |
 |----------------------|--------|-------------|
-| Account              | String | The CSC Ledger address to enable or disable the freeze. |
+| Account              | String | The STM Ledger address to enable or disable the freeze. |
 | TransactionType      | String | `TrustSet` |
 | LimitAmount          | Object | Object defining the trust line to freeze. |
 | LimitAmount.currency | String | Currency of the trust line |
-| LimitAmount.issuer   | String | The CSC Ledger address of the counterparty to freeze |
+| LimitAmount.issuer   | String | The STM Ledger address of the counterparty to freeze |
 | LimitAmount.value    | String | The amount of currency you trust this counterparty to issue to you, as a quoted number. From the perspective of a financial institution, this is typically `"0"`. |
 | Flags                | Number | To enable a freeze, use a value with the bit `0x00100000` (tfSetFreeze) enabled. To disable a freeze, use a value with the bit `0x00200000` (tfClearFreeze) enabled instead. |
 
 Set the `Fee`, `Sequence`, and `LastLedgerSequence` parameters [in the typical way](reference-transaction-format.html#signing-and-submitting-transactions).
 
-Example of submitting a TrustSet transaction to enable an individual freeze using the [WebSocket API](reference-casinocoind.html#websocket-api):
+Example of submitting a TrustSet transaction to enable an individual freeze using the [WebSocket API](reference-stoxumd.html#websocket-api):
 
 ```
 {
@@ -112,18 +112,18 @@ Example of submitting a TrustSet transaction to enable an individual freeze usin
 **Caution:** Never send your secret key to an untrusted server or over an insecure channel.
 
 
-### Using CasinocoinAPI ###
+### Using StoxumAPI ###
 
-To enable or disable Individual Freeze on a specific trust line, prepare a *Trustline* transaction using the [prepareTrustline](reference-casinocoinapi.html#preparetrustline) method. The fields of the `trustline` parameter should be set as follows:
+To enable or disable Individual Freeze on a specific trust line, prepare a *Trustline* transaction using the [prepareTrustline](reference-stoxumapi.html#preparetrustline) method. The fields of the `trustline` parameter should be set as follows:
 
 | Field        | Value  | Description |
 |--------------|--------|-------------|
-| currency     | String | The [currency](reference-casinocoinapi.html#currency) of the trust line to freeze |
-| counterparty | String | The [CSC Ledger address](reference-casinocoinapi.html#address) of the counterparty |
+| currency     | String | The [currency](reference-stoxumapi.html#currency) of the trust line to freeze |
+| counterparty | String | The [STM Ledger address](reference-stoxumapi.html#address) of the counterparty |
 | limit        | String | The amount of currency you trust this counterparty to issue to you, as a quoted number. From the perspective of a financial institution, this is typically `"0"`. |
 | frozen       | Boolean | `true` to enable Individual Freeze on this trust line. `false` to disable Individual Freeze. |
 
-The rest of the [transaction flow](reference-casinocoinapi.html#transaction-flow) is the same as any other transaction.
+The rest of the [transaction flow](reference-stoxumapi.html#transaction-flow) is the same as any other transaction.
 
 Example JavaScript (ECMAScript 6) code to enable Individual Freeze on a trust line:
 
@@ -134,11 +134,11 @@ Example JavaScript (ECMAScript 6) code to enable Individual Freeze on a trust li
 
 ## Enabling or Disabling Global Freeze ##
 
-### Using `casinocoind` ###
+### Using `stoxumd` ###
 
 To enable Global Freeze on an address, send an `AccountSet` transaction with the [asfGlobalFreeze flag value](reference-transaction-format.html#accountset-flags) in the `SetFlag` field. To disable Global Freeze, put the asfGlobalFreeze flag value in the `ClearFlag` field instead.
 
-Example of submitting an AccountSet transaction to enable Global Freeze using the [WebSocket API](reference-casinocoind.html#websocket-api):
+Example of submitting an AccountSet transaction to enable Global Freeze using the [WebSocket API](reference-stoxumd.html#websocket-api):
 
 ```
 {
@@ -162,15 +162,15 @@ Example of submitting an AccountSet transaction to enable Global Freeze using th
 **Caution:** Never send your secret key to an untrusted server or over an insecure channel.
 
 
-### Using CasinocoinAPI ###
+### Using StoxumAPI ###
 
-To enable or disable Global Freeze on an address, prepare a **Settings** transaction using the [prepareSettings](reference-casinocoinapi.html#preparesettings) method. The `settings` parameter should be an object set as follows:
+To enable or disable Global Freeze on an address, prepare a **Settings** transaction using the [prepareSettings](reference-stoxumapi.html#preparesettings) method. The `settings` parameter should be an object set as follows:
 
 | Field        | Value  | Description |
 |--------------|--------|-------------|
 | globalFreeze | Boolean | `true` to enable a Global Freeze on this address. `false` to disable Global Freeze. |
 
-The rest of the [transaction flow](reference-casinocoinapi.html#transaction-flow) is the same as any other transaction.
+The rest of the [transaction flow](reference-stoxumapi.html#transaction-flow) is the same as any other transaction.
 
 Example JavaScript (ECMAScript 6) code to enable Global Freeze on an address:
 
@@ -182,11 +182,11 @@ Example JavaScript (ECMAScript 6) code to enable Global Freeze on an address:
 
 ## Enabling No Freeze ##
 
-### Using `casinocoind` ###
+### Using `stoxumd` ###
 
 To enable No Freeze on an address, send an `AccountSet` transaction with the [asfNoFreeze flag value](reference-transaction-format.html#accountset-flags) in the `SetFlag` field. You must sign this transaction using the master key. Once enabled, you cannot disable No Freeze.
 
-Example of submitting an AccountSet transaction to enable No Freeze using the [WebSocket API](reference-casinocoind.html#websocket-api):
+Example of submitting an AccountSet transaction to enable No Freeze using the [WebSocket API](reference-stoxumd.html#websocket-api):
 
 WebSocket request:
 
@@ -211,15 +211,15 @@ WebSocket request:
 
 **Caution:** Never send your secret key to an untrusted server or over an insecure channel.
 
-### Using CasinocoinAPI ###
+### Using StoxumAPI ###
 
-To enable No Freeze on an address, prepare a **Settings** transaction using the [prepareSettings](reference-casinocoinapi.html#preparesettings) method. Once enabled, you cannot disable No Freeze. The `settings` parameter should be an object set as follows:
+To enable No Freeze on an address, prepare a **Settings** transaction using the [prepareSettings](reference-stoxumapi.html#preparesettings) method. Once enabled, you cannot disable No Freeze. The `settings` parameter should be an object set as follows:
 
 | Field    | Value   | Description |
 |----------|---------|-------------|
 | noFreeze | Boolean | `true`      |
 
-You must [sign](reference-casinocoinapi.html#sign) this transaction using the master key. The rest of the [transaction flow](reference-casinocoinapi.html#transaction-flow) is the same as any other transaction.
+You must [sign](reference-stoxumapi.html#sign) this transaction using the master key. The rest of the [transaction flow](reference-stoxumapi.html#transaction-flow) is the same as any other transaction.
 
 Example JavaScript (ECMAScript 6) code to enable No Freeze on an address:
 
@@ -230,14 +230,14 @@ Example JavaScript (ECMAScript 6) code to enable No Freeze on an address:
 
 ## Checking for Individual Freeze ##
 
-### Using `casinocoind` ###
+### Using `stoxumd` ###
 
-To see if a trust line has an Individual Freeze enabled, use the [`account_lines` method](reference-casinocoind.html#account-lines) with the following parameters:
+To see if a trust line has an Individual Freeze enabled, use the [`account_lines` method](reference-stoxumd.html#account-lines) with the following parameters:
 
 | Field    | Value   | Description |
 |----------|---------|-------------|
-| account  | String  | The CSC Ledger address of the issuer |
-| peer     | String  | The CSC Ledger address of the counterparty |
+| account  | String  | The STM Ledger address of the issuer |
+| peer     | String  | The STM Ledger address of the counterparty |
 | ledger\_index | String | Use `validated` to get the most recently validated information. |
 
 The response contains an array of trust lines, for each currency in which the issuing address and the counterparty are linked. Look for the following fields in each trust line object:
@@ -288,14 +288,14 @@ Example WebSocket response:
 The field `"freeze": true` indicates that cDarPNJEpCnpBZSfmcquydockkePkjPGA2 has enabled Individual Freeze on the USD trust line to csA2LpzuawewSBQXkiju3YQTMzW13pAAdW. The lack of a field `"freeze_peer": true` indicates that the counterparty has _not_ frozen the trust line.
 
 
-### Using CasinocoinAPI ###
+### Using StoxumAPI ###
 
-To see if a trust line has an Individual Freeze enabled, use the [`getTrustlines` method](reference-casinocoinapi.html#gettrustlines) with the following parameters:
+To see if a trust line has an Individual Freeze enabled, use the [`getTrustlines` method](reference-stoxumapi.html#gettrustlines) with the following parameters:
 
 | Field         | Value   | Description |
 |---------------|---------|-------------|
-| address       | String  | The CSC Ledger address of the issuer |
-| options.counterparty  | String  | The CSC Ledger address of the counterparty |
+| address       | String  | The STM Ledger address of the issuer |
+| options.counterparty  | String  | The STM Ledger address of the counterparty |
 
 The response contains an array of trust lines, for each currency in which the issuing address and the counterparty are linked. Look for the following fields in each trust line object:
 
@@ -313,13 +313,13 @@ Example JavaScript (ECMAScript 6) code to check whether a trust line is frozen:
 
 ## Checking for Global Freeze and No Freeze ##
 
-### Using `casinocoind` ###
+### Using `stoxumd` ###
 
-To see if an address has enabled Global Freeze, No Freeze, or both, use the [`account_info` method](reference-casinocoind.html#account-lines) with the following parameters:
+To see if an address has enabled Global Freeze, No Freeze, or both, use the [`account_info` method](reference-stoxumd.html#account-lines) with the following parameters:
 
 | Field    | Value   | Description |
 |----------|---------|-------------|
-| account  | String  | The CSC Ledger address of the issuing address |
+| account  | String  | The STM Ledger address of the issuing address |
 | ledger\_index | String | Use `validated` to get the most recently validated information. |
 
 Check the value of the `account_data.Flags` field of the response using the [bitwise-AND](https://en.wikipedia.org/wiki/Bitwise_operation#AND) operator:
@@ -370,7 +370,7 @@ WebSocket response:
 }
 ```
 
-In the above example, the `Flags` value is 12582912. This indicates that has the following flags enabled: lsfGlobalFreeze, lsfDefaultCasinocoin, as demonstrated by the following JavaScript code:
+In the above example, the `Flags` value is 12582912. This indicates that has the following flags enabled: lsfGlobalFreeze, lsfDefaultStoxum, as demonstrated by the following JavaScript code:
 
 ```js
 var lsfGlobalFreeze = 0x00400000;
@@ -385,13 +385,13 @@ console.log(currentFlags & lsfNoFreeze); //0
 //therefore, No Freeze is not enabled
 ```
 
-### Using CasinocoinAPI ###
+### Using StoxumAPI ###
 
-To see if an address has enabled Global Freeze, No Freeze, or both, use the [`getSettings` method](reference-casinocoinapi.html#getsettings) with the following parameters:
+To see if an address has enabled Global Freeze, No Freeze, or both, use the [`getSettings` method](reference-stoxumapi.html#getsettings) with the following parameters:
 
 | Field         | Value   | Description |
 |---------------|---------|-------------|
-| address       | String  | The CSC Ledger address of the issuing address |
+| address       | String  | The STM Ledger address of the issuing address |
 
 Look for the following values in the response object:
 
@@ -409,4 +409,4 @@ Example JavaScript (ECMAScript 6) code to check whether an address has Global Fr
 # See Also #
 
 * [GB-2014-02 New Feature: Balance Freeze](https://ripple.com/files/GB-2014-02.pdf)
-* [Freeze Code Samples](https://github.com/casinocoin/casinocoin-dev-portal/tree/master/content/code_samples/freeze)
+* [Freeze Code Samples](https://github.com/stoxum/stoxum-dev-portal/tree/master/content/code_samples/freeze)

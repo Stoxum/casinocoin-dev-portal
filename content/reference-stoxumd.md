@@ -1,46 +1,46 @@
-# casinocoind
+# stoxumd
 
-The core peer-to-peer server that manages the CSC Ledger is called `casinocoind`. Each `casinocoind` server connects to a network of peers, relays cryptographically signed transactions, and maintains a local copy of the complete shared global ledger. The source code for `casinocoind` is written in C++, and is [available on GitHub under an open-source license](https://github.com/casinocoin/casinocoind).
+The core peer-to-peer server that manages the STM Ledger is called `stoxumd`. Each `stoxumd` server connects to a network of peers, relays cryptographically signed transactions, and maintains a local copy of the complete shared global ledger. The source code for `stoxumd` is written in C++, and is [available on GitHub under an open-source license](https://github.com/stoxum/stoxumd).
 
-* [`casinocoind` Setup](tutorial-casinocoind-setup.html)
+* [`stoxumd` Setup](tutorial-stoxumd-setup.html)
 * [API Reference](#api-methods)
 * [Transaction Reference](reference-transaction-format.html)
-* JavaScript Client Library - [CasinocoinAPI](reference-casinocoinapi.html)
+* JavaScript Client Library - [StoxumAPI](reference-stoxumapi.html)
 
 
 # WebSocket and JSON-RPC APIs
 
-If you want to communicate directly with a `casinocoind` server, you can use either the WebSocket API or the JSON-RPC API. Both APIs use the same list of commands, with almost entirely the same parameters in each command. Alternatively, you can use [CasinocoinAPI](reference-casinocoinapi.html), which is a simplified JavaScript client library, which communicates directly with a `casinocoind` server from [Node.js](http://nodejs.org/) or a web browser.
+If you want to communicate directly with a `stoxumd` server, you can use either the WebSocket API or the JSON-RPC API. Both APIs use the same list of commands, with almost entirely the same parameters in each command. Alternatively, you can use [stoxumAPI](reference-stoxumapi.html), which is a simplified JavaScript client library, which communicates directly with a `stoxumd` server from [Node.js](http://nodejs.org/) or a web browser.
 
-* The WebSocket API uses the [WebSocket protocol](https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API), available in most browsers and Javascript implementations, to achieve persistent two-way communication. There is not a 1:1 correlation between requests and responses. Some requests prompt the server to send multiple messages back asynchronously; other times, responses may arrive in a different order than the requests that prompted them. The `casinocoind` server can be configured to accept secured (wss:), unsecured (ws:) WebSocket connections, or both.
-* The JSON-RPC API relies on request-response communication via HTTP or HTTPS. (The `casinocoind` server can be configured to accept HTTP, HTTPS, or both.) For commands that prompt multiple responses, you can provide a callback URL.
+* The WebSocket API uses the [WebSocket protocol](https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API), available in most browsers and Javascript implementations, to achieve persistent two-way communication. There is not a 1:1 correlation between requests and responses. Some requests prompt the server to send multiple messages back asynchronously; other times, responses may arrive in a different order than the requests that prompted them. The `stoxumd` server can be configured to accept secured (wss:), unsecured (ws:) WebSocket connections, or both.
+* The JSON-RPC API relies on request-response communication via HTTP or HTTPS. (The `stoxumd` server can be configured to accept HTTP, HTTPS, or both.) For commands that prompt multiple responses, you can provide a callback URL.
 
-In general, we recommend using WebSocket, because WebSocket's push paradigm has less latency and less network overhead. WebSocket is also more reliable; you can worry less about missing messages and establishing multiple connections. On the other hand, there is widespread support for JSON-RPC because you can use a standard HTTP library to connect to `casinocoind`'s JSON-RPC API.
+In general, we recommend using WebSocket, because WebSocket's push paradigm has less latency and less network overhead. WebSocket is also more reliable; you can worry less about missing messages and establishing multiple connections. On the other hand, there is widespread support for JSON-RPC because you can use a standard HTTP library to connect to `stoxumd`'s JSON-RPC API.
 
-**Note:** The `casinocoind` program can also be used as a quick commandline client to make JSON-RPC requests to a running `casinocoind` server. The commandline interface is intended for administrative purposes only and is _not a supported API_.
+**Note:** The `stoxumd` program can also be used as a quick commandline client to make JSON-RPC requests to a running `stoxumd` server. The commandline interface is intended for administrative purposes only and is _not a supported API_.
 
 
 ## Changes to the APIs
 
-The WebSocket and JSON-RPC APIs are still in development, and are subject to change. 
+The WebSocket and JSON-RPC APIs are still in development, and are subject to change.
 
-## Connecting to casinocoind
+## Connecting to stoxumd
 
-Before you can run any commands against a `casinocoind` server, you must know which server you are connecting to. Most servers are configured not to accept API requests directly from the outside network.
+Before you can run any commands against a `stoxumd` server, you must know which server you are connecting to. Most servers are configured not to accept API requests directly from the outside network.
 
-Alternatively, you can [run your own local copy of `casinocoind`](tutorial-casinocoind-setup.html). This is required if you want to access any of the [Admin Commands](#list-of-admin-commands). In this case, you should use whatever IP and port you configured the server to bind. (For example, `127.0.0.1:54321`) Additionally, to access admin functionality, you must connect from a port/IP address marked as admin in the config file.
+Alternatively, you can [run your own local copy of `stoxumd`](tutorial-stoxumd-setup.html). This is required if you want to access any of the [Admin Commands](#list-of-admin-commands). In this case, you should use whatever IP and port you configured the server to bind. (For example, `127.0.0.1:54321`) Additionally, to access admin functionality, you must connect from a port/IP address marked as admin in the config file.
 
-The [example config file](https://github.com/casinocoin/casinocoind/blob/master/doc/casinocoind-example.cfg#L907-L930) listens for connections on the local loopback network (127.0.0.1), with JSON-RPC (HTTP) on port 5005 and WebSocket (WS) on port 6006, and treats all connected clients as admin.
+The [example config file](https://github.com/stoxumd/stoxumd/doc/stoxumd-example.cfg#L907-L930) listens for connections on the local loopback network (127.0.0.1), with JSON-RPC (HTTP) on port 5005 and WebSocket (WS) on port 6006, and treats all connected clients as admin.
 
 
 
 ### WebSocket API
 
-If you are looking to try out some methods on the CSC Ledger, you can skip writing your own WebSocket code and go straight to using the API at the [CasinoCoin WebSocket API Tool](casinocoin-api-tool.html). Later on, when you want to connect to your own `casinocoind` server, you can [build your own client in the browser](https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API/Writing_WebSocket_client_applications) or [in Node.js](https://www.npmjs.com/package/ws).
+If you are looking to try out some methods on the STM Ledger, you can skip writing your own WebSocket code and go straight to using the API at the [Stoxum WebSocket API Tool](stoxum-api-tool.html). Later on, when you want to connect to your own `stoxumd` server, you can [build your own client in the browser](https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API/Writing_WebSocket_client_applications) or [in Node.js](https://www.npmjs.com/package/ws).
 
 #### Request Formatting
 
-After you open a WebSocket to the `casinocoind` server, you can send commands as a [JSON](https://en.wikipedia.org/wiki/JSON) object, with the following attributes:
+After you open a WebSocket to the `stoxumd` server, you can send commands as a [JSON](https://en.wikipedia.org/wiki/JSON) object, with the following attributes:
 
 * Put command name in top-level `"command"` field
 * All the relevant parameters for the command are also in the top level
@@ -50,23 +50,23 @@ The response comes as a JSON object.
 
 #### Public Servers
 
-Currently CasinoCoin (the company) maintains a set of public WebSocket servers at:
+Currently Stoxum (the company) maintains a set of public WebSocket servers at:
 
 | `Domain`        | Port | Notes                                 |
 |:----------------|:-----|:--------------------------------------|
-| `ws01.casinocoin.org` | 443  | `wss://` only; general purpose server |
-| `ws01.casinocoin.org` | 443  | `wss://` only; full-history server    |
+| `ws01.stoxum.org` | 443  | `wss://` only; general purpose server |
+| `ws01.stoxum.org` | 443  | `wss://` only; full-history server    |
 
-These public servers are not for sustained or business use, and they may become unavailable at any time. For regular use, you should run your own `casinocoind` server or contract someone you trust to do so.
+These public servers are not for sustained or business use, and they may become unavailable at any time. For regular use, you should run your own `stoxum` server or contract someone you trust to do so.
 
 
 ### JSON-RPC
 
-You can use any HTTP client (like [Poster for Firefox](https://addons.mozilla.org/en-US/firefox/addon/poster/) or [Postman for Chrome](https://chrome.google.com/webstore/detail/postman/fhbjgbiflinjbdggehcddcbncdddomop?hl=en)) to make JSON-RPC calls a `casinocoind` server. Most programming languages have a library for making HTTP requests built in.
+You can use any HTTP client (like [Poster for Firefox](https://addons.mozilla.org/en-US/firefox/addon/poster/) or [Postman for Chrome](https://chrome.google.com/webstore/detail/postman/fhbjgbiflinjbdggehcddcbncdddomop?hl=en)) to make JSON-RPC calls a `stoxum` server. Most programming languages have a library for making HTTP requests built in.
 
 #### Request Formatting
 
-To make a JSON-RPC request, send an HTTP **POST** request to the root path (`/`) on the port and IP where the `casinocoind` server is listening for JSON-RPC connections. You can use HTTP/1.0 or HTTP/1.1. If you use HTTPS, you should use TLS v1.2. For security reasons, `casinocoind` _does not support_ SSL v3 or earlier.
+To make a JSON-RPC request, send an HTTP **POST** request to the root path (`/`) on the port and IP where the `stoxum` server is listening for JSON-RPC connections. You can use HTTP/1.0 or HTTP/1.1. If you use HTTPS, you should use TLS v1.2. For security reasons, `stoxum` _does not support_ SSL v3 or earlier.
 
 Always include a `Content-Type` header with the value `application/json`.
 
@@ -81,22 +81,22 @@ The response is also a JSON object.
 
 #### Public Servers
 
-Currently, CasinoCoin (the company) maintains a set of public JSON-RPC servers at:
+Currently, Stoxum (the company) maintains a set of public JSON-RPC servers at:
 
 | `Domain`        | Port  | Notes                  |
 |:----------------|:------|:-----------------------|
-| `ws01.casinocoin.org` | 51234 | General purpose server |
-| `ws01.casinocoin.org` | 51234 | Full-history server    |
+| `ws01.stoxum.org` | 51234 | General purpose server |
+| `ws01.stoxum.org` | 51234 | Full-history server    |
 
-These public servers are not for sustained or business use, and they may become unavailable at any time. For regular use, you should run your own `casinocoind` server or contract someone you trust to do so.
+These public servers are not for sustained or business use, and they may become unavailable at any time. For regular use, you should run your own `stoxumd` server or contract someone you trust to do so.
 
 
 ### Commandline
 
-The commandline interface connects to the same service as the JSON-RPC one, so the public servers and server configuration are the same. As a commandline client, `casinocoind` connects to the local instance. For example:
+The commandline interface connects to the same service as the JSON-RPC one, so the public servers and server configuration are the same. As a commandline client, `stoxum` connects to the local instance. For example:
 
 ```
-casinocoind --conf=/etc/casinocoind.cfg server_info
+stoxumd --conf=/etc/stoxumd.cfg server_info
 ```
 
 **Note:** The commandline interface is intended for administrative purposes only and is _not a supported API_.
@@ -125,7 +125,7 @@ The commandline puts the command after any normal (dash-prefaced) commandline op
 *JSON-RPC*
 
 ```
-POST http://ws01.casinocoin.org:51234/
+POST http://ws01.stoxum.org:51234/
 {
     "method": "account_info",
     "params": [
@@ -141,7 +141,7 @@ POST http://ws01.casinocoin.org:51234/
 *Commandline*
 
 ```
-casinocoind account_info cDarPNJEpCnpBZSfmcquydockkePkjPGA2 validated true
+stoxumd account_info cDarPNJEpCnpBZSfmcquydockkePkjPGA2 validated true
 ```
 
 <!-- MULTICODE_BLOCK_END -->
@@ -236,7 +236,7 @@ The fields of a successful response include:
 The response format for commandline methods is the same as JSON-RPC responses, because they use the same interface.
 
 ## Error Responses
-It is impossible to list all the possible ways an error can occur. Some may occur in the transport layer (for example, loss of network connectivity), in which case the results vary depending on what client and transport you are using. However, if the `casinocoind` server successfully receives your request, it tries to respond in a standardized error format.
+It is impossible to list all the possible ways an error can occur. Some may occur in the transport layer (for example, loss of network connectivity), in which case the results vary depending on what client and transport you are using. However, if the `stoxumd` server successfully receives your request, it tries to respond in a standardized error format.
 
 Some example errors:
 
@@ -331,13 +331,13 @@ When your request results in an error, the entire request is copied back as part
 
 All methods can potentially return any of the following values for the `error` code:
 
-* `unknownCmd` - The request does not contain a [command](#api-methods) that the `casinocoind` server recognizes.
+* `unknownCmd` - The request does not contain a [command](#api-methods) that the `stoxumd` server recognizes.
 * `jsonInvalid` - (WebSocket only) The request is not a proper JSON object.
     * JSON-RPC returns a 400 Bad Request HTTP error in this case instead.
 * `missingCommand` - (WebSocket only) The request did not specify a `command` field.
     * JSON-RPC returns a 400 Bad Request HTTP error in this case instead.
 * `tooBusy` - The server is under too much load to do this command right now. Generally not returned if you are connected as an admin.
-* `noNetwork` - The server is having trouble connecting to the rest of the CSC Ledger peer-to-peer network (and is not running in stand-alone mode).
+* `noNetwork` - The server is having trouble connecting to the rest of the STM Ledger peer-to-peer network (and is not running in stand-alone mode).
 * `noCurrent` - The server does not know what the current ledger is, due to high load, network problems, validator failures, incorrect configuration, or some other problem.
 * `noClosed` - The server does not have a closed ledger, typically because it has not finished starting up.
 * `wsTextRequired` - (WebSocket only) The request's [opcode](https://tools.ietf.org/html/rfc6455#section-5.2) is not text.
@@ -352,7 +352,7 @@ All field names are case-sensitive. In responses, fields that are taken directly
 
 Different types of objects are uniquely identified in different ways:
 
-[Accounts](concept-accounts.html) are identified by their [Address][], for example `"cDarPNJEpCnpBZSfmcquydockkePkjPGA2"`. Addresses always start with "r". Many `casinocoind` methods also accept a hexadecimal representation.
+[Accounts](concept-accounts.html) are identified by their [Address][], for example `"cDarPNJEpCnpBZSfmcquydockkePkjPGA2"`. Addresses always start with "r". Many `stoxumd` methods also accept a hexadecimal representation.
 
 [Transactions](reference-transaction-format.html) are identified by a [Hash][] of the transaction's binary format. You can also identify a transaction by its sending account and [Sequence Number][].
 
@@ -402,44 +402,44 @@ If you do not specify a ledger, the `current` (in-progress) ledger is chosen by 
 
 ## Currencies
 
-There are two kinds of currencies in the CSC Ledger: CSC, and everything else. There are many differences between the two:
+There are two kinds of currencies in the STM Ledger: STM, and everything else. There are many differences between the two:
 
-| `CSC`                                                           | Issued Currencies |
+| `STM`                                                           | Issued Currencies |
 |:----------------------------------------------------------------|:-----------|
-| Has no issuer.                                                  | Always issued by an CSC Ledger account |
+| Has no issuer.                                                  | Always issued by an STM Ledger account |
 | Specified as a string                                           | Specified as an object |
-| Tracked in [accounts](reference-ledger-format.html#accountroot) | Tracked in [trust lines](reference-ledger-format.html#casinocoinstate) |
+| Tracked in [accounts](reference-ledger-format.html#accountroot) | Tracked in [trust lines](reference-ledger-format.html#stoxumstate) |
 | Can never be created; can only be destroyed                     | Can be issued or redeemed freely |
 | Maximum value `100000000000` (`1e11`)                           | Maximum value `9999999999999999e80` |
-| Precise to the nearest ["drop"](#csc) (0.00000001 CSC)          | 15 decimal digits of precision, with a minimum nonzero absolute value of `1000000000000000e-96` |
+| Precise to the nearest ["drop"](#stm) (0.00000001 STM)          | 15 decimal digits of precision, with a minimum nonzero absolute value of `1000000000000000e-96` |
 
-**Caution:** The CSC Ledger uses decimal math with different precision than typical floating-point numbers, so currency amounts are always presented as strings.
+**Caution:** The STM Ledger uses decimal math with different precision than typical floating-point numbers, so currency amounts are always presented as strings.
 
 ### Specifying Currency Amounts
 
-Some API methods require you to specify an amount of currency. Depending on whether you are dealing in the network's native CSC currency or other currency units (called _issuances_), the style for specifying it is very different.
+Some API methods require you to specify an amount of currency. Depending on whether you are dealing in the network's native STM currency or other currency units (called _issuances_), the style for specifying it is very different.
 
-#### CSC
-[drops of CSC]: #csc
-[CSC, in drops]: #csc
+#### STM
+[drops of STM]: #stm
+[STM, in drops]: #stm
 
-Amounts of CSC are represented as strings. (CSC has precision equivalent to a 64-bit integer, but JSON integers are limited to 32 bits, so CSC can overflow if represented in a JSON integer.) CSC is formally specified in "drops", which are equivalent to 0.00000001 of an CSC each. Thus, to represent 1.0 CSC in a JSON document, you would write:
+Amounts of STM are represented as strings. (STM has precision equivalent to a 64-bit integer, but JSON integers are limited to 32 bits, so STM can overflow if represented in a JSON integer.) STM is formally specified in "drops", which are equivalent to 0.00000001 of an STM each. Thus, to represent 1.0 STM in a JSON document, you would write:
 
 ```
 "1000000"
 ```
 
-**Do not specify CSC as an object.**
+**Do not specify STM as an object.**
 
-Unit tests are permitted to submit values of CSC (not drops) with a decimal point - for example, "1.23" meaning 1.23 CSC. All other cases should always specify CSC in drops, with no decimal point: e.g. "123000000" meaning 1.23 CSC.
+Unit tests are permitted to submit values of STM (not drops) with a decimal point - for example, "1.23" meaning 1.23 STM. All other cases should always specify STM in drops, with no decimal point: e.g. "123000000" meaning 1.23 STM.
 
-#### Non-CSC
+#### Non-STM
 
-If you are specifying non-CSC currency (including fiat dollars, precious metals, cryptocurrencies, or other custom currency) you must specify it with a currency specification object. This is a JSON object with three fields:
+If you are specifying non-STM currency (including fiat dollars, precious metals, cryptocurrencies, or other custom currency) you must specify it with a currency specification object. This is a JSON object with three fields:
 
 | `Field`    | Type                       | Description                        |
 |:-----------|:---------------------------|:-----------------------------------|
-| `currency` | String - [Currency Code][] | Arbitrary code for currency to issue. Cannot be `CSC`. |
+| `currency` | String - [Currency Code][] | Arbitrary code for currency to issue. Cannot be `STM`. |
 | `value`    | String                     | Quoted decimal representation of the amount of currency. This can include scientific notation, such as `1.23e11` meaning 12,300,000,000,000. Both `e` and `E` may be used. |
 | `issuer`   | String                     | Unique account address of the entity issuing the currency. In other words, the person or business where the currency can be redeemed. |
 
@@ -455,13 +455,13 @@ For example, to represent $153.75 US dollars issued by account `cDarPNJEpCnpBZSf
 }
 ```
 
-Unit tests are permitted to submit amounts of non-CSC currencies as a slash-separated string in the format `"amount/currency/issuer"`. All other cases should use the JSON object format above.
+Unit tests are permitted to submit amounts of non-STM currencies as a slash-separated string in the format `"amount/currency/issuer"`. All other cases should use the JSON object format above.
 
 #### Specifying Currencies Without Amounts
 
-If you are specifying a non-CSC currency without an amount (typically for defining an order book of currency exchange offers) you should specify it as above, but omit the `value` field.
+If you are specifying a non-STM currency without an amount (typically for defining an order book of currency exchange offers) you should specify it as above, but omit the `value` field.
 
-If you are specifying CSC without an amount (typically for defining an order book) you should specify it as a JSON object with _only_ a `currency` field. Never include an `issuer` field for CSC.
+If you are specifying STM without an amount (typically for defining an order book) you should specify it as a JSON object with _only_ a `currency` field. Never include an `issuer` field for STM.
 
 Finally, if the recipient account of the payment trusts multiple issuers for a currency, you can indicate that the payment should be made in any combination of issuers that the recipient accepts. To do this, specify the recipient account's address as the `issuer` value in the JSON object.
 
@@ -473,17 +473,17 @@ Finally, if the recipient account of the payment trusts multiple issuers for a c
 
 ## Specifying Time
 
-The `casinocoind` server and its APIs represent time as an unsigned integer. This number measures the number of seconds since the "CasinoCoin Epoch" of January 1, 2000 (00:00 UTC). This is like the way the [Unix epoch](http://en.wikipedia.org/wiki/Unix_time) works, except the CasinoCoin Epoch is 946684800 seconds after the Unix Epoch.
+The `stoxumd` server and its APIs represent time as an unsigned integer. This number measures the number of seconds since the "Stoxum Epoch" of January 1, 2000 (00:00 UTC). This is like the way the [Unix epoch](http://en.wikipedia.org/wiki/Unix_time) works, except the Stoxum Epoch is 946684800 seconds after the Unix Epoch.
 
-Don't convert CasinoCoin Epoch times to UNIX Epoch times in 32-bit variables: this could lead to integer overflows.
+Don't convert Stoxum Epoch times to UNIX Epoch times in 32-bit variables: this could lead to integer overflows.
 
 ## Possible Server States
 
-Depending on how the `casinocoind` server is configured, how long it has been running, and other factors, a server may be participating in the global CSC Ledger peer-to-peer network to different degrees. This is represented as the `server_state` field in the responses to the [`server_info`](#server-info) and [`server_state`](#server-state) commands. The possible responses follow a range of ascending interaction, with each later value superseding the previous one. Their definitions are as follows (in order of increasing priority):
+Depending on how the `stoxumd` server is configured, how long it has been running, and other factors, a server may be participating in the global STM Ledger peer-to-peer network to different degrees. This is represented as the `server_state` field in the responses to the [`server_info`](#server-info) and [`server_state`](#server-state) commands. The possible responses follow a range of ascending interaction, with each later value superseding the previous one. Their definitions are as follows (in order of increasing priority):
 
 | `Value`        | Description                                                 |
 |:---------------|:------------------------------------------------------------|
-| `disconnected` | The server is not connected to the CSC Ledger peer-to-peer network whatsoever. It may be running in offline mode, or it may not be able to access the network for whatever reason. |
+| `disconnected` | The server is not connected to the STM Ledger peer-to-peer network whatsoever. It may be running in offline mode, or it may not be able to access the network for whatever reason. |
 | `connected`    | The server believes it is connected to the network.         |
 | `syncing`      | The server is currently behind on ledger versions. (It is normal for a server to spend a few minutes catching up after you start it.) |
 | `tracking`     | The server is in agreement with the network                 |
@@ -502,7 +502,7 @@ The format of the `marker` field is intentionally undefined. Each server can def
 
 ## Modifying the Ledger
 
-All changes to the CSC Ledger happen as the result of transactions. The only API methods that can change the contents of the CSC Ledger are the commands that submit transactions. Even then, changes only apply permanently if the transactions are approved by the [consensus process](concept-consensus.html). Most other public methods represent different ways to view the data represented in the CSC Ledger, or request information about the state of the server.
+All changes to the STM Ledger happen as the result of transactions. The only API methods that can change the contents of the STM Ledger are the commands that submit transactions. Even then, changes only apply permanently if the transactions are approved by the [consensus process](concept-consensus.html). Most other public methods represent different ways to view the data represented in the STM Ledger, or request information about the state of the server.
 
 Transaction submission commands:
 
@@ -537,11 +537,11 @@ API methods for the Websocket and JSON-RPC APIs are defined by command names, an
 * [`ledger_current` - Get the current working ledger version](#ledger-current)
 * [`ledger_data` - Get the raw contents of a ledger version](#ledger-data)
 * [`ledger_entry` - Get one element from a ledger version](#ledger-entry)
-* [`nocasinocoin_check` - Get recommended changes to an account's DefaultCasinoCoin and NoCasinocoin settings](#nocasinocoin-check)
+* [`nostoxumcoin_check` - Get recommended changes to an account's DefaultStoxum and NoStoxumcoin settings](#nostoxumcoin-check)
 * [`path_find` - Find a path for a payment between two accounts and receive updates](#path-find)
 * [`ping` - Confirm connectivity with the server](#ping)
 * [`random` - Generate a random number](#random)
-* [`casinocoin_path_find` - Find a path for payment between two accounts, once](#casinocoin-path-find)
+* [`stoxum_path_find` - Find a path for payment between two accounts, once](#stoxum-path-find)
 * [`server_info` - Retrieve status of the server in human-readable format](#server-info)
 * [`server_state` - Retrieve status of the server in machine-readable format](#server-state)
 * [`sign` - Cryptographically sign a transaction](#sign)
@@ -558,10 +558,10 @@ The `owner_info` command is deprecated. Use [`account_objects`](#account-objects
 
 ## List of Admin Commands
 
-Admin commands are only available if you [connect to `casinocoind`](#connecting-to-casinocoind) on a host and port that the config file identifies as admin. (By default, the commandline client uses an admin connection.)
+Admin commands are only available if you [connect to `stoxumd`](#connecting-to-stoxumd) on a host and port that the config file identifies as admin. (By default, the commandline client uses an admin connection.)
 
 * [`can_delete` - Allow online deletion of ledgers up to a specific ledger](#can-delete)
-* [`connect` - Force the casinocoind server to connect to a specific peer](#connect)
+* [`connect` - Force the stoxumd server to connect to a specific peer](#connect)
 * [`consensus_info` - Get information about the state of consensus as it happens](#consensus-info)
 * [`feature` - Get information about protocol amendments](#feature)
 * [`fetch_info` - Get information about the server's sync with the network](#fetch-info)
@@ -573,8 +573,8 @@ Admin commands are only available if you [connect to `casinocoind`](#connecting-
 * [`logrotate` - Reopen the log file](#logrotate)
 * [`peers` - Get information about the peer servers connected](#peers)
 * [`print` - Get information about internal subsystems](#print)
-* [`stop` - Shut down the casinocoind server](#stop)
-* [`validation_create` - Generate keys for a new casinocoind validator](#validation-create)
+* [`stop` - Shut down the stoxumd server](#stop)
+* [`validation_create` - Generate keys for a new stoxumd validator](#validation-create)
 * [`validation_seed` - Temporarily set key to be used for validating](#validation-seed)
 * [`validators` - Get information about the current validators](#validators)
 * [`validator_list_sites` - Get information about sites that publish validator lists](#validator-list-sites)
@@ -589,7 +589,7 @@ The following admin commands are deprecated and may be removed without further n
 
 ## Commandline Access
 
-You can use the `casinocoind` application (as a separate instance) as a JSON-RPC client. In this mode, it has syntax for triggering most API methods with a single line from the command prompt, as described in each method. However, some methods or options don't have commandline syntax. For otherwise unsupported syntax, you can use the following method:
+You can use the `stoxumd` application (as a separate instance) as a JSON-RPC client. In this mode, it has syntax for triggering most API methods with a single line from the command prompt, as described in each method. However, some methods or options don't have commandline syntax. For otherwise unsupported syntax, you can use the following method:
 
 * [`json` - Pass JSON through the commandline](#json)
 
@@ -597,11 +597,11 @@ You can use the `casinocoind` application (as a separate instance) as a JSON-RPC
 
 
 # Account Information
-An "Account" in the CSC Ledger represents a holder of CSC and a sender of transactions. Accounts can send and receive CSC and issued assets, participate in the decentralized exchange, and change their own settings. Creating an account involves generating keys and then receiving CSC from another account. For more information, see [Accounts](concept-accounts.html).
+An "Account" in the STM Ledger represents a holder of STM and a sender of transactions. Accounts can send and receive STM and issued assets, participate in the decentralized exchange, and change their own settings. Creating an account involves generating keys and then receiving STM from another account. For more information, see [Accounts](concept-accounts.html).
 
 
 ## account_currencies
-[[Source]<br>](https://github.com/casinocoin/casinocoind/blob/4.0.1/src/casinocoin/rpc/handlers/AccountCurrencies.cpp "Source")
+[[Source]<br>](https://github.com/stoxum/stoxumd/src/stoxumd/rpc/handlers/AccountCurrencies.cpp "Source")
 
 The `account_currencies` command retrieves a list of currencies that an account can send or receive, based on its trust lines. (This is not a thoroughly confirmed list, but it can be used to populate user interfaces.)
 
@@ -639,7 +639,7 @@ An example of the request format:
 
 <!-- MULTICODE_BLOCK_END -->
 
-[Try it! >](casinocoin-api-tool.html#account_currencies)
+[Try it! >](stoxum-api-tool.html#account_currencies)
 
 The request includes the following parameters:
 
@@ -752,7 +752,7 @@ The response follows the [standard format](#response-formatting), with a success
 
 
 ## account_channels
-[[Source]<br>](https://github.com/casinocoin/casinocoind/blob/master/src/casinocoin/rpc/handlers/AccountChannels.cpp "Source")
+[[Source]<br>](https://github.com/stoxum/stoxumd/src/stoxum/rpc/handlers/AccountChannels.cpp "Source")
 
 _(Requires the [PayChan amendment](reference-amendments.html#paychan) to be enabled.)_
 
@@ -792,7 +792,7 @@ An example of the request format:
 
 ```bash
 #Syntax: account_channels <account> [<destination_account>] [<ledger>]
-casinocoind account_channels cN7n7otQDd6FczFgLdSqtcsAUxDkw6fzRH cDarPNJEpCnpBZSfmcquydockkePkjPGA2 validated
+stoxum account_channels cN7n7otQDd6FczFgLdSqtcsAUxDkw6fzRH cDarPNJEpCnpBZSfmcquydockkePkjPGA2 validated
 ```
 
 <!-- MULTICODE_BLOCK_END -->
@@ -905,15 +905,15 @@ Each Channel Object has the following fields:
 | Field | Type | Description |
 |-------|------|-------------|
 | `account` | String | The owner of the channel, as an [Address][]. |
-| `amount` | String | The total amount of [CSC, in drops](#specifying-currency-amounts) allocated to this channel. |
-| `balance` | String | The total amount of CSC, in drops, paid out from this channel, as of the ledger version used. (You can calculate the amount of CSC left in the channel by subtracting `balance` from `amount`.) |
+| `amount` | String | The total amount of [STM, in drops](#specifying-currency-amounts) allocated to this channel. |
+| `balance` | String | The total amount of STM, in drops, paid out from this channel, as of the ledger version used. (You can calculate the amount of STM left in the channel by subtracting `balance` from `amount`.) |
 | `channel_id` | String | A unique ID for this channel, as a 64-character hexadecimal string. This is also the [ID of the channel object](reference-ledger-format.html#paychannel-id-format) in the ledger's state data. |
-| `destination_account` | String | the destination account of the channel, as an [Address][]. Only this account can receive the CSC in the channel while it is open. |
+| `destination_account` | String | the destination account of the channel, as an [Address][]. Only this account can receive the STM in the channel while it is open. |
 | `public_key` | String | _(May be omitted)_ The public key for the payment channel in base58 format. Signed claims against this channel must be redeemed with the matching key pair. |
 | `public_key_hex` | String | _(May be omitted)_ The public key for the payment channel in hexadecimal format, if one was specified at channel creation. Signed claims against this channel must be redeemed with the matching key pair. |
 | `settle_delay` | Unsigned Integer | The number of seconds the payment channel must stay open after the owner of the channel requests to close it. |
-| `expiration` | Unsigned Integer | _(May be omitted)_ Time, in seconds since the [CasinoCoin Epoch](#specifying-time), when this channel is set to expire. This expiration date is mutable. If this is before the close time of the most recent validated ledger, the channel is expired. |
-| `cancel_after` | Unsigned Integer | _(May be omitted)_ Time, in seconds since the [CasinoCoin Epoch](#specifying-time), of this channel's immutable expiration, if one was specified at channel creation. If this is before the close time of the most recent validated ledger, the channel is expired. |
+| `expiration` | Unsigned Integer | _(May be omitted)_ Time, in seconds since the [Stoxum Epoch](#specifying-time), when this channel is set to expire. This expiration date is mutable. If this is before the close time of the most recent validated ledger, the channel is expired. |
+| `cancel_after` | Unsigned Integer | _(May be omitted)_ Time, in seconds since the [Stoxum Epoch](#specifying-time), of this channel's immutable expiration, if one was specified at channel creation. If this is before the close time of the most recent validated ledger, the channel is expired. |
 | `source_tag` | Unsigned Integer | _(May be omitted)_ A 32-bit unsigned integer to use as a [source tag](tutorial-gateway-guide.html#source-and-destination-tags) for payments through this payment channel, if one was specified at channel creation. This indicates the payment channel's originator or other purpose at the source account. Conventionally, if you bounce payments from this channel, you should specify this value in the `DestinationTag` of the return payment. |
 | `destination_tag` | Unsigned Integer | _(May be omitted)_ A 32-bit unsigned integer to use as a [destination tag](tutorial-gateway-guide.html#source-and-destination-tags) for payments through this channel, if one was specified at channel creation. This indicates the payment channel's beneficiary or other purpose at the destination account. |
 
@@ -927,9 +927,9 @@ Each Channel Object has the following fields:
 
 
 ## account_info
-[[Source]<br>](https://github.com/casinocoin/casinocoind/blob/master/src/casinocoin/rpc/handlers/AccountInfo.cpp "Source")
+[[Source]<br>](https://github.com/stoxum/stoximd/src/stoxum/rpc/handlers/AccountInfo.cpp "Source")
 
-The `account_info` command retrieves information about an account, its activity, and its CSC balance. All information retrieved is relative to a particular version of the ledger.
+The `account_info` command retrieves information about an account, its activity, and its STM balance. All information retrieved is relative to a particular version of the ledger.
 
 #### Request Format
 
@@ -970,19 +970,19 @@ An example of an account_info request:
 
 ```
 #Syntax: account_info account [ledger_index|ledger_hash] [strict]
-casinocoind account_info cDarPNJEpCnpBZSfmcquydockkePkjPGA2 true
+stoxumd account_info cDarPNJEpCnpBZSfmcquydockkePkjPGA2 true
 ```
 
 <!-- MULTICODE_BLOCK_END -->
 
-[Try it! >](casinocoin-api-tool.html#account_info)
+[Try it! >](stoxum-api-tool.html#account_info)
 
 The request contains the following parameters:
 
 | `Field`        | Type                       | Description                    |
 |:---------------|:---------------------------|:-------------------------------|
 | `account`      | String                     | A unique identifier for the account, most commonly the account's [Address][]. |
-| `strict`       | Boolean                    | (Optional, defaults to False) If set to True, then the `account` field only accepts a public key or CSC Ledger address. |
+| `strict`       | Boolean                    | (Optional, defaults to False) If set to True, then the `account` field only accepts a public key or STM Ledger address. |
 | `ledger_hash`  | String                     | _(Optional)_ A 20-byte hex string for the ledger version to use. (See [Specifying a Ledger](#specifying-ledgers)) |
 | `ledger_index` | String or Unsigned Integer | _(Optional)_ The sequence number of the ledger to use, or a shortcut string to choose a ledger automatically. (See [Specifying a Ledger](#specifying-ledgers)) |
 | `queue`        | Boolean                    | _(Optional)_ If `true`, and the [FeeEscalation amendment](reference-amendments.html#feeescalation) is enabled, also returns stats about queued transactions associated with this account. Can only be used when querying for the data from the current open ledger. |
@@ -1111,7 +1111,7 @@ The response follows the [standard format](#response-formatting), with the resul
 | `signer_lists`         | Array   | (Omitted unless the request specified `signer_lists` and at least one SignerList is associated with the account.) Array of [SignerList ledger objects](reference-ledger-format.html#signerlist) associated with this account for [Multi-Signing](reference-transaction-format.html#multi-signing). Since an account can own at most one SignerList, this array must have exactly one member if it is present. |
 | `ledger_current_index` | Integer | (Omitted if `ledger_index` is provided instead) The sequence number of the most-current ledger, which was used when retrieving this information. The information does not contain any changes from ledgers newer than this one. |
 | `ledger_index`         | Integer | (Omitted if `ledger_current_index` is provided instead) The sequence number of the ledger used when retrieving this information. The information does not contain any changes from ledgers newer than this one. |
-| `queue_data`           | Object  | (Omitted unless `queue` specified as `true` and querying the current open ledger.) Information about [queued transactions](concept-transaction-cost.html#queued-transactions) sent by this account. This information describes the state of the local `casinocoind` server, which may be different from other servers in the consensus network. Some fields may be omitted because the values are calculated "lazily" by the queuing mechanism. |
+| `queue_data`           | Object  | (Omitted unless `queue` specified as `true` and querying the current open ledger.) Information about [queued transactions](concept-transaction-cost.html#queued-transactions) sent by this account. This information describes the state of the local `stoxumd` server, which may be different from other servers in the consensus network. Some fields may be omitted because the values are calculated "lazily" by the queuing mechanism. |
 | `validated`            | Boolean | True if this data is from a validated ledger version; if omitted or set to false, this data is not final. |
 
 The `queue_data` parameter, if present, contains the following fields:
@@ -1122,7 +1122,7 @@ The `queue_data` parameter, if present, contains the following fields:
 | `auth_change_queued`    | Boolean | (May be omitted) Whether a transaction in the queue changes this address's [ways of authorizing transactions](reference-transaction-format.html#authorizing-transactions). If `true`, this address can queue no further transactions until that transaction has been executed or dropped from the queue. |
 | `lowest_sequence`       | Integer | (May be omitted) The lowest [Sequence Number][] among transactions queued by this address. |
 | `highest_sequence`      | Integer | (May be omitted) The highest [Sequence Number][] among transactions queued by this address. |
-| `max_spend_drops_total` | String  | (May be omitted) Integer amount of [drops of CSC](#specifying-currency-amounts) that could be debited from this address if every transaction in the queue consumes the maximum amount of CSC possible. |
+| `max_spend_drops_total` | String  | (May be omitted) Integer amount of [drops of STM](#specifying-currency-amounts) that could be debited from this address if every transaction in the queue consumes the maximum amount of STM possible. |
 | `transactions`          | Array   | (May be omitted) Information about each queued transaction from this address. |
 
 Each object in the `transactions` array, if present, may contain any or all of the following fields:
@@ -1130,9 +1130,9 @@ Each object in the `transactions` array, if present, may contain any or all of t
 | `Field`           | Type    | Description                                    |
 |:------------------|:--------|:-----------------------------------------------|
 | `auth_change`     | Boolean | Whether this transaction changes this address's [ways of authorizing transactions](reference-transaction-format.html#authorizing-transactions). |
-| `fee`             | String  | The [Transaction Cost](concept-transaction-cost.html) of this transaction, in [drops of CSC](#specifying-currency-amounts). |
+| `fee`             | String  | The [Transaction Cost](concept-transaction-cost.html) of this transaction, in [drops of STM](#specifying-currency-amounts). |
 | `fee_level`       | String  | The transaction cost of this transaction, relative to the minimum cost for this type of transaction, in [fee levels][]. |
-| `max_spend_drops` | String  | The maximum amount of CSC, [in drops](#specifying-currency-amounts), this transaction could send or destroy. |
+| `max_spend_drops` | String  | The maximum amount of STM, [in drops](#specifying-currency-amounts), this transaction could send or destroy. |
 | `seq`             | Integer | The [Sequence Number][] of this transaction.   |
 
 #### Possible Errors
@@ -1145,9 +1145,9 @@ Each object in the `transactions` array, if present, may contain any or all of t
 
 
 ## account_lines
-[[Source]<br>](https://github.com/casinocoin/casinocoind/blob/master/src/casinocoin/rpc/handlers/AccountLines.cpp "Source")
+[[Source]<br>](https://github.com/stoxum/stoxumd/src/stoxum/rpc/handlers/AccountLines.cpp "Source")
 
-The `account_lines` method returns information about an account's trust lines, including balances in all non-CSC currencies and assets. All information retrieved is relative to a particular version of the ledger.
+The `account_lines` method returns information about an account's trust lines, including balances in all non-STM currencies and assets. All information retrieved is relative to a particular version of the ledger.
 
 #### Request Format
 
@@ -1182,7 +1182,7 @@ An example of the request format:
 
 <!-- MULTICODE_BLOCK_END -->
 
-[Try it! >](casinocoin-api-tool.html#account_lines)
+[Try it! >](stoxum-api-tool.html#account_lines)
 
 The request accepts the following paramters:
 
@@ -1228,8 +1228,8 @@ An example of a successful response:
                 "currency": "XAU",
                 "limit": "0",
                 "limit_peer": "0",
-                "no_casinocoin": true,
-                "no_casinocoin_peer": true,
+                "no_stoxumcoin": true,
+                "no_stoxumcoin_peer": true,
                 "quality_in": 0,
                 "quality_out": 0
             },
@@ -1239,7 +1239,7 @@ An example of a successful response:
                 "currency": "USD",
                 "limit": "5",
                 "limit_peer": "0",
-                "no_casinocoin": true,
+                "no_stoxumcoin": true,
                 "quality_in": 0,
                 "quality_out": 0
             }
@@ -1271,8 +1271,8 @@ An example of a successful response:
                 "currency": "XAU",
                 "limit": "0",
                 "limit_peer": "0",
-                "no_casinocoin": true,
-                "no_casinocoin_peer": true,
+                "no_stoxumcoin": true,
+                "no_stoxumcoin_peer": true,
                 "quality_in": 0,
                 "quality_out": 0
             },
@@ -1282,7 +1282,7 @@ An example of a successful response:
                 "currency": "015841551A748AD2C1F76FF6ECB0CCCD00000000",
                 "limit": "10.01037626125837",
                 "limit_peer": "0",
-                "no_casinocoin": true,
+                "no_stoxumcoin": true,
                 "quality_in": 0,
                 "quality_out": 0
             }
@@ -1316,8 +1316,8 @@ Each trust line object has some combination of the following fields:
 | `limit_peer`     | String           | The maximum amount of currency that the counterparty account is willing to owe the perspective account |
 | `quality_in`     | Unsigned Integer | Rate at which the account values incoming balances on this trust line, as a ratio of this value per 1 billion units. (For example, a value of 500 million represents a 0.5:1 ratio.) As a special case, 0 is treated as a 1:1 ratio. |
 | `quality_out`    | Unsigned Integer | Rate at which the account values outgoing balances on this trust line, as a ratio of this value per 1 billion units. (For example, a value of 500 million represents a 0.5:1 ratio.) As a special case, 0 is treated as a 1:1 ratio. |
-| `no_casinocoin`      | Boolean          | (May be omitted) `true` if this account has enabled the [NoCasinocoin flag](concept-nocasinocoin.html) for this line. If omitted, that is the same as `false`. |
-| `no_casinocoin_peer` | Boolean          | (May be omitted) `true` if the peer account has enabled the [NoCasinocoin flag](concept-nocasinocoin.html). If omitted, that is the same as `false`. |
+| `no_stoxumcoin`      | Boolean          | (May be omitted) `true` if this account has enabled the [NoStoxumcoin flag](concept-nostoxumcoin.html) for this line. If omitted, that is the same as `false`. |
+| `no_stoxumcoin_peer` | Boolean          | (May be omitted) `true` if the peer account has enabled the [NoStoxumcoin flag](concept-nostoxumcoin.html). If omitted, that is the same as `false`. |
 | `freeze`         | Boolean          | (May be omitted) `true` if this account has [frozen](concept-freeze.html) this trust line. If omitted, that is the same as `false`. |
 | `freeze_peer`    | Boolean          | (May be omitted) `true` if the peer account has [frozen](concept-freeze.html) this trust line. If omitted, that is the same as `false`. |
 
@@ -1331,7 +1331,7 @@ Each trust line object has some combination of the following fields:
 
 
 ## account_offers
-[[Source]<br>](https://github.com/casinocoin/casinocoind/blob/master/src/casinocoin/rpc/handlers/AccountOffers.cpp "Source")
+[[Source]<br>](https://github.com/stoxum/stoxumd/src/stoxum/rpc/handlers/AccountOffers.cpp "Source")
 
 The `account_offers` method retrieves a list of offers made by a given account that are outstanding as of a particular ledger version.
 
@@ -1370,12 +1370,12 @@ An example of the request format:
 
 ```
 #Syntax: account_offers account [ledger_index]
-casinocoind account_offers cDarPNJEpCnpBZSfmcquydockkePkjPGA2 current
+stoxumd account_offers cDarPNJEpCnpBZSfmcquydockkePkjPGA2 current
 ```
 
 <!-- MULTICODE_BLOCK_END -->
 
-[Try it! >](casinocoin-api-tool.html#account_offers)
+[Try it! >](stoxum-api-tool.html#account_offers)
 
 A request can include the following parameters:
 
@@ -1505,10 +1505,10 @@ Each offer object contains the following fields:
 |:-------------|:-----------------|:-------------------------------------------|
 | `flags`      | Unsigned integer | Options set for this offer entry as bit-flags. |
 | `seq`        | Unsigned integer | Sequence number of the transaction that created this entry. (Transaction [sequence numbers](#account-sequence) are relative to accounts.) |
-| `taker_gets` | String or Object | The amount the account accepting the offer receives, as a String representing an amount in CSC, or a currency specification object. (See [Specifying Currency Amounts](#specifying-currency-amounts)) |
-| `taker_pays` | String or Object | The amount the account accepting the offer provides, as a String representing an amount in CSC, or a currency specification object. (See [Specifying Currency Amounts](#specifying-currency-amounts)) |
+| `taker_gets` | String or Object | The amount the account accepting the offer receives, as a String representing an amount in STM, or a currency specification object. (See [Specifying Currency Amounts](#specifying-currency-amounts)) |
+| `taker_pays` | String or Object | The amount the account accepting the offer provides, as a String representing an amount in STM, or a currency specification object. (See [Specifying Currency Amounts](#specifying-currency-amounts)) |
 | `quality`    | Number           | The exchange rate of the offer, as the ratio of the original `taker_pays` divided by the original `taker_gets`. When executing offers, the offer with the most favorable (lowest) quality is consumed first; offers with the same quality are executed from oldest to newest. |
-| `expiration` | Unsigned integer | (May be omitted) A time after which this offer is considered unfunded, as [the number of seconds since the CasinoCoin Epoch](#specifying-time). See also: [Offer Expiration](reference-transaction-format.html#expiration). |
+| `expiration` | Unsigned integer | (May be omitted) A time after which this offer is considered unfunded, as [the number of seconds since the Stoxum Epoch](#specifying-time). See also: [Offer Expiration](reference-transaction-format.html#expiration). |
 
 #### Possible Errors
 
@@ -1520,7 +1520,7 @@ Each offer object contains the following fields:
 
 
 ## account_objects
-[[Source]<br>](https://github.com/casinocoin/casinocoind/blob/4.0.1/src/casinocoin/rpc/handlers/AccountObjects.cpp "Source")
+[[Source]<br>](https://github.com/stoxum/stoxumd/src/stoxum/rpc/handlers/AccountObjects.cpp "Source")
 
 The `account_objects` command returns the raw [ledger format][] for all objects owned by an account. For a higher-level view of an account's trust lines and balances, see [`account_lines`](#account-lines) instead.
 
@@ -1529,7 +1529,7 @@ The `account_objects` command returns the raw [ledger format][] for all objects 
 The types of objects that may appear in the `account_objects` response for an account include:
 
 - [Offer objects](reference-ledger-format.html#offer) for orders that are currently live, unfunded, or expired but not yet removed. (See [Lifecycle of an Offer](reference-transaction-format.html#lifecycle-of-an-offer) for more information.)
-- [CasinocoinState objects](reference-ledger-format.html#casinocoinstate) for trust lines where this account's side is not in the default state.
+- [StoxumState objects](reference-ledger-format.html#stoxumstate) for trust lines where this account's side is not in the default state.
 - The account's [SignerList](reference-ledger-format.html#signerlist), if the account has [multi-signing](reference-transaction-format.html#multi-signing) enabled.
 - [Escrow objects](reference-ledger-format.html#escrow) for held payments that have not yet been executed or canceled.
 - [PayChannel objects](reference-ledger-format.html#paychannel) for open payment channels.
@@ -1574,7 +1574,7 @@ An example of the request format:
 
 ```
 #Syntax: account_objects <account> [<ledger>]
-casinocoind account_objects cDarPNJEpCnpBZSfmcquydockkePkjPGA2 validated
+stoxumd account_objects cDarPNJEpCnpBZSfmcquydockkePkjPGA2 validated
 ```
 
 <!-- MULTICODE_BLOCK_END -->
@@ -1584,7 +1584,7 @@ The request includes the following parameters:
 | `Field`        | Type                                       | Description    |
 |:---------------|:-------------------------------------------|:---------------|
 | `account`      | String                                     | A unique identifier for the account, most commonly the account's address. |
-| `type`         | String                                     | _(Optional)_ If included, filter results to include only this type of ledger object. The valid types are: `offer`, `signer_list`, `state` (trust line), `escrow`, and `payment_channel`. <!-- Author's note: Omitted types from this list that can't be owned by an account: https://github.com/casinocoin/casinocoind/blob/4.0.1/src/casinocoin/rpc/impl/RPCHelpers.cpp#L676-L686 --> |
+| `type`         | String                                     | _(Optional)_ If included, filter results to include only this type of ledger object. The valid types are: `offer`, `signer_list`, `state` (trust line), `escrow`, and `payment_channel`. <!-- Author's note: Omitted types from this list that can't be owned by an account: https://github.com/stoxum/stoxumd/src/stoxum/rpc/impl/RPCHelpers.cpp#L676-L686 --> |
 | `ledger_hash`  | String                                     | _(Optional)_ A 20-byte hex string for the ledger version to use. (See [Specifying a Ledger](#specifying-ledgers)) |
 | `ledger_index` | String or Unsigned Integer                 | _(Optional)_ The sequence number of the ledger to use, or a shortcut string to choose a ledger automatically. (See [Specifying a Ledger](#specifying-ledgers)) |
 | `limit`        | Unsigned Integer                           | _(Optional)_ The maximum number of objects to include in the results. Must be within the inclusive range 10 to 400 on non-admin connections. Defaults to 200. |
@@ -1619,7 +1619,7 @@ An example of a successful response:
                     "value": "0"
                 },
                 "HighNode": "0000000000000000",
-                "LedgerEntryType": "CasinocoinState",
+                "LedgerEntryType": "StoxumState",
                 "LowLimit": {
                     "currency": "ASP",
                     "issuer": "c3vi7mWxru9rJCxETCyA1CHvzL96eZWx5z",
@@ -1643,7 +1643,7 @@ An example of a successful response:
                     "value": "0"
                 },
                 "HighNode": "0000000000000000",
-                "LedgerEntryType": "CasinocoinState",
+                "LedgerEntryType": "StoxumState",
                 "LowLimit": {
                     "currency": "XAU",
                     "issuer": "c3vi7mWxru9rJCxETCyA1CHvzL96eZWx5z",
@@ -1667,7 +1667,7 @@ An example of a successful response:
                     "value": "0"
                 },
                 "HighNode": "0000000000000000",
-                "LedgerEntryType": "CasinocoinState",
+                "LedgerEntryType": "StoxumState",
                 "LowLimit": {
                     "currency": "USD",
                     "issuer": "cDarPNJEpCnpBZSfmcquydockkePkjPGA2",
@@ -1691,7 +1691,7 @@ An example of a successful response:
                     "value": "0"
                 },
                 "HighNode": "0000000000000000",
-                "LedgerEntryType": "CasinocoinState",
+                "LedgerEntryType": "StoxumState",
                 "LowLimit": {
                     "currency": "MXN",
                     "issuer": "cDarPNJEpCnpBZSfmcquydockkePkjPGA2",
@@ -1715,7 +1715,7 @@ An example of a successful response:
                     "value": "0"
                 },
                 "HighNode": "0000000000000000",
-                "LedgerEntryType": "CasinocoinState",
+                "LedgerEntryType": "StoxumState",
                 "LowLimit": {
                     "currency": "EUR",
                     "issuer": "cDarPNJEpCnpBZSfmcquydockkePkjPGA2",
@@ -1739,7 +1739,7 @@ An example of a successful response:
                     "value": "3"
                 },
                 "HighNode": "0000000000000000",
-                "LedgerEntryType": "CasinocoinState",
+                "LedgerEntryType": "StoxumState",
                 "LowLimit": {
                     "currency": "CNY",
                     "issuer": "cnuF96W4SZoCJmbHYBFoJZpR8eCaxNvekK",
@@ -1763,7 +1763,7 @@ An example of a successful response:
                     "value": "0"
                 },
                 "HighNode": "0000000000000000",
-                "LedgerEntryType": "CasinocoinState",
+                "LedgerEntryType": "StoxumState",
                 "LowLimit": {
                     "currency": "DYM",
                     "issuer": "cDarPNJEpCnpBZSfmcquydockkePkjPGA2",
@@ -1787,7 +1787,7 @@ An example of a successful response:
                     "value": "0"
                 },
                 "HighNode": "0000000000000000",
-                "LedgerEntryType": "CasinocoinState",
+                "LedgerEntryType": "StoxumState",
                 "LowLimit": {
                     "currency": "CHF",
                     "issuer": "cvYAfWj5gh67oV6fW32ZzP3Aw4Eubs59B",
@@ -1811,7 +1811,7 @@ An example of a successful response:
                     "value": "3"
                 },
                 "HighNode": "0000000000000000",
-                "LedgerEntryType": "CasinocoinState",
+                "LedgerEntryType": "StoxumState",
                 "LowLimit": {
                     "currency": "BTC",
                     "issuer": "cvYAfWj5gh67oV6fW32ZzP3Aw4Eubs59B",
@@ -1835,7 +1835,7 @@ An example of a successful response:
                     "value": "5000"
                 },
                 "HighNode": "0000000000000000",
-                "LedgerEntryType": "CasinocoinState",
+                "LedgerEntryType": "StoxumState",
                 "LowLimit": {
                     "currency": "USD",
                     "issuer": "cvYAfWj5gh67oV6fW32ZzP3Aw4Eubs59B",
@@ -1877,7 +1877,7 @@ An example of a successful response:
                     "value": "0"
                 },
                 "HighNode": "0000000000000000",
-                "LedgerEntryType": "CasinocoinState",
+                "LedgerEntryType": "StoxumState",
                 "LowLimit": {
                     "currency": "ASP",
                     "issuer": "c3vi7mWxru9rJCxETCyA1CHvzL96eZWx5z",
@@ -1901,7 +1901,7 @@ An example of a successful response:
                     "value": "0"
                 },
                 "HighNode": "0000000000000000",
-                "LedgerEntryType": "CasinocoinState",
+                "LedgerEntryType": "StoxumState",
                 "LowLimit": {
                     "currency": "XAU",
                     "issuer": "c3vi7mWxru9rJCxETCyA1CHvzL96eZWx5z",
@@ -1925,7 +1925,7 @@ An example of a successful response:
                     "value": "0"
                 },
                 "HighNode": "0000000000000000",
-                "LedgerEntryType": "CasinocoinState",
+                "LedgerEntryType": "StoxumState",
                 "LowLimit": {
                     "currency": "USD",
                     "issuer": "cDarPNJEpCnpBZSfmcquydockkePkjPGA2",
@@ -1949,7 +1949,7 @@ An example of a successful response:
                     "value": "0"
                 },
                 "HighNode": "0000000000000000",
-                "LedgerEntryType": "CasinocoinState",
+                "LedgerEntryType": "StoxumState",
                 "LowLimit": {
                     "currency": "MXN",
                     "issuer": "cDarPNJEpCnpBZSfmcquydockkePkjPGA2",
@@ -1973,7 +1973,7 @@ An example of a successful response:
                     "value": "0"
                 },
                 "HighNode": "0000000000000000",
-                "LedgerEntryType": "CasinocoinState",
+                "LedgerEntryType": "StoxumState",
                 "LowLimit": {
                     "currency": "EUR",
                     "issuer": "cDarPNJEpCnpBZSfmcquydockkePkjPGA2",
@@ -1997,7 +1997,7 @@ An example of a successful response:
                     "value": "3"
                 },
                 "HighNode": "0000000000000000",
-                "LedgerEntryType": "CasinocoinState",
+                "LedgerEntryType": "StoxumState",
                 "LowLimit": {
                     "currency": "CNY",
                     "issuer": "cnuF96W4SZoCJmbHYBFoJZpR8eCaxNvekK",
@@ -2021,7 +2021,7 @@ An example of a successful response:
                     "value": "0"
                 },
                 "HighNode": "0000000000000000",
-                "LedgerEntryType": "CasinocoinState",
+                "LedgerEntryType": "StoxumState",
                 "LowLimit": {
                     "currency": "DYM",
                     "issuer": "cDarPNJEpCnpBZSfmcquydockkePkjPGA2",
@@ -2045,7 +2045,7 @@ An example of a successful response:
                     "value": "0"
                 },
                 "HighNode": "0000000000000000",
-                "LedgerEntryType": "CasinocoinState",
+                "LedgerEntryType": "StoxumState",
                 "LowLimit": {
                     "currency": "CHF",
                     "issuer": "cvYAfWj5gh67oV6fW32ZzP3Aw4Eubs59B",
@@ -2069,7 +2069,7 @@ An example of a successful response:
                     "value": "3"
                 },
                 "HighNode": "0000000000000000",
-                "LedgerEntryType": "CasinocoinState",
+                "LedgerEntryType": "StoxumState",
                 "LowLimit": {
                     "currency": "BTC",
                     "issuer": "cvYAfWj5gh67oV6fW32ZzP3Aw4Eubs59B",
@@ -2093,7 +2093,7 @@ An example of a successful response:
                     "value": "5000"
                 },
                 "HighNode": "0000000000000000",
-                "LedgerEntryType": "CasinocoinState",
+                "LedgerEntryType": "StoxumState",
                 "LowLimit": {
                     "currency": "USD",
                     "issuer": "cvYAfWj5gh67oV6fW32ZzP3Aw4Eubs59B",
@@ -2140,7 +2140,7 @@ The response follows the [standard format](#response-formatting), with a success
 
 
 ## account_tx
-[[Source]<br>](https://github.com/casinocoin/casinocoind/blob/master/src/casinocoin/rpc/handlers/AccountTx.cpp "Source")
+[[Source]<br>](https://github.com/stoxum/stoxumd/src/stoxum/rpc/handlers/AccountTx.cpp "Source")
 
 The `account_tx` method retrieves a list of transactions that involved the specified account.
 
@@ -2187,12 +2187,12 @@ An example of the request format:
 
 ```
 #Syntax account_tx account ledger_index_min ledger_index_max [offset] [limit] [binary] [count] [forward]
-casinocoind -- account_tx cDarPNJEpCnpBZSfmcquydockkePkjPGA2 -1 -1 2 5 1 0 1
+stoxumd -- account_tx cDarPNJEpCnpBZSfmcquydockkePkjPGA2 -1 -1 2 5 1 0 1
 ```
 
 <!-- MULTICODE_BLOCK_END -->
 
-[Try it! >](casinocoin-api-tool.html#account_tx)
+[Try it! >](stoxum-api-tool.html#account_tx)
 
 The request includes the following parameters:
 
@@ -2208,11 +2208,11 @@ The request includes the following parameters:
 | `limit`            | Integer                                    | _(Optional)_ Default varies. Limit the number of transactions to retrieve. The server is not required to honor this value. |
 | `marker`           | [(Not Specified)](#markers-and-pagination) | Value from a previous paginated response. Resume retrieving data where that response left off. This value is stable even if there is a change in the server's range of available ledgers. |
 
-[[Source]<br>](https://github.com/casinocoin/casinocoind/blob/master/src/casinocoin/rpc/handlers/AccountTxSwitch.cpp "Source")<br>
+[[Source]<br>](https://github.com/stoxum/stoxumd/src/stoxum/rpc/handlers/AccountTxSwitch.cpp "Source")<br>
 
 While each of these fields is marked as optional, **you must use at least one** in your request: `ledger_index`, `ledger_hash`, `ledger_index_min`, or `ledger_index_max`.
 
-**Note:** For WebSocket and JSON-RPC, there is also a deprecated legacy variation of the `account_tx` method. For that reason, CasinoCoin recommends *not using any of the following fields*: `offset`, `count`, `descending`, `ledger_max`, and `ledger_min`. If you use any of these deprecated fields, the method does not support pagination.
+**Note:** For WebSocket and JSON-RPC, there is also a deprecated legacy variation of the `account_tx` method. For that reason, Stoxum recommends *not using any of the following fields*: `offset`, `count`, `descending`, `ledger_max`, and `ledger_min`. If you use any of these deprecated fields, the method does not support pagination.
 
 ##### **Iterating over queried data**
 
@@ -2264,7 +2264,7 @@ An example of a successful response:
                         },
                         {
                             "CreatedNode": {
-                                "LedgerEntryType": "CasinocoinState",
+                                "LedgerEntryType": "StoxumState",
                                 "LedgerIndex": "718C6D58DD3BBAAAEBFE48B8FBE3C32C9F6F2EBC395233BA95D0057078EE07DB",
                                 "NewFields": {
                                     "Balance": {
@@ -2395,7 +2395,7 @@ An example of a successful response:
                         },
                         {
                             "CreatedNode": {
-                                "LedgerEntryType": "CasinocoinState",
+                                "LedgerEntryType": "StoxumState",
                                 "LedgerIndex": "EA4BF03B4700123CDFFB6EB09DC1D6E28D5CEB7F680FB00FC24BC1C3BB2DB959",
                                 "NewFields": {
                                     "Balance": {
@@ -2499,7 +2499,7 @@ An example of a successful response:
                         },
                         {
                             "CreatedNode": {
-                                "LedgerEntryType": "CasinocoinState",
+                                "LedgerEntryType": "StoxumState",
                                 "LedgerIndex": "718C6D58DD3BBAAAEBFE48B8FBE3C32C9F6F2EBC395233BA95D0057078EE07DB",
                                 "NewFields": {
                                     "Balance": {
@@ -2630,7 +2630,7 @@ An example of a successful response:
                         },
                         {
                             "CreatedNode": {
-                                "LedgerEntryType": "CasinocoinState",
+                                "LedgerEntryType": "StoxumState",
                                 "LedgerIndex": "EA4BF03B4700123CDFFB6EB09DC1D6E28D5CEB7F680FB00FC24BC1C3BB2DB959",
                                 "NewFields": {
                                     "Balance": {
@@ -2728,14 +2728,14 @@ Each transaction object includes the following fields, depending on whether it w
 * Any of the [universal error types](#universal-errors).
 * `invalidParams` - One or more fields are specified incorrectly, or one or more required fields are missing.
 * `actMalformed` - The [Address][] specified in the `account` field of the request is not formatted properly.
-* `actBitcoin` - The [Address][] specified in the `account` field is formatted like a Bitcoin address instead of a CSC Ledger address.
+* `actBitcoin` - The [Address][] specified in the `account` field is formatted like a Bitcoin address instead of a STM Ledger address.
 * `lgrIdxsInvalid` - The ledger specified by the `ledger_index_min` or `ledger_index_max` does not exist, or if it does exist but the server does not have it.
 
 
-## nocasinocoin_check
-[[Source]<br>](https://github.com/casinocoin/casinocoind/blob/4.0.1/src/casinocoin/rpc/handlers/NoCasinocoinCheck.cpp "Source")
+## nostoxumcoin_check
+[[Source]<br>](https://github.com/stoxum/stoxumd/src/stoxum/rpc/handlers/NoStoxumcoinCheck.cpp "Source")
 
-The `nocasinocoin_check` command provides a quick way to check the status of [the DefaultCasinoCoin field for an account and the NoCasinocoin flag of its trust lines](concept-nocasinocoin.html), compared with the recommended settings.
+The `nostoxumcoin_check` command provides a quick way to check the status of [the DefaultStoxum field for an account and the NoStoxumcoin flag of its trust lines](concept-nostoxumcoin.html), compared with the recommended settings.
 
 #### Request Format
 An example of the request format:
@@ -2747,7 +2747,7 @@ An example of the request format:
 ```
 {
     "id": 0,
-    "command": "nocasinocoin_check",
+    "command": "nostoxumcoin_check",
     "account": "cDarPNJEpCnpBZSfmcquydockkePkjPGA2",
     "role": "gateway",
     "ledger_index": "current",
@@ -2760,7 +2760,7 @@ An example of the request format:
 
 ```
 {
-    "method": "nocasinocoin_check",
+    "method": "nostoxumcoin_check",
     "params": [
         {
             "account": "cDarPNJEpCnpBZSfmcquydockkePkjPGA2",
@@ -2782,7 +2782,7 @@ The request includes the following parameters:
 | `Field`        | Type                       | Description                    |
 |:---------------|:---------------------------|:-------------------------------|
 | `account`      | String                     | A unique identifier for the account, most commonly the account's address. |
-| `role`         | String                     | Whether the address refers to a `gateway` or `user`. Recommendations depend on the role of the account. Issuers must have DefaultCasinocoin enabled and must disable NoCasinocoin on all trust lines. Users should have DefaultCasinocoin disabled, and should enable NoCasinocoin on all trust lines. |
+| `role`         | String                     | Whether the address refers to a `gateway` or `user`. Recommendations depend on the role of the account. Issuers must have DefaultStoxum enabled and must disable NoStoxumcoin on all trust lines. Users should have DefaultStoxum disabled, and should enable NoStoxumcoin on all trust lines. |
 | `transactions` | Boolean                    | _(Optional)_ If `true`, include an array of suggested [transactions](reference-transaction-format.html), as JSON objects, that you can sign and submit to fix the problems. Defaults to false. |
 | `limit`        | Unsigned Integer           | _(Optional)_ The maximum number of trust line problems to include in the results. Defaults to 300. |
 | `ledger_hash`  | String                     | _(Optional)_ A 20-byte hex string for the ledger version to use. (See [Specifying a Ledger](#specifying-ledgers)) |
@@ -2804,9 +2804,9 @@ An example of a successful response:
   "result": {
     "ledger_current_index": 14342939,
     "problems": [
-      "You should immediately set your default casinocoin flag",
-      "You should clear the no casinocoin flag on your XAU line to c3vi7mWxru9rJCxETCyA1CHvzL96eZWx5z",
-      "You should clear the no casinocoin flag on your USD line to cMwjYedjc7qqtKYVLiAccJSmCwih4LnE2q"
+      "You should immediately set your default stoxum flag",
+      "You should clear the no stoxum flag on your XAU line to c3vi7mWxru9rJCxETCyA1CHvzL96eZWx5z",
+      "You should clear the no stoxum flag on your USD line to cMwjYedjc7qqtKYVLiAccJSmCwih4LnE2q"
     ],
     "transactions": [
       {
@@ -2854,9 +2854,9 @@ An example of a successful response:
     "result": {
         "ledger_current_index": 14380381,
         "problems": [
-            "You should immediately set your default casinocoin flag",
-            "You should clear the no casinocoin flag on your XAU line to c3vi7mWxru9rJCxETCyA1CHvzL96eZWx5z",
-            "You should clear the no casinocoin flag on your USD line to cMwjYedjc7qqtKYVLiAccJSmCwih4LnE2q",
+            "You should immediately set your default stoxum flag",
+            "You should clear the no stoxum flag on your XAU line to c3vi7mWxru9rJCxETCyA1CHvzL96eZWx5z",
+            "You should clear the no stoxum flag on your USD line to cMwjYedjc7qqtKYVLiAccJSmCwih4LnE2q",
         ],
         "status": "success",
         "transactions": [
@@ -2904,7 +2904,7 @@ The response follows the [standard format](#response-formatting), with a success
 | `Field`                | Type   | Description                                |
 |:-----------------------|:-------|:-------------------------------------------|
 | `ledger_current_index` | Number | The sequence number of the ledger used to calculate these results. |
-| `problems`             | Array  | Array of strings with human-readable descriptions of the problems. This includes up to one entry if the account's DefaultCasinocoin setting is not as recommended, plus up to `limit` entries for trust lines whose NoCasinocoin setting is not as recommended. |
+| `problems`             | Array  | Array of strings with human-readable descriptions of the problems. This includes up to one entry if the account's DefaultStoxum setting is not as recommended, plus up to `limit` entries for trust lines whose NoStoxumcoin setting is not as recommended. |
 | `transactions`         | Array  | (May be omitted) If the request specified `transactions` as `true`, this is an array of JSON objects, each of which is the JSON form of a [transaction](reference-transaction-format.html) that should fix one of the described problems. The length of this array is the same as the `problems` array, and each entry is intended to fix the problem described at the same index into that array. |
 
 #### Possible Errors
@@ -2916,7 +2916,7 @@ The response follows the [standard format](#response-formatting), with a success
 
 
 ## gateway_balances
-[[Source]<br>](https://github.com/casinocoin/casinocoind/blob/4.0.1/src/casinocoin/rpc/handlers/GatewayBalances.cpp "Source")
+[[Source]<br>](https://github.com/stoxum/stoxumd/src/stoxum/rpc/handlers/GatewayBalances.cpp "Source")
 
 The `gateway_balances` command calculates the total balances issued by a given account, optionally excluding amounts held by [operational addresses](concept-issuing-and-operational-addresses.html).
 
@@ -3136,11 +3136,11 @@ The response follows the [standard format](#response-formatting), with a success
 
 
 ## wallet_propose
-[[Source]<br>](https://github.com/casinocoin/casinocoind/blob/master/src/casinocoin/rpc/handlers/WalletPropose.cpp "Source")
+[[Source]<br>](https://github.com/stoxum/stoxumd/src/stoxum/rpc/handlers/WalletPropose.cpp "Source")
 
-Use the `wallet_propose` method to generate a key pair and CSC Ledger address. This command only generates keys, and does not affect the CSC Ledger itself in any way. To become a funded address stored in the ledger, the address must [receive a Payment transaction](reference-transaction-format.html#creating-accounts) that provides enough CSC to meet the [reserve requirement](concept-reserves.html).
+Use the `wallet_propose` method to generate a key pair and STM Ledger address. This command only generates keys, and does not affect the STM Ledger itself in any way. To become a funded address stored in the ledger, the address must [receive a Payment transaction](reference-transaction-format.html#creating-accounts) that provides enough STM to meet the [reserve requirement](concept-reserves.html).
 
-*The `wallet_propose` request is an [admin command](#connecting-to-casinocoind) that cannot be run by unprivileged users!* (This command is restricted to protect against people sniffing network traffic for account secrets, since admin commands are not usually transmitted over the outside network.)
+*The `wallet_propose` request is an [admin command](#connecting-to-stoxumd) that cannot be run by unprivileged users!* (This command is restricted to protect against people sniffing network traffic for account secrets, since admin commands are not usually transmitted over the outside network.)
 
 #### Request Format
 
@@ -3198,7 +3198,7 @@ An example of the request format:
 
 ```
 #Syntax: wallet_propose [passphrase]
-casinocoind wallet_propose masterpassphrase
+stoxumd wallet_propose masterpassphrase
 ```
 
 <!-- MULTICODE_BLOCK_END -->
@@ -3212,7 +3212,7 @@ The request can contain the following parameters:
 | `seed`       | String | _(Optional)_ Generate the key pair and address from this [base58][]-encoded seed value. Cannot be used with `passphrase` or `seed_hex`. |
 | `seed_hex`   | String | _(Optional)_ Generate the key pair and address from this seed value in [hexadecimal][] format. Cannot be used with `passphrase` or `seed`. |
 
-You must provide **at most one** of the following fields: `passphrase`, `seed`, or `seed_hex`. If you omit all three, `casinocoind` uses a random seed.
+You must provide **at most one** of the following fields: `passphrase`, `seed`, or `seed_hex`. If you omit all three, `stoxumd` uses a random seed.
 
 **Note:** [Ed25519](https://ed25519.cr.yp.to/) support is experimental. The commandline version of this command cannot generate Ed25519 keys.
 
@@ -3223,7 +3223,7 @@ For most cases, you should use a seed value generated from a strong source of ra
 Cases where you would specify a known seed include:
 
 * Re-calculating your address when you only know the seed associated with that address
-* Testing `casinocoind` functionality
+* Testing `stoxumd` functionality
 
 If you do specify a seed, you can specify it in any of the following formats:
 
@@ -3281,7 +3281,7 @@ An example of a successful response:
 *Commandline*
 
 ```
-Loading: "/etc/casinocoind.cfg"
+Loading: "/etc/stoxumd.cfg"
 Connecting to 127.0.0.1:5005
 {
    "result" : {
@@ -3303,7 +3303,7 @@ The response follows the [standard format](#response-formatting), with a success
 
 | `Field`           | Type   | Description                                     |
 |:------------------|:-------|:------------------------------------------------|
-| `master_seed`     | String | The master seed from which all other information about this account is derived, in CasinoCoin's [base58][] encoded string format. This is the private key of the key pair. |
+| `master_seed`     | String | The master seed from which all other information about this account is derived, in Stoxum's [base58][] encoded string format. This is the private key of the key pair. |
 | `master_seed_hex` | String | The master seed, in hex format.                 |
 | `master_key`      | String | The master seed, in [RFC 1751](http://tools.ietf.org/html/rfc1751) format. |
 | `account_id`      | String | The [Address][] of the account.                 |
@@ -3317,16 +3317,16 @@ The key generated by this method can also be used as a regular key for an accoun
 
 * Any of the [universal error types](#universal-errors).
 * `invalidParams` - One or more fields are specified incorrectly.
-* `badSeed` - The request specified a disallowed seed value (in the `passphrase`, `seed`, or `seed_hex` fields), such as an empty string, or a string resembling a CSC Ledger address.
+* `badSeed` - The request specified a disallowed seed value (in the `passphrase`, `seed`, or `seed_hex` fields), such as an empty string, or a string resembling a STM Ledger address.
 
 
 
 # Ledger Information
 
-Each `casinocoind` server keeps a complete copy of the CSC Ledger's current state, which contains all the accounts, transactions, offers, and other data in the network in an optimized tree format. As transactions and offers are proposed, each server incorporates them into its current copy of the ledger, closes it periodically, and (if configured) participates in advancing the globally-validated version. After the network reaches consensus, that ledger version is validated and becomes permanently immutable. Any transactions that were not included in one ledger version become candidates to be included in the next validated version.
+Each `stoxumd` server keeps a complete copy of the STM Ledger's current state, which contains all the accounts, transactions, offers, and other data in the network in an optimized tree format. As transactions and offers are proposed, each server incorporates them into its current copy of the ledger, closes it periodically, and (if configured) participates in advancing the globally-validated version. After the network reaches consensus, that ledger version is validated and becomes permanently immutable. Any transactions that were not included in one ledger version become candidates to be included in the next validated version.
 
 ## ledger
-[[Source]<br>](https://github.com/casinocoin/casinocoind/blob/master/src/casinocoin/rpc/handlers/LedgerHandler.cpp "Source")
+[[Source]<br>](https://github.com/stoxum/stoxumd/src/stoxum/rpc/handlers/LedgerHandler.cpp "Source")
 
 Retrieve information about the public ledger.
 
@@ -3374,12 +3374,12 @@ An example of the request format:
 #Syntax: ledger ledger_index|ledger_hash [full|tx]
 # "full" is equivalent to "full": true
 # "tx" is equivalent to "transactions": true
-casinocoind ledger current
+stoxumd ledger current
 ```
 
 <!-- MULTICODE_BLOCK_END -->
 
-[Try it! >](casinocoin-api-tool.html#ledger)
+[Try it! >](stoxum-api-tool.html#ledger)
 
 The request can contain the following parameters:
 
@@ -3477,14 +3477,14 @@ The response follows the [standard format](#response-formatting), with a success
 | `ledger`                       | Object  | The complete header data of this ledger. |
 | `ledger.account_hash`          | String  | Hash of all account state information in this ledger, as hex |
 | `ledger.accounts`              | Array   | (Omitted unless requested) All the [account-state information](reference-ledger-format.html) in this ledger. |
-| `ledger.close_time`            | Integer | The time this ledger was closed, in seconds since the [CasinoCoin Epoch](#specifying-time) |
+| `ledger.close_time`            | Integer | The time this ledger was closed, in seconds since the [Stoxum Epoch](#specifying-time) |
 | `ledger.close_time_human`      | String  | The time this ledger was closed, in human-readable format |
 | `ledger.close_time_resolution` | Integer | Ledger close times are rounded to within this many seconds. |
 | `ledger.closed`                | Boolean | Whether or not this ledger has been closed |
 | `ledger.ledger_hash`           | String  | Unique identifying hash of the entire ledger. |
 | `ledger.ledger_index`          | String  | The [Ledger Index][] of this ledger, as a quoted integer |
 | `ledger.parent_hash`           | String  | Unique identifying hash of the ledger that came immediately before this one. |
-| `ledger.total_coins`           | String  | Total number of CSC drops in the network, as a quoted integer. (This decreases as transaction costs destroy CSC.) |
+| `ledger.total_coins`           | String  | Total number of STM drops in the network, as a quoted integer. (This decreases as transaction costs destroy STM.) |
 | `ledger.transaction_hash`      | String  | Hash of the transaction information included in this ledger, as hex |
 | `ledger.transactions`          | Array   | (Omitted unless requested) Transactions applied in this ledger version. By default, members are the transactions' identifying [Hash][] strings. If the request specified `expand` as true, members are full representations of the transactions instead, in either JSON or binary depending on whether the request specified `binary` as true. |
 | `ledger_hash`                  | String  | Unique identifying hash of the entire ledger. |
@@ -3503,9 +3503,9 @@ Each member of the `queue_data` array represents one transaction in the queue. S
 | `preflight_result`  | String           | The tentative result from preliminary transaction checking. This is always `tesSUCCESS`. |
 | `last_result`       | String           | _(May be omitted)_ If this transaction was left in the queue after getting a [retriable (`ter`) result](reference-transaction-format.html#result-categories), this is the exact `ter` result code it got. |
 | `auth_change`       | Boolean          | _(May be omitted)_ Whether this transaction changes this address's [ways of authorizing transactions](reference-transaction-format.html#authorizing-transactions). |
-| `fee`               | String           | _(May be omitted)_ The [Transaction Cost](concept-transaction-cost.html) of this transaction, in [drops of CSC](#specifying-currency-amounts). |
+| `fee`               | String           | _(May be omitted)_ The [Transaction Cost](concept-transaction-cost.html) of this transaction, in [drops of STM](#specifying-currency-amounts). |
 | `fee_level`         | String           | _(May be omitted)_ The transaction cost of this transaction, relative to the minimum cost for this type of transaction, in [fee levels][]. |
-| `max_spend_drops`   | String           | _(May be omitted)_ The maximum amount of CSC, [in drops](#specifying-currency-amounts), this transaction could potentially send or destroy. |
+| `max_spend_drops`   | String           | _(May be omitted)_ The maximum amount of STM, [in drops](#specifying-currency-amounts), this transaction could potentially send or destroy. |
 
 If the request specified `"owner_funds": true` and expanded transactions, the response has a field `owner_funds` in the `metaData` object of each [OfferCreate-type transaction](reference-transaction-format.html#offercreate). The purpose of this field is to make it easier to track the [funding status of offers](reference-transaction-format.html#lifecycle-of-an-offer) with each new validated ledger. This field is defined slightly differently than the version of this field in [Order Book subscription streams](#order-book-streams):
 
@@ -3522,7 +3522,7 @@ If the request specified `"owner_funds": true` and expanded transactions, the re
 
 
 ## ledger_closed
-[[Source]<br>](https://github.com/casinocoin/casinocoind/blob/master/src/casinocoin/rpc/handlers/LedgerClosed.cpp "Source")
+[[Source]<br>](https://github.com/stoxum/stoxumd/src/stoxum/rpc/handlers/LedgerClosed.cpp "Source")
 
 The `ledger_closed` method returns the unique identifiers of the most recently closed ledger. (This ledger is not necessarily validated and immutable yet.)
 
@@ -3555,12 +3555,12 @@ An example of the request format:
 
 ```
 #Syntax: ledger_closed
-casinocoind ledger_closed
+stoxumd ledger_closed
 ```
 
 <!-- MULTICODE_BLOCK_END -->
 
-[Try it! >](casinocoin-api-tool.html#ledger_closed)
+[Try it! >](stoxum-api-tool.html#ledger_closed)
 
 This method accepts no parameters.
 
@@ -3611,7 +3611,7 @@ The response follows the [standard format](#response-formatting), with a success
 
 
 ## ledger_current
-[[Source]<br>](https://github.com/casinocoin/casinocoind/blob/master/src/casinocoin/rpc/handlers/LedgerCurrent.cpp "Source")
+[[Source]<br>](https://github.com/stoxum/stoxumd/src/stoxum/rpc/handlers/LedgerCurrent.cpp "Source")
 
 The `ledger_current` method returns the unique identifiers of the current in-progress ledger. This command is mostly useful for testing, because the ledger returned is still in flux.
 
@@ -3645,12 +3645,12 @@ An example of the request format:
 
 ```
 #Syntax: ledger_current
-casinocoind ledger_current
+stoxumd ledger_current
 ```
 
 <!-- MULTICODE_BLOCK_END -->
 
-[Try it! >](casinocoin-api-tool.html#ledger_current)
+[Try it! >](stoxum-api-tool.html#ledger_current)
 
 The request contains no parameters.
 
@@ -3701,7 +3701,7 @@ A `ledger_hash` field is not provided, because the hash of the current ledger is
 
 
 ## ledger_data
-[[Source]<br>](https://github.com/casinocoin/casinocoind/blob/master/src/casinocoin/rpc/handlers/LedgerData.cpp "Source")
+[[Source]<br>](https://github.com/stoxum/stoxumd/src/stoxum/rpc/handlers/LedgerData.cpp "Source")
 
 The `ledger_data` method retrieves contents of the specified ledger. You can iterate through several calls to retrieve the entire contents of a single ledger version.
 
@@ -3878,7 +3878,7 @@ An example of a successful response:
                     "value": "10"
                 },
                 "HighNode": "0000000000000000",
-                "LedgerEntryType": "CasinocoinState",
+                "LedgerEntryType": "StoxumState",
                 "LowLimit": {
                     "currency": "BTC",
                     "issuer": "cvYAfWj5gh67oV6fW32ZzP3Aw4Eubs59B",
@@ -3960,9 +3960,9 @@ The format of each object in the `state` array depends on whether `binary` was s
 
 
 ## ledger_entry
-[[Source]<br>](https://github.com/casinocoin/casinocoind/blob/master/src/casinocoin/rpc/handlers/LedgerEntry.cpp "Source")
+[[Source]<br>](https://github.com/stoxum/stoxumd/src/stoxum/rpc/handlers/LedgerEntry.cpp "Source")
 
-The `ledger_entry` method returns a single ledger object from the CSC Ledger in its raw format. See [ledger format][] for information on the different types of objects you can retrieve.
+The `ledger_entry` method returns a single ledger object from the STM Ledger in its raw format. See [ledger format][] for information on the different types of objects you can retrieve.
 
 **Note:** There is no commandline version of this method. You can use the [`json` command](#json) to access this method from the commandline instead.
 
@@ -4001,7 +4001,7 @@ An example of the request format:
 
 <!-- MULTICODE_BLOCK_END -->
 
-[Try it! >](casinocoin-api-tool.html#ledger_entry)
+[Try it! >](stoxum-api-tool.html#ledger_entry)
 
 This method can retrieve several different types of data. You can select which type of item to retrieve by passing the appropriate parameters. Specifically, you should provide exactly one of the following fields:
 
@@ -4009,7 +4009,7 @@ This method can retrieve several different types of data. You can select which t
 2. `account_root` - Retrieve an [AccountRoot object](reference-ledger-format.html#accountroot). This is roughly equivalent to the [account_info](#account-info) command.
 3. `directory` - Retrieve a [DirectoryNode](reference-ledger-format.html#directorynode), which contains a list of other ledger objects
 4. `offer` - Retrieve an [Offer object](reference-ledger-format.html#offer), which defines an offer to exchange currency
-5. `casinocoin_state` - Retrieve a [CasinocoinState object](reference-ledger-format.html#casinocoinstate), which tracks a (non-CSC) currency balance between two accounts.
+5. `stoxum_state` - Retrieve a [StoxumState object](reference-ledger-format.html#stoxumstate), which tracks a (non-STM) currency balance between two accounts.
 
 If you specify more than one of the above items, the server retrieves only of them; it is undefined which it chooses.
 
@@ -4026,9 +4026,9 @@ The full list of parameters recognized by this method is as follows:
 | `offer`                 | Object or String           | _(Optional)_ Specify an [Offer object](reference-ledger-format.html#offer) to retrieve. If a string, interpret as the [unique index](reference-ledger-format.html#tree-format) to the Offer. If an object, requires the sub-fields `account` and `seq` to uniquely identify the offer. |
 | `offer.account`         | String - [Address][]       | (Required if `offer` specified) The account that placed the offer. |
 | `offer.seq`             | Unsigned Integer           | (Required if `offer` specified) The sequence number of the transaction that created the Offer object. |
-| `casinocoin_state`          | Object                     | _(Optional)_ Object specifying the CasinocoinState (trust line) object to retrieve. The `accounts` and `currency` sub-fields are required to uniquely specify the CasinocoinState entry to retrieve. |
-| `casinocoin_state.accounts` | Array                      | (Required if `casinocoin_state` specified) 2-length array of account [Address][]es, defining the two accounts linked by this [CasinocoinState object](reference-ledger-format.html#casinocoinstate) |
-| `casinocoin_state.currency` | String                     | (Required if `casinocoin_state` specified) [Currency Code][] of the [CasinocoinState object](reference-ledger-format.html#casinocoinstate) to retrieve. |
+| `stoxum_state`          | Object                     | _(Optional)_ Object specifying the StoxumState (trust line) object to retrieve. The `accounts` and `currency` sub-fields are required to uniquely specify the StoxumState entry to retrieve. |
+| `stoxum_state.accounts` | Array                      | (Required if `stoxum_state` specified) 2-length array of account [Address][]es, defining the two accounts linked by this [StoxumState object](reference-ledger-format.html#stoxumstate) |
+| `stoxum_state.currency` | String                     | (Required if `stoxum_state` specified) [Currency Code][] of the [StoxumState object](reference-ledger-format.html#stoxumstate) to retrieve. |
 | `binary`                | Boolean                    | _(Optional)_ If true, return the requested ledger object's contents as a hex string. Otherwise, return data in JSON format. The default is `true` if searching by `index` and `false` otherwise. |
 | `ledger_hash`           | String                     | _(Optional)_ A 20-byte hex string for the ledger version to use. (See [Specifying a Ledger](#specifying-ledgers)) |
 | `ledger_index`          | String or Unsigned Integer | _(Optional)_ The sequence number of the ledger to use, or a shortcut string to choose a ledger automatically. (See [Specifying a Ledger](#specifying-ledgers)) |
@@ -4109,11 +4109,11 @@ The response follows the [standard format](#response-formatting), with a success
 
 
 ## ledger_request
-[[Source]<br>](https://github.com/casinocoin/casinocoind/blob/4.0.1/src/casinocoin/rpc/handlers/LedgerRequest.cpp "Source")
+[[Source]<br>](https://github.com/stoxum/stoxum/src/stoxum/rpc/handlers/LedgerRequest.cpp "Source")
 
 The `ledger_request` command tells server to fetch a specific ledger version from its connected peers. This only works if one of the server's immediately-connected peers has that ledger. You may need to run the command several times to completely fetch a ledger.
 
-*The `ledger_request` request is an [admin command](#connecting-to-casinocoind) that cannot be run by unprivileged users!*
+*The `ledger_request` request is an [admin command](#connecting-to-stoxumd) that cannot be run by unprivileged users!*
 
 #### Request Format
 An example of the request format:
@@ -4133,7 +4133,7 @@ An example of the request format:
 *Commandline*
 
 ```
-casinocoind ledger_request 13800000
+stoxumd ledger_request 13800000
 ```
 
 <!-- MULTICODE_BLOCK_END -->
@@ -4149,9 +4149,9 @@ You must provide either `ledger_index` or `ledger_hash` but not both.
 
 #### Response Format
 
-The response follows the [standard format](#response-formatting). However, the request returns a failure response if it does not have the specified ledger _even if it successfully instructed the `casinocoind` server to start retrieving the ledger_.
+The response follows the [standard format](#response-formatting). However, the request returns a failure response if it does not have the specified ledger _even if it successfully instructed the `stoxumd` server to start retrieving the ledger_.
 
-**Note:** To retrieve a ledger, the casinocoind server must have a direct peer with that ledger in its history. If none of the peers have the requested ledger, you can use the [`connect` command](#connect) or the `fixed_ips` section of the config file to add CasinoCoin's full-history server at `ws01.casinocoin.org` and then make the `ledger_request` request again.
+**Note:** To retrieve a ledger, the stoxumd server must have a direct peer with that ledger in its history. If none of the peers have the requested ledger, you can use the [`connect` command](#connect) or the `fixed_ips` section of the config file to add Stoxum's full-history server at `ws01.stoxum.org` and then make the `ledger_request` request again.
 
 A failure response indicates the status of fetching the ledger. A successful response contains the information for the ledger in a similar format to the [`ledger` command](#ledger).
 
@@ -4160,7 +4160,7 @@ A failure response indicates the status of fetching the ledger. A successful res
 *Commandline (failure)*
 
 ```
-Loading: "/etc/casinocoind.cfg"
+Loading: "/etc/stoxumd.cfg"
 Connecting to 127.0.0.1:5005
 {
    "result" : {
@@ -4185,7 +4185,7 @@ Connecting to 127.0.0.1:5005
 *Commandline (in-progress)*
 
 ```
-Loading: "/etc/casinocoind.cfg"
+Loading: "/etc/stoxumd.cfg"
 Connecting to 127.0.0.1:5005
 {
    "result" : {
@@ -4231,7 +4231,7 @@ Connecting to 127.0.0.1:5005
 *Commandline (success)*
 
 ```
-Loading: "/etc/casinocoind.cfg"
+Loading: "/etc/stoxumd.cfg"
 Connecting to 127.0.0.1:5005
 {
    "result" : {
@@ -4268,7 +4268,7 @@ The three possible response formats are as follows:
 
 #### Ledger Request Object
 
-When the server is in the progress of fetching a ledger, but has not yet finished, the `casinocoind` server returns a ledger request object indicating its progress towards fetching the ledger. This object has the following fields:
+When the server is in the progress of fetching a ledger, but has not yet finished, the `stoxumd` server returns a ledger request object indicating its progress towards fetching the ledger. This object has the following fields:
 
 | `Field`                     | Type             | Description                 |
 |:----------------------------|:-----------------|:----------------------------|
@@ -4289,11 +4289,11 @@ When the server is in the progress of fetching a ledger, but has not yet finishe
 
 
 ## ledger_accept
-[[Source]<br>](https://github.com/casinocoin/casinocoind/blob/4.0.1/src/casinocoin/rpc/handlers/LedgerAccept.cpp "Source")
+[[Source]<br>](https://github.com/stoxum/stoxumd/src/stoxum/rpc/handlers/LedgerAccept.cpp "Source")
 
-The `ledger_accept` method forces the server to close the current-working ledger and move to the next ledger number. This method is intended for testing purposes only, and is only available when the `casinocoind` server is running stand-alone mode.
+The `ledger_accept` method forces the server to close the current-working ledger and move to the next ledger number. This method is intended for testing purposes only, and is only available when the `stoxumd` server is running stand-alone mode.
 
-*The `ledger_accept` method is an [admin command](#connecting-to-casinocoind) that cannot be run by unprivileged users!*
+*The `ledger_accept` method is an [admin command](#connecting-to-stoxumd) that cannot be run by unprivileged users!*
 
 #### Request Format
 
@@ -4314,7 +4314,7 @@ An example of the request format:
 
 ```
 #Syntax: ledger_accept
-casinocoind ledger_accept
+stoxumd ledger_accept
 ```
 
 <!-- MULTICODE_BLOCK_END -->
@@ -4341,23 +4341,23 @@ The response follows the [standard format](#response-formatting), with a success
 |:-----------------------|:-----------------|:---------------------------------|
 | `ledger_current_index` | Unsigned Integer | Sequence number of the newly created 'current' ledger |
 
-**Note:** When you close a ledger, `casinocoind` determines the canonical order of transactions in that ledger and replays them. This can change the outcome of transactions that were provisionally applied to the current ledger.
+**Note:** When you close a ledger, `stoxumd` determines the canonical order of transactions in that ledger and replays them. This can change the outcome of transactions that were provisionally applied to the current ledger.
 
 #### Possible Errors
 
 * Any of the [universal error types](#universal-errors).
-* `notStandAlone` - If the `casinocoind` server is not currently running in stand-alone mode.
+* `notStandAlone` - If the `stoxumd` server is not currently running in stand-alone mode.
 
 
 
 # Transactions
 
-Transactions are the only thing that can modify the shared state of the CSC Ledger. All business on the CSC Ledger takes the form of transactions, which include not only payments, but also currency-exchange offers, account settings, and changes to the properties of the ledger itself (like adopting new features).
+Transactions are the only thing that can modify the shared state of the STM Ledger. All business on the STM Ledger takes the form of transactions, which include not only payments, but also currency-exchange offers, account settings, and changes to the properties of the ledger itself (like adopting new features).
 
-There are several sources of complication in transactions. Unlike traditional banking, where a trusted third party (the bank, or the [ACH](http://en.wikipedia.org/wiki/Automated_Clearing_House)) verifies the participants' identities and ensures their balances are adjusted accurately, CasinoCoin uses cryptography and decentralized computing power to do the same thing. Sending CSC requires no third party aside from the distributed network itself. However, the CSC Ledger also supports issuing balances in any currency and trading them in a decentralized exchange. This brings far more power, but it also means that the system must account for [counterparty risk](http://en.wikipedia.org/wiki/Counterparty_risk#Counterparty_risk), currency conversions, and other issues. The CSC Ledger must be robust to keep track of which transactions have been completely validated, even when subject to hardware failures, attacks, or natural disasters.
+There are several sources of complication in transactions. Unlike traditional banking, where a trusted third party (the bank, or the [ACH](http://en.wikipedia.org/wiki/Automated_Clearing_House)) verifies the participants' identities and ensures their balances are adjusted accurately, Stoxum uses cryptography and decentralized computing power to do the same thing. Sending STM requires no third party aside from the distributed network itself. However, the STM Ledger also supports issuing balances in any currency and trading them in a decentralized exchange. This brings far more power, but it also means that the system must account for [counterparty risk](http://en.wikipedia.org/wiki/Counterparty_risk#Counterparty_risk), currency conversions, and other issues. The STM Ledger must be robust to keep track of which transactions have been completely validated, even when subject to hardware failures, attacks, or natural disasters.
 
 ## tx
-[[Source]<br>](https://github.com/casinocoin/casinocoind/blob/master/src/casinocoin/rpc/handlers/Tx.cpp "Source")
+[[Source]<br>](https://github.com/stoxum/stoxumd/src/stoxum/rpc/handlers/Tx.cpp "Source")
 
 The `tx` method retrieves information on a single transaction.
 
@@ -4394,12 +4394,12 @@ An example of the request format:
 
 ```
 #Syntax: tx transaction [binary]
-casinocoind tx E08D6E9754025BA2534A78707605E0601F03ACE063687A0CA1BDDACFCD1698C7 false
+stoxumd tx E08D6E9754025BA2534A78707605E0601F03ACE063687A0CA1BDDACFCD1698C7 false
 ```
 
 <!-- MULTICODE_BLOCK_END -->
 
-[Try it! >](casinocoin-api-tool.html#tx)
+[Try it! >](stoxum-api-tool.html#tx)
 
 The request includes the following parameters:
 
@@ -4518,7 +4518,7 @@ An example of a successful response:
                             },
                             "LowNode": "0000000000000000"
                         },
-                        "LedgerEntryType": "CasinocoinState",
+                        "LedgerEntryType": "StoxumState",
                         "LedgerIndex": "EA4BF03B4700123CDFFB6EB09DC1D6E28D5CEB7F680FB00FC24BC1C3BB2DB959",
                         "PreviousFields": {
                             "Balance": {
@@ -4559,12 +4559,12 @@ The response follows the [standard format](#response-formatting), with a success
 
 * Any of the [universal error types](#universal-errors).
 * `invalidParams` - One or more fields are specified incorrectly, or one or more required fields are missing.
-* `txnNotFound` - Either the transaction does not exist, or it was part of an older ledger version that `casinocoind` does not have available.
+* `txnNotFound` - Either the transaction does not exist, or it was part of an older ledger version that `stoxum` does not have available.
 
 
 
 ## transaction_entry
-[[Source]<br>](https://github.com/casinocoin/casinocoind/blob/master/src/casinocoin/rpc/handlers/TransactionEntry.cpp "Source")
+[[Source]<br>](https://github.com/stoxum/stoxumd/src/stoxum/rpc/handlers/TransactionEntry.cpp "Source")
 
 The `transaction_entry` method retrieves information on a single transaction from a specific ledger version. (The [`tx`](#tx) command, by contrast, searches all ledgers for the specified transaction. We recommend using that method instead.)
 
@@ -4603,12 +4603,12 @@ An example of the request format:
 
 ```
 #Syntax: transaction_entry transaction_hash ledger_index|ledger_hash
-casinocoind transaction_entry E08D6E9754025BA2534A78707605E0601F03ACE063687A0CA1BDDACFCD1698C7 348734
+stoxumd transaction_entry E08D6E9754025BA2534A78707605E0601F03ACE063687A0CA1BDDACFCD1698C7 348734
 ```
 
 <!-- MULTICODE_BLOCK_END -->
 
-[Try it! >](casinocoin-api-tool.html#transaction_entry)
+[Try it! >](stoxum-api-tool.html#transaction_entry)
 
 The request includes the following parameters:
 
@@ -4676,7 +4676,7 @@ An example of a successful response:
                             },
                             "LowNode": "0000000000000000"
                         },
-                        "LedgerEntryType": "CasinocoinState",
+                        "LedgerEntryType": "StoxumState",
                         "LedgerIndex": "EA4BF03B4700123CDFFB6EB09DC1D6E28D5CEB7F680FB00FC24BC1C3BB2DB959",
                         "PreviousFields": {
                             "Balance": {
@@ -4781,11 +4781,11 @@ There are a couple possible reasons the server may fail to find the transaction:
 * `lgrNotFound` - The ledger specified by the `ledger_hash` or `ledger_index` does not exist, or it does exist but the server does not have it.
 * `transactionNotFound` - The transaction specified in the request could not be found in the specified ledger. (It might be in a different ledger version, or it might not be available at all.)
 
-<!-- I think ledgerNotFound ( https://github.com/casinocoin/casinocoind/blob/develop/src/casinocoin/rpc/handlers/TransactionEntry.cpp#L62 ) should not occur because lookupLedger would have errored out first. -->
+<!-- I think ledgerNotFound ( https://github.com/stoxum/stoxumd/blob/develop/src/stoxum/rpc/handlers/TransactionEntry.cpp#L62 ) should not occur because lookupLedger would have errored out first. -->
 
 
 ## tx_history
-[[Source]<br>](https://github.com/casinocoin/casinocoind/blob/master/src/casinocoin/rpc/handlers/TxHistory.cpp "Source")
+[[Source]<br>](https://github.com/stoxum/stoxumd/src/stoxum/rpc/handlers/TxHistory.cpp "Source")
 
 The `tx_history` method retrieves some of the most recent transactions made.
 
@@ -4823,12 +4823,12 @@ An example of the request format:
 
 ```
 #Syntax: tx_history [start]
-casinocoind tx_history 0
+stoxumd tx_history 0
 ```
 
 <!-- MULTICODE_BLOCK_END -->
 
-[Try it! >](casinocoin-api-tool.html#tx_history)
+[Try it! >](stoxum-api-tool.html#tx_history)
 
 The request includes the following parameters:
 
@@ -5108,7 +5108,7 @@ An example of a successful response:
               "type_hex": "0000000000000001"
             },
             {
-              "currency": "CSC",
+              "currency": "STM",
               "type": 16,
               "type_hex": "0000000000000010"
             },
@@ -5149,7 +5149,7 @@ An example of a successful response:
               "type_hex": "0000000000000001"
             },
             {
-              "currency": "CSC",
+              "currency": "STM",
               "type": 16,
               "type_hex": "0000000000000010"
             },
@@ -5177,7 +5177,7 @@ An example of a successful response:
               "type_hex": "0000000000000001"
             },
             {
-              "currency": "CSC",
+              "currency": "STM",
               "type": 16,
               "type_hex": "0000000000000010"
             },
@@ -5681,9 +5681,9 @@ The fields included in each transaction object vary slightly depending on the ty
 
 
 ## path_find
-[[Source]<br>](https://github.com/casinocoin/casinocoind/blob/master/src/casinocoin/rpc/handlers/PathFind.cpp "Source")
+[[Source]<br>](https://github.com/stoxum/stoxumd/src/stoxum/rpc/handlers/PathFind.cpp "Source")
 
-*WebSocket API only!* The `path_find` method searches for a [path](concept-paths.html) along which a transaction can possibly be made, and periodically sends updates when the path changes over time. For a simpler version that is supported by JSON-RPC, see [`casinocoin_path_find`](#casinocoin-path-find). For payments occurring strictly in CSC, it is not necessary to find a path, because CSC can be sent directly to any account.
+*WebSocket API only!* The `path_find` method searches for a [path](concept-paths.html) along which a transaction can possibly be made, and periodically sends updates when the path changes over time. For a simpler version that is supported by JSON-RPC, see [`stoxum_path_find`](#stoxum-path-find). For payments occurring strictly in STM, it is not necessary to find a path, because STM can be sent directly to any account.
 
 There are three different modes, or sub-commands, of the path_find command. Specify which one you want with the `subcommand` parameter:
 
@@ -5691,10 +5691,10 @@ There are three different modes, or sub-commands, of the path_find command. Spec
 * `close` - Stop sending pathfinding information
 * `status` - Get the information of the currently-open pathfinding request
 
-Although the `casinocoind` server tries to find the cheapest path or combination of paths for making a payment, it is not guaranteed that the paths returned by this method are, in fact, the best paths. Due to server load, pathfinding may not find the best results. Additionally, you should be careful with the pathfinding results from untrusted servers. A server could be modified to return less-than-optimal paths to earn money for its operators. If you do not have your own server that you can trust with pathfinding, you should compare the results of pathfinding from multiple servers run by different parties, to minimize the risk of a single server returning poor results. (**Note:** A server returning less-than-optimal results is not necessarily proof of malicious behavior; it could also be a symptom of heavy server load.)
+Although the `stoxum` server tries to find the cheapest path or combination of paths for making a payment, it is not guaranteed that the paths returned by this method are, in fact, the best paths. Due to server load, pathfinding may not find the best results. Additionally, you should be careful with the pathfinding results from untrusted servers. A server could be modified to return less-than-optimal paths to earn money for its operators. If you do not have your own server that you can trust with pathfinding, you should compare the results of pathfinding from multiple servers run by different parties, to minimize the risk of a single server returning poor results. (**Note:** A server returning less-than-optimal results is not necessarily proof of malicious behavior; it could also be a symptom of heavy server load.)
 
 ### path_find create
-[[Source]<br>](https://github.com/casinocoin/casinocoind/blob/master/src/casinocoin/rpc/handlers/PathFind.cpp#L38 "Source")
+[[Source]<br>](https://github.com/stoxum/stoxumd/src/stoxum/rpc/handlers/PathFind.cpp#L38 "Source")
 
 The `create` subcommand of `path_find` creates an ongoing request to find possible paths along which a payment transaction could be made from one specified account such that another account receives a desired amount of some currency. The initial response contains a suggested path between the two addresses that would result in the desired amount being received. After that, the server sends additional messages, with `"type": "path_find"`, with updates to the potential paths. The frequency of updates is left to the discretion of the server, but it usually means once every few seconds when there is a new ledger version.
 
@@ -5724,7 +5724,7 @@ An example of the request format:
 
 <!-- MULTICODE_BLOCK_END -->
 
-[Try it! >](casinocoin-api-tool.html#path_find)
+[Try it! >](stoxum-api-tool.html#path_find)
 
 The request includes the following parameters:
 
@@ -5733,7 +5733,7 @@ The request includes the following parameters:
 | `subcommand`          | String           | Use `"create"` to send the create subcommand |
 | `source_account`      | String           | Unique address of the account to find a path from. (In other words, the account that would be sending a payment.) |
 | `destination_account` | String           | Unique address of the account to find a path to. (In other words, the account that would receive a payment.) |
-| `destination_amount`  | String or Object | [Currency amount](#specifying-currency-amounts) that the destination account would receive in a transaction. **Special case:** You can specify `"-1"` (for CSC) or provide -1 as the contents of the `value` field (for non-CSC currencies). This requests a path to deliver as much as possible, while spending no more than the amount specified in `send_max` (if provided). |
+| `destination_amount`  | String or Object | [Currency amount](#specifying-currency-amounts) that the destination account would receive in a transaction. **Special case:** You can specify `"-1"` (for STM) or provide -1 as the contents of the `value` field (for non-STM currencies). This requests a path to deliver as much as possible, while spending no more than the amount specified in `send_max` (if provided). |
 | `send_max`            | String or Object | _(Optional)_ [Currency amount](#specifying-currency-amounts) that would be spent in the transaction. Not compatible with `source_currencies`. |
 | `paths`               | Array            | _(Optional)_ Array of arrays of objects, representing [payment paths](concept-paths.html) to check. You can use this to keep updated on changes to particular paths you already know about, or to check the overall cost to make a payment along a certain path. |
 
@@ -6124,7 +6124,7 @@ The initial response follows the [standard format](#response-formatting), with a
 | `destination_amount`  | String or Object | [Currency amount](#specifying-currency-amounts) that the destination would receive in a transaction |
 | `id`                  | (Various)        | (WebSocket only) The ID provided in the WebSocket request is included again at this level. |
 | `source_account`      | String           | Unique address that would send a transaction |
-| `full_reply`          | Boolean          | If `false`, this is the result of an incomplete search. A later reply may have a better path. If `true`, then this is the best path found. (It is still theoretically possible that a better path could exist, but `casinocoind` won't find it.) Until you close the pathfinding request, `casinocoind` continues to send updates each time a new ledger closes. |
+| `full_reply`          | Boolean          | If `false`, this is the result of an incomplete search. A later reply may have a better path. If `true`, then this is the best path found. (It is still theoretically possible that a better path could exist, but `stoxumd` won't find it.) Until you close the pathfinding request, `stoxumd` continues to send updates each time a new ledger closes. |
 
 Each element in the `alternatives` array is an object that represents a path from one possible source currency (held by the initiating account) to the destination account and currency. This object has the following fields:
 
@@ -6137,13 +6137,13 @@ Each element in the `alternatives` array is an object that represents a path fro
 
 * Any of the [universal error types](#universal-errors).
 * `invalidParams` - One or more fields are specified incorrectly, or one or more required fields are missing.
-* `noEvents` - You are using a protocol that does not support asynchronous callbacks, for example JSON-RPC. (See [casinocoin\_path\_find](#casinocoin-path-find) for a pathfinding method that _is_ compatible with JSON-RPC.)
+* `noEvents` - You are using a protocol that does not support asynchronous callbacks, for example JSON-RPC. (See [stoxum\_path\_find](#stoxum-path-find) for a pathfinding method that _is_ compatible with JSON-RPC.)
 
 #### Asynchronous Follow-ups
 
 In addition to the initial response, the server sends more messages in a similar format to update on the status of [payment paths](concept-paths.html) over time. These messages include the `id` of the original WebSocket request so you can tell which request prompted them, and the field `"type": "path_find"` at the top level to indicate that they are additional responses. The other fields are defined in the same way as the initial response.
 
-If the follow-up includes `"full_reply": true`, then this is the best path that casinocoind can find as of the current ledger.
+If the follow-up includes `"full_reply": true`, then this is the best path that stoxumd can find as of the current ledger.
 
 Here is an example of an asychronous follow-up from a path_find create request:
 
@@ -6171,7 +6171,7 @@ Here is an example of an asychronous follow-up from a path_find create request:
 <!-- MULTICODE_BLOCK_END -->
 
 ### path_find close
-[[Source]<br>](https://github.com/casinocoin/casinocoind/blob/master/src/casinocoin/rpc/handlers/PathFind.cpp#L46 "Source")
+[[Source]<br>](https://github.com/stoxum/stoxumd/src/stoxum/rpc/handlers/PathFind.cpp#L46 "Source")
 
 The `close` subcommand of `path_find` instructs the server to stop sending information about the current open pathfinding request.
 
@@ -6212,11 +6212,11 @@ If there was no outstanding pathfinding request, an error is returned instead.
 
 * Any of the [universal error types](#universal-errors).
 * `invalidParams` - If any fields are specified incorrectly, or any required fields are missing.
-* `noEvents` - If you tried to use this method on a protocol that does not support asynchronous callbacks, for example JSON-RPC. (See [casinocoin\_path\_find](#casinocoin-path-find) for a pathfinding method that _is_ compatible with JSON-RPC.)
+* `noEvents` - If you tried to use this method on a protocol that does not support asynchronous callbacks, for example JSON-RPC. (See [stoxum\_path\_find](#stoxum-path-find) for a pathfinding method that _is_ compatible with JSON-RPC.)
 * `noPathRequest` - You tried to close a pathfinding request when there is not an open one.
 
 ### path_find status
-[[Source]<br>](https://github.com/casinocoin/casinocoind/blob/master/src/casinocoin/rpc/handlers/PathFind.cpp#L57 "Source")
+[[Source]<br>](https://github.com/stoxum/stoxumd/src/stoxum/rpc/handlers/PathFind.cpp#L57 "Source")
 
 The `status` subcommand of `path_find` requests an immediate update about the client's currently-open pathfinding request.
 
@@ -6257,16 +6257,16 @@ If there was no outstanding pathfinding request, an error is returned instead.
 
 * Any of the [universal error types](#universal-errors).
 * `invalidParams` - One or more fields are specified incorrectly, or one or more required fields are missing.
-* `noEvents` - You are using a protocol that does not support asynchronous callbacks, for example JSON-RPC. (See [casinocoin\_path\_find](#casinocoin-path-find) for a pathfinding method that _is_ compatible with JSON-RPC.)
+* `noEvents` - You are using a protocol that does not support asynchronous callbacks, for example JSON-RPC. (See [stoxum\_path\_find](#stoxum-path-find) for a pathfinding method that _is_ compatible with JSON-RPC.)
 * `noPathRequest` - You tried to check the status of a pathfinding request when there is not an open one.
 
 
-## casinocoin_path_find
-[[Source]<br>](https://github.com/casinocoin/casinocoind/blob/master/src/casinocoin/rpc/handlers/CasinocoinPathFind.cpp "Source")
+## stoxum_path_find
+[[Source]<br>](https://github.com/stoxum/stoxumd/src/stoxum/rpc/handlers/StoxumcoinPathFind.cpp "Source")
 
-The `casinocoin_path_find` method is a simplified version of [`path_find`](#path-find) that provides a single response with a [payment path](concept-paths.html) you can use right away. It is available in both the WebSocket and JSON-RPC APIs. However, the results tend to become outdated as time passes. Instead of making multiple calls to stay updated, you should use [`path_find`](#path-find) instead where possible.
+The `stoxum_path_find` method is a simplified version of [`path_find`](#path-find) that provides a single response with a [payment path](concept-paths.html) you can use right away. It is available in both the WebSocket and JSON-RPC APIs. However, the results tend to become outdated as time passes. Instead of making multiple calls to stay updated, you should use [`path_find`](#path-find) instead where possible.
 
-Although the `casinocoind` server tries to find the cheapest path or combination of paths for making a payment, it is not guaranteed that the paths returned by this method are, in fact, the best paths.
+Although the `stoxumd` server tries to find the cheapest path or combination of paths for making a payment, it is not guaranteed that the paths returned by this method are, in fact, the best paths.
 
 **Caution:** Be careful with the pathfinding results from untrusted servers. A server could be modified to return less-than-optimal paths to earn money for its operators. A server may also return poor results when under heavy load. If you do not have your own server that you can trust with pathfinding, you should compare the results of pathfinding from multiple servers run by different parties, to minimize the risk of a single server returning poor results.
 
@@ -6280,11 +6280,11 @@ An example of the request format:
 ```
 {
     "id": 8,
-    "command": "casinocoin_path_find",
+    "command": "stoxum_path_find",
     "source_account": "cDarPNJEpCnpBZSfmcquydockkePkjPGA2",
     "source_currencies": [
         {
-            "currency": "CSC"
+            "currency": "STM"
         },
         {
             "currency": "USD"
@@ -6303,7 +6303,7 @@ An example of the request format:
 
 ```
 {
-    "method": "casinocoin_path_find",
+    "method": "stoxum_path_find",
     "params": [
         {
             "destination_account": "cDarPNJEpCnpBZSfmcquydockkePkjPGA2",
@@ -6315,7 +6315,7 @@ An example of the request format:
             "source_account": "cDarPNJEpCnpBZSfmcquydockkePkjPGA2",
             "source_currencies": [
                 {
-                    "currency": "CSC"
+                    "currency": "STM"
                 },
                 {
                     "currency": "USD"
@@ -6329,13 +6329,13 @@ An example of the request format:
 *Commandline*
 
 ```
-#Syntax casinocoin_path_find json ledger_index|ledger_hash
-casinocoind casinocoin_path_find '{"source_account": "cDarPNJEpCnpBZSfmcquydockkePkjPGA2", "source_currencies": [ { "currency": "CSC" }, { "currency": "USD" } ], "destination_account": "cDarPNJEpCnpBZSfmcquydockkePkjPGA2", "destination_amount": { "value": "0.001", "currency": "USD", "issuer": "cvYAfWj5gh67oV6fW32ZzP3Aw4Eubs59B" } }'
+#Syntax stoxum_path_find json ledger_index|ledger_hash
+stoxumd stoxum_path_find '{"source_account": "cDarPNJEpCnpBZSfmcquydockkePkjPGA2", "source_currencies": [ { "currency": "STM" }, { "currency": "USD" } ], "destination_account": "cDarPNJEpCnpBZSfmcquydockkePkjPGA2", "destination_amount": { "value": "0.001", "currency": "USD", "issuer": "cvYAfWj5gh67oV6fW32ZzP3Aw4Eubs59B" } }'
 ```
 
 <!-- MULTICODE_BLOCK_END -->
 
-[Try it! >](casinocoin-api-tool.html#casinocoin_path_find)
+[Try it! >](stoxum-api-tool.html#stoxum_path_find)
 
 The request includes the following parameters:
 
@@ -6343,7 +6343,7 @@ The request includes the following parameters:
 |:----------------------|:---------------------------|:------------------------|
 | `source_account`      | String                     | Unique address of the account that would send funds in a transaction |
 | `destination_account` | String                     | Unique address of the account that would receive funds in a transaction |
-| `destination_amount`  | String or Object           | [Currency amount](#specifying-currency-amounts) that the destination account would receive in a transaction. **Special case:** You can specify `"-1"` (for CSC) or provide -1 as the contents of the `value` field (for non-CSC currencies). This requests a path to deliver as much as possible, while spending no more than the amount specified in `send_max` (if provided). |
+| `destination_amount`  | String or Object           | [Currency amount](#specifying-currency-amounts) that the destination account would receive in a transaction. **Special case:** You can specify `"-1"` (for STM) or provide -1 as the contents of the `value` field (for non-STM currencies). This requests a path to deliver as much as possible, while spending no more than the amount specified in `send_max` (if provided). |
 | `send_max`            | String or Object           | _(Optional)_ [Currency amount](#specifying-currency-amounts) that would be spent in the transaction. Cannot be used with `source_currencies`. |
 | `source_currencies`   | Array                      | _(Optional)_ Array of currencies that the source account might want to spend. Each entry in the array should be a JSON object with a mandatory `currency` field and optional `issuer` field, like how [currency amounts](#specifying-currency-amounts) are specified. Cannot contain more than **18** source currencies. By default, uses all source currencies available up to a maximum of **88** different currency/issuer pairs. |
 | `ledger_hash`         | String                     | _(Optional)_ A 20-byte hex string for the ledger version to use. (See [Specifying a Ledger](#specifying-ledgers)) |
@@ -6458,7 +6458,7 @@ An example of a successful response:
             "MXN",
             "BTC",
             "USD",
-            "CSC"
+            "STM"
         ]
     }
 }
@@ -6565,7 +6565,7 @@ An example of a successful response:
             "EUR",
             "015841551A748AD2C1F76FF6ECB0CCCD00000000",
             "MXN",
-            "CSC"
+            "STM"
         ],
         "status": "success"
     }
@@ -6607,11 +6607,11 @@ The following fields are deprecated, and may be omitted: `paths_canonical`, and 
 
 
 ## sign
-[[Source]<br>](https://github.com/casinocoin/casinocoind/blob/master/src/casinocoin/rpc/handlers/SignHandler.cpp "Source")
+[[Source]<br>](https://github.com/stoxum/stoxumd/src/stoxum/rpc/handlers/SignHandler.cpp "Source")
 
 The `sign` method takes a [transaction in JSON format](reference-transaction-format.html) and a secret key, and returns a signed binary representation of the transaction. The result is always different, even when you provide the same transaction JSON and secret key. To contribute one signature to a multi-signed transaction, use the [`sign_for` command](#sign-for) instead.
 
-**Caution:** Unless you run the `casinocoind` server yourself, you should do [local signing with CasinocoinAPI](reference-casinocoinapi.html#sign) instead of using this command. An untrustworthy server could change the transaction before signing it, or use your secret key to sign additional arbitrary transactions as if they came from you.
+**Caution:** Unless you run the `stoxumd` server yourself, you should do [local signing with StoxumAPI](reference-stoxumapi.html#sign) instead of using this command. An untrustworthy server could change the transaction before signing it, or use your secret key to sign additional arbitrary transactions as if they came from you.
 
 #### Request Format
 An example of the request format:
@@ -6669,12 +6669,12 @@ An example of the request format:
 
 ```
 #Syntax: sign secret tx_json [offline]
-casinocoind sign s████████████████████████████ '{"TransactionType": "Payment", "Account": "cDarPNJEpCnpBZSfmcquydockkePkjPGA2", "Destination": "ca5nK24KXen9AHvsdFTKHSANinZseWnPcX", "Amount": { "currency": "USD", "value": "1", "issuer" : "cDarPNJEpCnpBZSfmcquydockkePkjPGA2" }, "Sequence": 360, "Fee": "10000"}' offline
+stoxumd sign s████████████████████████████ '{"TransactionType": "Payment", "Account": "cDarPNJEpCnpBZSfmcquydockkePkjPGA2", "Destination": "ca5nK24KXen9AHvsdFTKHSANinZseWnPcX", "Amount": { "currency": "USD", "value": "1", "issuer" : "cDarPNJEpCnpBZSfmcquydockkePkjPGA2" }, "Sequence": 360, "Fee": "10000"}' offline
 ```
 
 <!-- MULTICODE_BLOCK_END -->
 
-[Try it! >](casinocoin-api-tool.html#sign)
+[Try it! >](stoxum-api-tool.html#sign)
 
 To sign a transaction, you must provide a secret key that can [authorize the transaction](reference-transaction-format.html#authorizing-transactions). You can do this in a few ways:
 
@@ -6702,11 +6702,11 @@ The server automatically tries to fill in certain fields in `tx_json` (the [Tran
 
 * `Sequence` - The server automatically uses the next Sequence number from the sender's account information.
     * **Caution:** The next sequence number for the account is not incremented until this transaction is applied. If you sign multiple transactions without submitting and waiting for the response to each one, you must manually provide the correct sequence numbers for each transaction after the first.
-* `Fee` - If you omit the `Fee` parameter, the server tries to fill in an appropriate transaction cost automatically. On the production CSC Ledger, this fails with `rpcHIGH_FEE` unless you provide an appropriate `fee_mult_max` value.
-    * The `fee_mult_max` and `fee_div_max` parameters limit how high the automatically-provided transaction cost can be, in terms of the load-scaling multiplier that gets applied to the [reference transaction cost](concept-transaction-cost.html#reference-transaction-cost). The default settings return an error if the automatically-provided value would use greater than a 10× multiplier. However, the production CSC Ledger [typically has a 1000× load multiplier](concept-transaction-cost.html#current-transaction-cost).
-    * The commandline syntax does not support `fee_mult_max` and `fee_div_max`. For the production CSC Ledger, you must provide a `Fee` value.
+* `Fee` - If you omit the `Fee` parameter, the server tries to fill in an appropriate transaction cost automatically. On the production STM Ledger, this fails with `rpcHIGH_FEE` unless you provide an appropriate `fee_mult_max` value.
+    * The `fee_mult_max` and `fee_div_max` parameters limit how high the automatically-provided transaction cost can be, in terms of the load-scaling multiplier that gets applied to the [reference transaction cost](concept-transaction-cost.html#reference-transaction-cost). The default settings return an error if the automatically-provided value would use greater than a 10× multiplier. However, the production STM Ledger [typically has a 1000× load multiplier](concept-transaction-cost.html#current-transaction-cost).
+    * The commandline syntax does not support `fee_mult_max` and `fee_div_max`. For the production STM Ledger, you must provide a `Fee` value.
     * **Caution:** A malicious server can specify an excessively high transaction cost, ignoring the values of `fee_mult_max` and `fee_div_max`.
-* `Paths` - For Payment-type transactions (excluding CSC-to-CSC transfers), the Paths field can be automatically filled, as if you did a [casinocoin_path_find](#casinocoin-path-find). Only filled if `build_path` is provided.
+* `Paths` - For Payment-type transactions (excluding STM-to-STM transfers), the Paths field can be automatically filled, as if you did a [stoxum_path_find](#stoxum-path-find). Only filled if `build_path` is provided.
 
 #### Response Format
 
@@ -6774,7 +6774,7 @@ An example of a successful response:
 *Commandline*
 
 ```
-Loading: "/etc/casinocoind.cfg"
+Loading: "/etc/stoxum.cfg"
 Connecting to 127.0.0.1:5005
 {
    "result" : {
@@ -6825,7 +6825,7 @@ The response follows the [standard format](#response-formatting), with a success
 
 
 ## sign_for
-[[Source]<br>](https://github.com/casinocoin/casinocoind/blob/master/src/casinocoin/rpc/handlers/SignFor.cpp "Source")
+[[Source]<br>](https://github.com/stoxum/stoxumd/src/stoxum/rpc/handlers/SignFor.cpp "Source")
 
 The `sign_for` command provides one signature for a [multi-signed transaction](reference-transaction-format.html#multi-signing).
 
@@ -6891,8 +6891,8 @@ POST http://localhost:5005/
 *Commandline*
 
 ```
-#Syntax: casinocoind sign_for <signer_address> <signer_secret> [offline]
-casinocoind sign_for csA2LpzuawewSBQXkiju3YQTMzW13pAAdW s████████████████████████████ '{
+#Syntax: stoxumd sign_for <signer_address> <signer_secret> [offline]
+stoxumd sign_for csA2LpzuawewSBQXkiju3YQTMzW13pAAdW s████████████████████████████ '{
     "TransactionType": "TrustSet",
     "Account": "cEuLyBCvcw4CFmzv8RepSiAoNgF8tTGJQC",
     "Flags": 262144,
@@ -7003,7 +7003,7 @@ An example of a successful response:
 *Commandline*
 
 ```
-Loading: "/etc/casinocoind.cfg"
+Loading: "/etc/stoxumd.cfg"
 Connecting to 127.0.0.1:5005
 {
    "result" : {
@@ -7057,7 +7057,7 @@ The response follows the [standard format](#response-formatting), with a success
 
 
 ## submit
-[[Source]<br>](https://github.com/casinocoin/casinocoind/blob/master/src/casinocoin/rpc/handlers/Submit.cpp "Source")
+[[Source]<br>](https://github.com/stoxum/stoxumd/src/stoxum/rpc/handlers/Submit.cpp "Source")
 
 The `submit` method applies a [transaction](reference-transaction-format.html) and sends it to the network to be confirmed and included in future ledgers.
 
@@ -7113,7 +7113,7 @@ submit 1200002280000000240000000361D4838D7EA4C6800000000000000000000000000055534
 
 <!-- MULTICODE_BLOCK_END -->
 
-[Try it! >](casinocoin-api-tool.html#submit)
+[Try it! >](stoxum-api-tool.html#submit)
 
 
 ### Sign-and-Submit Mode
@@ -7137,7 +7137,7 @@ The request includes the following parameters:
 | `key_type`     | String  | _(Optional)_ Type of cryptographic key provided in this request. Valid types are `secp256k1` or `ed25519`. Defaults to `secp256k1`. Cannot be used with `secret`. **Caution:** Ed25519 support is experimental. |
 | `fail_hard`    | Boolean | (Optional, defaults to false) If true, and the transaction fails locally, do not retry or relay the transaction to other servers |
 | `offline`      | Boolean | (Optional, defaults to false) If true, when constructing the transaction, do not try to automatically fill in or validate values. |
-| `build_path`   | Boolean | _(Optional)_ If provided for a Payment-type transaction, automatically fill in the `Paths` field before signing. You must omit this field if the transaction is a direct CSC-to-CSC transfer. **Caution:** The server looks for the presence or absence of this field, not its value. This behavior may change. |
+| `build_path`   | Boolean | _(Optional)_ If provided for a Payment-type transaction, automatically fill in the `Paths` field before signing. You must omit this field if the transaction is a direct STM-to-STM transfer. **Caution:** The server looks for the presence or absence of this field, not its value. This behavior may change. |
 | `fee_mult_max` | Integer | (Optional, defaults to 10, recommended value 1000) If the `Fee` parameter is omitted, this field limits the automatically-provided `Fee` value so that it is less than or equal to the long-term base transaction cost times this value. |
 | `fee_div_max`  | Integer | (Optional, defaults to 1) Used with `fee_mult_max` to create a fractional multiplier for the limit. Specifically, the server multiplies its base [transaction cost](concept-transaction-cost.html) by `fee_mult_max`, then divides by this value (rounding down to an integer) to get a limit. If the automatically-provided `Fee` value would be over the limit, the submit command fails. |
 
@@ -7199,12 +7199,12 @@ An example of the request format:
 
 ```
 #Syntax: submit secret json [offline]
-casinocoind submit s████████████████████████████ '{"Account": "cDarPNJEpCnpBZSfmcquydockkePkjPGA2", "Amount": { "currency": "USD", "issuer": "cDarPNJEpCnpBZSfmcquydockkePkjPGA2", "value": "1" }, "Destination": "ca5nK24KXen9AHvsdFTKHSANinZseWnPcX", "TransactionType": "Payment", "Fee": "10000"}'
+stoxumd submit s████████████████████████████ '{"Account": "cDarPNJEpCnpBZSfmcquydockkePkjPGA2", "Amount": { "currency": "USD", "issuer": "cDarPNJEpCnpBZSfmcquydockkePkjPGA2", "value": "1" }, "Destination": "ca5nK24KXen9AHvsdFTKHSANinZseWnPcX", "TransactionType": "Payment", "Fee": "10000"}'
 ```
 
 <!-- MULTICODE_BLOCK_END -->
 
-[Try it! >](casinocoin-api-tool.html#submit)
+[Try it! >](stoxum-api-tool.html#submit)
 
 #### Response Format
 
@@ -7277,7 +7277,7 @@ An example of a successful response:
 *Commandline*
 
 ```
-Loading: "/etc/casinocoind.cfg"
+Loading: "/etc/stoxumd.cfg"
 Connecting to 127.0.0.1:5005
 {
    "result" : {
@@ -7341,7 +7341,7 @@ The response follows the [standard format](#response-formatting), with a success
 
 
 ## submit_multisigned
-[[Source]<br>](https://github.com/casinocoin/casinocoind/blob/master/src/casinocoin/rpc/handlers/SubmitMultiSigned.cpp "Source")
+[[Source]<br>](https://github.com/stoxum/stoxumd/src/stoxum/rpc/handlers/SubmitMultiSigned.cpp "Source")
 
 The `submit_multisigned` command applies a [multi-signed](reference-transaction-format.html#multi-signing) transaction and sends it to the network to be included in future ledgers. (You can also submit multi-signed transactions in binary form using the [`submit` command in submit-only mode](#submit-only-mode).)
 
@@ -7434,7 +7434,7 @@ An example of the request format:
 
 ```
 #Syntax: submit_multisigned <tx_json>
-casinocoind submit_multisigned '{
+stoxumd submit_multisigned '{
     "Account": "cEuLyBCvcw4CFmzv8RepSiAoNgF8tTGJQC",
     "Fee": "30000",
     "Flags": 262144,
@@ -7594,7 +7594,7 @@ The response follows the [standard format](#response-formatting), with a success
 
 
 ## book_offers
-[[Source]<br>](https://github.com/casinocoin/casinocoind/blob/develop/src/casinocoin/rpc/handlers/BookOffers.cpp "Source")
+[[Source]<br>](https://github.com/stoxum/stoxumd/blob/develop/src/stoxum/rpc/handlers/BookOffers.cpp "Source")
 
 The `book_offers` method retrieves a list of offers, also known as the [order book](http://www.investopedia.com/terms/o/order-book.asp), between two currencies. If the results are very large, a partial result is returned with a marker so that later requests can resume from where the previous one left off.
 
@@ -7611,7 +7611,7 @@ An example of the request format:
   "command": "book_offers",
   "taker": "cDarPNJEpCnpBZSfmcquydockkePkjPGA2",
   "taker_gets": {
-    "currency": "CSC"
+    "currency": "STM"
   },
   "taker_pays": {
     "currency": "USD",
@@ -7630,7 +7630,7 @@ An example of the request format:
         {
             "taker": "cDarPNJEpCnpBZSfmcquydockkePkjPGA2",
             "taker_gets": {
-                "currency": "CSC"
+                "currency": "STM"
             },
             "taker_pays": {
                 "currency": "USD",
@@ -7646,12 +7646,12 @@ An example of the request format:
 
 ```
 #Syntax: book_offers taker_pays taker_gets [taker [ledger [limit] ] ]
-casinocoind book_offers 'USD/cvYAfWj5gh67oV6fW32ZzP3Aw4Eubs59B' 'EUR/cvYAfWj5gh67oV6fW32ZzP3Aw4Eubs59B'
+stoxumd book_offers 'USD/cvYAfWj5gh67oV6fW32ZzP3Aw4Eubs59B' 'EUR/cvYAfWj5gh67oV6fW32ZzP3Aw4Eubs59B'
 ```
 
 <!-- MULTICODE_BLOCK_END -->
 
-[Try it! >](casinocoin-api-tool.html#book_offers)
+[Try it! >](stoxum-api-tool.html#book_offers)
 
 The request includes the following parameters:
 
@@ -7661,8 +7661,8 @@ The request includes the following parameters:
 | `ledger_index` | String or Unsigned Integer | _(Optional)_ The sequence number of the ledger to use, or a shortcut string to choose a ledger automatically. (See [Specifying a Ledger](#specifying-ledgers)) |
 | `limit`        | Unsigned Integer           | _(Optional)_ If provided, the server does not provide more than this many offers in the results. The total number of results returned may be fewer than the limit, because the server omits unfunded offers. |
 | `taker`        | String                     | _(Optional)_ The [Address][] of an account to use as a perspective. [Unfunded offers](reference-transaction-format.html#lifecycle-of-an-offer) placed by this account are always included in the response. (You can use this to look up your own orders to cancel them.) |
-| `taker_gets`   | Object                     | Specification of which currency the account taking the offer would receive, as an object with `currency` and `issuer` fields (omit issuer for CSC), like [currency amounts](#specifying-currency-amounts). |
-| `taker_pays`   | Object                     | Specification of which currency the account taking the offer would pay, as an object with `currency` and `issuer` fields (omit issuer for CSC), like [currency amounts](#specifying-currency-amounts). |
+| `taker_gets`   | Object                     | Specification of which currency the account taking the offer would receive, as an object with `currency` and `issuer` fields (omit issuer for STM), like [currency amounts](#specifying-currency-amounts). |
+| `taker_pays`   | Object                     | Specification of which currency the account taking the offer would pay, as an object with `currency` and `issuer` fields (omit issuer for STM), like [currency amounts](#specifying-currency-amounts). |
 
 #### Response Format
 
@@ -7760,9 +7760,9 @@ In addition to the standard Offer fields, the following fields may be included i
 
 | `Field`             | Type                             | Description         |
 |:--------------------|:---------------------------------|:--------------------|
-| `owner_funds`       | String                           | Amount of the TakerGets currency the side placing the offer has available to be traded. (CSC is represented as drops; any other currency is represented as a decimal value.) If a trader has multiple offers in the same book, only the highest-ranked offer includes this field. |
-| `taker_gets_funded` | String (CSC) or Object (non-CSC) | (Only included in partially-funded offers) The maximum amount of currency that the taker can get, given the funding status of the offer. |
-| `taker_pays_funded` | String (CSC) or Object (non-CSC) | (Only included in partially-funded offers) The maximum amount of currency that the taker would pay, given the funding status of the offer. |
+| `owner_funds`       | String                           | Amount of the TakerGets currency the side placing the offer has available to be traded. (STM is represented as drops; any other currency is represented as a decimal value.) If a trader has multiple offers in the same book, only the highest-ranked offer includes this field. |
+| `taker_gets_funded` | String (STM) or Object (non-STM) | (Only included in partially-funded offers) The maximum amount of currency that the taker can get, given the funding status of the offer. |
+| `taker_pays_funded` | String (STM) or Object (non-STM) | (Only included in partially-funded offers) The maximum amount of currency that the taker would pay, given the funding status of the offer. |
 | `quality`           | Number                           | The exchange rate, as the ratio `taker_pays` divided by `taker_gets`. For fairness, offers that have the same quality are automatically taken first-in, first-out. (In other words, if multiple people offer to exchange currency at the same rate, the oldest offer is taken first.) |
 
 #### Possible Errors
@@ -7779,11 +7779,11 @@ In addition to the standard Offer fields, the following fields may be included i
 
 
 ## channel_authorize
-[[Source]<br>](https://github.com/casinocoin/casinocoind/blob/4.0.1/src/casinocoin/rpc/handlers/PayChanClaim.cpp#L41 "Source")
+[[Source]<br>](https://github.com/stoxum/stoxumd/src/stoxum/rpc/handlers/PayChanClaim.cpp#L41 "Source")
 
 _(Requires the [PayChan amendment](reference-amendments.html#paychan) to be enabled.)_
 
-The `channel_authorize` method creates a signature that can be used to redeem a specific amount of CSC from a payment channel.
+The `channel_authorize` method creates a signature that can be used to redeem a specific amount of STM from a payment channel.
 
 #### Request Format
 An example of the request format:
@@ -7822,7 +7822,7 @@ Content-Type: application/json
 
 ```
 #Syntax: channel_authorize <private_key> <channel_id> <drops>
-casinocoind channel_authorize s████████████████████████████ 5DB01B7FFED6B67E6B0414DED11E051D2EE2B7619CE0EAA6286D67A3A4D5BDB3 1000000
+stoxumd channel_authorize s████████████████████████████ 5DB01B7FFED6B67E6B0414DED11E051D2EE2B7619CE0EAA6286D67A3A4D5BDB3 1000000
 ```
 
 <!-- MULTICODE_BLOCK_END -->
@@ -7833,7 +7833,7 @@ The request includes the following parameters:
 |-------|------|-------------|
 | `channel_id` | String | The unique ID of the payment channel to use.
 | `secret` | String | The secret key to use to sign the claim. This must be the same key pair as the public key specified in the channel. |
-| `amount` | String | Cumulative amount of CSC, in drops, to authorize. If the destination has already received a lesser amount of CSC from this channel, the signature created by this method can be redeemed for the difference. |
+| `amount` | String | Cumulative amount of STM, in drops, to authorize. If the destination has already received a lesser amount of STM from this channel, the signature created by this method can be redeemed for the difference. |
 
 **Note:** You cannot use Ed25519 keys to sign claims with this method. This is a known bug.
 
@@ -7885,23 +7885,23 @@ The response follows the [standard format](#response-formatting), with a success
 
 | Field | Type | Description |
 |-------|------|-------------|
-| `signature` | String | The signature for this claim, as a hexadecimal value. To process the claim, the destination account of the payment channel must send a [PaymentChannelClaim transaction][] with this signature, the exact Channel ID, CSC amount, and public key of the channel. |
+| `signature` | String | The signature for this claim, as a hexadecimal value. To process the claim, the destination account of the payment channel must send a [PaymentChannelClaim transaction][] with this signature, the exact Channel ID, STM amount, and public key of the channel. |
 
 #### Possible Errors
 
 * Any of the [universal error types](#universal-errors).
 * `badSeed` - The `secret` in the request is not a valid secret key.
-* `channelAmtMalformed` - The `amount` in the request is not a valid [CSC amount](#specifying-currency-amounts).
+* `channelAmtMalformed` - The `amount` in the request is not a valid [STM amount](#specifying-currency-amounts).
 * `channelMalformed` - The `channel_id` in the request is not a valid Channel ID. The Channel ID should be a 256-bit (64-character) hexadecimal string.
 
 
 
 ## channel_verify
-[[Source]<br>](https://github.com/casinocoin/casinocoind/blob/4.0.1/src/casinocoin/rpc/handlers/PayChanClaim.cpp#L89 "Source")
+[[Source]<br>](https://github.com/stoxum/stoxumd/src/stoxum/rpc/handlers/PayChanClaim.cpp#L89 "Source")
 
 _(Requires the [PayChan amendment](reference-amendments.html#paychan) to be enabled.)_
 
-The `channel_verify` method checks the validity of a signature that can be used to redeem a specific amount of CSC from a payment channel.
+The `channel_verify` method checks the validity of a signature that can be used to redeem a specific amount of STM from a payment channel.
 
 #### Request Format
 An example of the request format:
@@ -7942,7 +7942,7 @@ Content-Type: application/json
 
 ```
 #Syntax: channel_verify <public_key> <channel_id> <amount> <signature>
-casinocoind channel_verify aB44YfzW24VDEJQ2UuLPV2PvqcPCSoLnL7y5M1EzhdW4LnK5xMS3 5DB01B7FFED6B67E6B0414DED11E051D2EE2B7619CE0EAA6286D67A3A4D5BDB3 1000000 304402204EF0AFB78AC23ED1C472E74F4299C0C21F1B21D07EFC0A3838A420F76D783A400220154FB11B6F54320666E4C36CA7F686C16A3A0456800BBC43746F34AF50290064
+stoxumd channel_verify aB44YfzW24VDEJQ2UuLPV2PvqcPCSoLnL7y5M1EzhdW4LnK5xMS3 5DB01B7FFED6B67E6B0414DED11E051D2EE2B7619CE0EAA6286D67A3A4D5BDB3 1000000 304402204EF0AFB78AC23ED1C472E74F4299C0C21F1B21D07EFC0A3838A420F76D783A400220154FB11B6F54320666E4C36CA7F686C16A3A0456800BBC43746F34AF50290064
 ```
 
 <!-- MULTICODE_BLOCK_END -->
@@ -7951,8 +7951,8 @@ The request includes the following parameters:
 
 | Field | Type | Description |
 |-------|------|-------------|
-| `amount` | String | The amount of [CSC, in drops][], the provided `signature` authorizes. |
-| `channel_id` | String | The Channel ID of the channel that provides the CSC. This is a 64-character hexadecimal string. |
+| `amount` | String | The amount of [STM, in drops][], the provided `signature` authorizes. |
+| `channel_id` | String | The Channel ID of the channel that provides the STM. This is a 64-character hexadecimal string. |
 | `public_key` | String | The public key of the channel and the key pair that was used to create the signature, in base58 format. (One way to get the public key in base58 format is to use the [`wallet_propose` command](#wallet-propose).) |
 | `signature` | String | The signature to verify, in hexadecimal. |
 
@@ -8007,7 +8007,7 @@ The response follows the [standard format](#response-formatting), with a success
 |-------|------|-------------|
 | `signature_verified` | Boolean | If `true`, the signature is valid for the stated amount, channel, and public key. |
 
-**Caution:** This does not indicate check that the channel has enough CSC allocated to it. Before considering a claim valid, you should look up the channel in the latest validated ledger and confirm that the channel is open and its `amount` value is equal or greater than the `amount` of the claim. To do so, use the [`account_channels` method](#account-channels).
+**Caution:** This does not indicate check that the channel has enough STM allocated to it. Before considering a claim valid, you should look up the channel in the latest validated ledger and confirm that the channel is open and its `amount` value is equal or greater than the `amount` of the claim. To do so, use the [`account_channels` method](#account-channels).
 
 #### Possible Errors
 
@@ -8015,7 +8015,7 @@ The response follows the [standard format](#response-formatting), with a success
 * `invalidParams` - One or more fields are specified incorrectly, or one or more required fields are missing.
 * `publicMalformed` - The `public_key` field of the request is not a valid public key in the correct format. Public keys are 33 bytes and must be represented in base58. The base58 representation of account public keys starts with the letter `a`.
 * `channelMalformed` - The `channel_id` field of the request is not a valid Channel ID. The Channel ID must be a 256-bit (64-character) hexadecimal string.
-* `channelAmtMalformed` - The value specified in the `amount` field was not a valid [CSC amount](#specifying-currency-amounts).
+* `channelAmtMalformed` - The value specified in the `amount` field was not a valid [STM amount](#specifying-currency-amounts).
 
 
 
@@ -8027,7 +8027,7 @@ Using subscriptions, you can have the server push updates to your client when va
 JSON-RPC support for subscription callbacks is deprecated and may not work as expected.
 
 ## subscribe
-[[Source]<br>](https://github.com/casinocoin/casinocoind/blob/master/src/casinocoin/rpc/handlers/Subscribe.cpp "Source")
+[[Source]<br>](https://github.com/stoxum/stoxumd/src/stoxum/rpc/handlers/Subscribe.cpp "Source")
 
 The `subscribe` method requests periodic notifications from the server when certain events happen.
 
@@ -8050,12 +8050,12 @@ An example of the request format:
 
 ```
 {
-    "id": "Example subscribe to CSC/GateHub USD order book",
+    "id": "Example subscribe to STM/GateHub USD order book",
     "command": "subscribe",
     "books": [
         {
             "taker_pays": {
-                "currency": "CSC"
+                "currency": "STM"
             },
             "taker_gets": {
                 "currency": "USD",
@@ -8079,7 +8079,7 @@ An example of the request format:
 
 <!-- MULTICODE_BLOCK_END -->
 
-[Try it! >](casinocoin-api-tool.html#subscribe)
+[Try it! >](stoxum-api-tool.html#subscribe)
 
 The request includes the following parameters:
 
@@ -8097,13 +8097,13 @@ The following parameters are deprecated and may be removed without further notic
 
 The `streams` parameter provides access to the following default streams of information:
 
-* `server` - Sends a message whenever the status of the `casinocoind` server (for example, network connectivity) changes
+* `server` - Sends a message whenever the status of the `stoxumd` server (for example, network connectivity) changes
 * `ledger` - Sends a message whenever the consensus process declares a new validated ledger
 * `transactions` - Sends a message whenever a transaction is included in a closed ledger
 * `transactions_proposed` - Sends a message whenever a transaction is included in a closed ledger, as well as some transactions that have not yet been included in a validated ledger and may never be. Not all proposed transactions appear before validation.
     **Note:** [Even some transactions that don't succeed are included](reference-transaction-format.html#result-categories) in validated ledgers, because they take the anti-spam transaction fee.
-* `validations` - Sends a message whenever the server receives a validation message from a server it trusts. (An individual `casinocoind` declares a ledger validated when the server receives validation messages from at least a quorum of trusted validators.)
-* `peer_status` - **(Admin only)** Information about connected peer `casinocoind` servers, especially with regards to the consensus process.
+* `validations` - Sends a message whenever the server receives a validation message from a server it trusts. (An individual `stoxumd` declares a ledger validated when the server receives validation messages from at least a quorum of trusted validators.)
+* `peer_status` - **(Admin only)** Information about connected peer `stoxumd` servers, especially with regards to the consensus process.
 
 Each member of the `books` array, if provided, is an object with the following fields:
 
@@ -8139,7 +8139,7 @@ The response follows the [standard format](#response-formatting). The fields con
 * `accounts` and `accounts_proposed` - No fields returned
 * *Stream: server* - Information about the server status, such as `load_base` (the current load level of the server), `random` (a randomly-generated value), and others, subject to change.
 * *Stream: transactions*, *Stream: transactions_proposed*, and *Stream: validations* - No fields returned
-* *Stream: ledger* - Information about the ledgers on hand and current fee schedule, such as `fee_base` (current base fee for transactions in CSC), `fee_ref` (current base fee for transactions in fee units), `ledger_hash` (hash of the latest validated ledger), `reserve_base` (minimum reserve for accounts), and more.
+* *Stream: ledger* - Information about the ledgers on hand and current fee schedule, such as `fee_base` (current base fee for transactions in STM), `fee_ref` (current base fee for transactions in fee units), `ledger_hash` (hash of the latest validated ledger), `reserve_base` (minimum reserve for accounts), and more.
 * `books` - No fields returned by default. If `"snapshot": true` is set in the request, returns `offers` (an array of offer definition objects defining the order book)
 
 #### Possible Errors
@@ -8149,7 +8149,7 @@ The response follows the [standard format](#response-formatting). The fields con
 * `noPermission` - The request included the `url` field, but you are not connected as an admin.
 * `unknownStream` - One or more the members of the `streams` field of the request is not a valid stream name.
 * `malformedStream` - The `streams` field of the request is not formatted properly.
-* `malformedAccount` - One of the addresses in the `accounts` or `accounts_proposed` fields of the request is not a properly-formatted CSC Ledger address. (**Note:**: You _can_ subscribe to the stream of an address that does not yet have an entry in the global ledger to get a message when that address becomes funded.)
+* `malformedAccount` - One of the addresses in the `accounts` or `accounts_proposed` fields of the request is not a properly-formatted STM Ledger address. (**Note:**: You _can_ subscribe to the stream of an address that does not yet have an entry in the global ledger to get a message when that address becomes funded.)
 * `srcCurMalformed` - One or more `taker_pays` sub-fields of the `books` field in the request is not formatted properly.
 * `dstAmtMalformed` - One or more `taker_gets` sub-fields of the `books` field in the request is not formatted properly.
 * `srcIsrMalformed` - The `issuer` field of one or more `taker_pays` sub-fields of the `books` field in the request is not valid.
@@ -8160,7 +8160,7 @@ When you subscribe to a particular stream, you receive periodic responses on tha
 
 ### Ledger Stream
 
-The `ledger` stream only sends `ledgerClosed` messages when [the consensus process](https://casinocoin.org/build/casinocoin-ledger-consensus-process/) declares a new validated ledger. The message identifies the ledger and provides some information about its contents.
+The `ledger` stream only sends `ledgerClosed` messages when [the consensus process](https://stoxum.org/build/stoxum-ledger-consensus-process/) declares a new validated ledger. The message identifies the ledger and provides some information about its contents.
 
 ```
 {
@@ -8182,12 +8182,12 @@ The fields from a ledger stream message are as follows:
 | `Field`             | Type             | Description                         |
 |:--------------------|:-----------------|:------------------------------------|
 | `type`              | String           | `ledgerClosed` indicates this is from the ledger stream |
-| `fee_base`          | Unsigned Integer | Cost of the 'reference transaction' in drops of CSC. (See [Transaction Cost](concept-transaction-cost.html) If the ledger includes a [SetFee pseudo-transaction](reference-transaction-format.html#setfee) the new transaction cost applies to all transactions after this ledger. |
+| `fee_base`          | Unsigned Integer | Cost of the 'reference transaction' in drops of STM. (See [Transaction Cost](concept-transaction-cost.html) If the ledger includes a [SetFee pseudo-transaction](reference-transaction-format.html#setfee) the new transaction cost applies to all transactions after this ledger. |
 | `fee_ref`           | Unsigned Integer | Cost of the 'reference transaction' in 'fee units'. |
 | `ledger_hash`       | String           | Unique hash of the ledger that was closed, as hex |
 | `ledger_index`      | Unsigned Integer | Sequence number of the ledger that was closed |
-| `ledger_time`       | Unsigned Integer | The time this ledger was closed, in seconds since the [CasinoCoin Epoch](#specifying-time) |
-| `reserve_base`      | Unsigned Integer | The minimum reserve, in drops of CSC, that is required for an account. If the ledger includes a [SetFee pseudo-transaction](reference-transaction-format.html#setfee) the new base reserve applies after this ledger. |
+| `ledger_time`       | Unsigned Integer | The time this ledger was closed, in seconds since the [Stoxum Epoch](#specifying-time) |
+| `reserve_base`      | Unsigned Integer | The minimum reserve, in drops of STM, that is required for an account. If the ledger includes a [SetFee pseudo-transaction](reference-transaction-format.html#setfee) the new base reserve applies after this ledger. |
 | `reserve_inc`       | Unsigned Integer | The increase in account reserve that is added for each item the account owns, such as offers or trust lines. If the ledger includes a [SetFee pseudo-transaction](reference-transaction-format.html#setfee) the new owner reserve applies after this ledger. |
 | `txn_count`         | Unsigned Integer | Number of new transactions included in this ledger |
 | `validated_ledgers` | String           | (May be omitted) Range of ledgers that the server has available. This may be discontiguous. This field is not returned if the server is not connected to the network, or if it is connected but has not yet obtained a ledger from the network. |
@@ -8236,7 +8236,7 @@ The fields from a validations stream message are as follows:
 | `reserve_base`          | Integer          | (May be omitted) The minimum reserve requirement (`account_reserve` value) this validator wants to set by [Fee Voting](concept-fee-voting.html). |
 | `reserve_inc`           | Integer          | (May be omitted) The increment in the reserve requirement (`owner_reserve` value) this validator wants to set by [Fee Voting](concept-fee-voting.html). |
 | `signature`             | String           | The signature that the validator used to sign its vote for this ledger. |
-| `signing_time`          | Number           | When this validation vote was signed, in seconds since the [CasinoCoin Epoch](#specifying-time). |
+| `signing_time`          | Number           | When this validation vote was signed, in seconds since the [Stoxum Epoch](#specifying-time). |
 | `validation_public_key` | String           | The [base58][] encoded public key from the key-pair that the validator used to sign the message. This identifies the validator sending the message and can also be used to verify the `signature`. |
 
 
@@ -8381,7 +8381,7 @@ Transaction stream messages have the following fields:
 
 ### Peer Status Stream
 
-The admin-only `peer_status` stream reports a large amount of information on the activities of other `casinocoind` servers to which this server is connected, in particular their status in the consensus process.
+The admin-only `peer_status` stream reports a large amount of information on the activities of other `stoxumd` servers to which this server is connected, in particular their status in the consensus process.
 
 Example of a Peer Status stream message:
 
@@ -8397,13 +8397,13 @@ Example of a Peer Status stream message:
 }
 ```
 
-Peer Status stream messages represent some event where the status of the peer `casinocoind` server changed. These messages are JSON objects with the following fields:
+Peer Status stream messages represent some event where the status of the peer `stoxumd` server changed. These messages are JSON objects with the following fields:
 
 | `Field`            | Value  | Description                                    |
 |:-------------------|:-------|:-----------------------------------------------|
 | `type`             | String | `peerStatusChange` indicates this comes from the Peer Status stream. |
 | `action`           | String | The type of event that prompted this message. See [Peer Status Events](#peer-status-events) for possible values. |
-| `date`             | Number | The time this event occurred, in seconds since the [CasinoCoin Epoch](#specifying-time). |
+| `date`             | Number | The time this event occurred, in seconds since the [Stoxum Epoch](#specifying-time). |
 | `ledger_hash`      | String | (May be omitted) The identifying [Hash][] of a ledger version to which this message pertains. |
 | `ledger_index`     | Number | (May be omitted) The [Ledger Index][] of a ledger version to which this message pertains. |
 | `ledger_index_max` | Number | (May be omitted) The largest [Ledger Index][] the peer has currently available. |
@@ -8560,7 +8560,7 @@ The format of an order book stream message is the same as that of [transaction s
 
 
 ## unsubscribe
-[[Source]<br>](https://github.com/casinocoin/casinocoind/blob/master/src/casinocoin/rpc/handlers/Unsubscribe.cpp "Source")
+[[Source]<br>](https://github.com/stoxum/stoxumd/src/stoxum/rpc/handlers/Unsubscribe.cpp "Source")
 
 The `unsubscribe` command tells the server to stop sending messages for a particular subscription or set of subscriptions.
 
@@ -8581,7 +8581,7 @@ An example of the request format:
     "books": [
         {
             "taker_pays": {
-                "currency": "CSC"
+                "currency": "STM"
             },
             "taker_gets": {
                 "currency": "USD",
@@ -8595,7 +8595,7 @@ An example of the request format:
 
 <!-- MULTICODE_BLOCK_END -->
 
-[Try it! >](casinocoin-api-tool.html#unsubscribe)
+[Try it! >](stoxum-api-tool.html#unsubscribe)
 
 The parameters in the request are specified almost exactly like the parameters to [`subscribe`](#subscribe), except that they are used to define which subscriptions to end instead. The parameters are:
 
@@ -8612,8 +8612,8 @@ The objects in the `books` array are defined almost like the ones from subscribe
 
 | `Field`      | Type    | Description                                         |
 |:-------------|:--------|:----------------------------------------------------|
-| `taker_gets` | Object  | Specification of which currency the account taking the offer would receive, as an object with `currency` and `issuer` fields (omit issuer for CSC), like [currency amounts](#specifying-currency-amounts). |
-| `taker_pays` | Object  | Specification of which currency the account taking the offer would pay, as an object with `currency` and `issuer` fields (omit issuer for CSC), like [currency amounts](#specifying-currency-amounts). |
+| `taker_gets` | Object  | Specification of which currency the account taking the offer would receive, as an object with `currency` and `issuer` fields (omit issuer for STM), like [currency amounts](#specifying-currency-amounts). |
+| `taker_pays` | Object  | Specification of which currency the account taking the offer would pay, as an object with `currency` and `issuer` fields (omit issuer for STM), like [currency amounts](#specifying-currency-amounts). |
 | `both`       | Boolean | (Optional, defaults to false) If true, remove a subscription for both sides of the order book. |
 
 #### Response Format
@@ -8643,7 +8643,7 @@ The response follows the [standard format](#response-formatting), with a success
 * `invalidParams` - One or more fields are specified incorrectly, or one or more required fields are missing.
 * `noPermission` - The request included the `url` field, but you are not connected as an admin.
 * `malformedStream` - The `streams` field of the request is not formatted properly.
-* `malformedAccount` - One of the addresses in the `accounts` or `accounts_proposed` fields of the request is not a properly-formatted CSC Ledger address.
+* `malformedAccount` - One of the addresses in the `accounts` or `accounts_proposed` fields of the request is not a properly-formatted STM Ledger address.
     * **Note:**: You _can_ subscribe to the stream of an address that does not yet have an entry in the global ledger to get a message when that address becomes funded.
 * `srcCurMalformed` - One or more `taker_pays` sub-fields of the `books` field in the request is not formatted properly.
 * `dstAmtMalformed` - One or more `taker_gets` sub-fields of the `books` field in the request is not formatted properly.
@@ -8660,9 +8660,9 @@ The response follows the [standard format](#response-formatting), with a success
 There are also commands that retrieve information about the current state of the server. These may be useful for monitoring the health of the server, or in preparing for making other API methods. For example, you may query for the current fee schedule before sending a transaction, or you may check which ledger versions are available before digging into the ledger history for a specific record.
 
 ## server_info
-[[Source]<br>](https://github.com/casinocoin/casinocoind/blob/master/src/casinocoin/rpc/handlers/ServerInfo.cpp "Source")
+[[Source]<br>](https://github.com/stoxum/stoxumd/src/stoxum/rpc/handlers/ServerInfo.cpp "Source")
 
-The `server_info` command asks the server for a human-readable version of various information about the `casinocoind` server being queried.
+The `server_info` command asks the server for a human-readable version of various information about the `stoxumd` server being queried.
 
 #### Request Format
 An example of the request format:
@@ -8693,12 +8693,12 @@ An example of the request format:
 
 ```
 #Syntax: server_info
-casinocoind server_info
+stoxumd server_info
 ```
 
 <!-- MULTICODE_BLOCK_END -->
 
-[Try it! >](casinocoin-api-tool.html#server_info)
+[Try it! >](stoxum-api-tool.html#server_info)
 
 The request does not takes any parameters.
 
@@ -8801,10 +8801,10 @@ An example of a successful response:
       "uptime": 173379,
       "validated_ledger": {
         "age": 3,
-        "base_fee_csc": 0.00001,
+        "base_fee_stm": 0.00001,
         "hash": "04F7CF4EACC57140C8088F6BFDC8A824BB3ED5717C3DAA6642101F9FB446226C",
-        "reserve_base_csc": 20,
-        "reserve_inc_csc": 5,
+        "reserve_base_stm": 20,
+        "reserve_inc_stm": 5,
         "seq": 18614732
       },
       "validation_quorum": 4,
@@ -8919,10 +8919,10 @@ An example of a successful response:
          "uptime" : 1792,
          "validated_ledger" : {
             "age" : 1,
-            "base_fee_csc" : 1e-05,
+            "base_fee_stm" : 1e-05,
             "hash" : "D2C122281EB72E64D19B9654A8D3D0FC4207373D3FE5D91AE516685A58874621",
-            "reserve_base_csc" : 20,
-            "reserve_inc_csc" : 5,
+            "reserve_base_stm" : 20,
+            "reserve_inc_stm" : 5,
             "seq" : 24901185
          },
          "validation_quorum" : 4,
@@ -8941,23 +8941,23 @@ The `info` object may have some arrangement of the following fields:
 
 | `Field`                             | Type                      | Description |
 |:------------------------------------|:--------------------------|:-----------|
-| `build_version`                     | String                    | The version number of the running `casinocoind` version. |
+| `build_version`                     | String                    | The version number of the running `stoxumd` version. |
 | `closed_ledger`                     | Object                    | (May be omitted) Information on the most recently closed ledger that has not been validated by consensus. If the most recently validated ledger is available, the response omits this field and includes `validated_ledger` instead. The member fields are the same as the `validated_ledger` field. |
-| `complete_ledgers`                  | String                    | Range expression indicating the sequence numbers of the ledger versions the local casinocoind has in its database. This may be a disjoint sequence, for example `24900901-24900984,24901116-24901158`. |
-| `hostid`                            | String                    | On an admin request, returns the hostname of the server running the `casinocoind` instance; otherwise, returns a unique four letter word. |
-| `io_latency_ms`                     | Number                    | Amount of time spent waiting for I/O operations, in milliseconds. If this number is not very, very low, then the `casinocoind` server is probably having serious load issues. |
+| `complete_ledgers`                  | String                    | Range expression indicating the sequence numbers of the ledger versions the local stoxumd has in its database. This may be a disjoint sequence, for example `24900901-24900984,24901116-24901158`. |
+| `hostid`                            | String                    | On an admin request, returns the hostname of the server running the `stoxumd` instance; otherwise, returns a unique four letter word. |
+| `io_latency_ms`                     | Number                    | Amount of time spent waiting for I/O operations, in milliseconds. If this number is not very, very low, then the `stoxumd` server is probably having serious load issues. |
 | `last_close`                        | Object                    | Information about the last time the server closed a ledger, including the amount of time it took to reach a consensus and the number of trusted validators participating. |
 | `load`                              | Object                    | _(Admin only)_ Detailed information about the current load state of the server |
 | `load.job_types`                    | Array                     | _(Admin only)_ Information about the rate of different types of jobs the server is doing and how much time it spends on each. |
 | `load.threads`                      | Number                    | _(Admin only)_ The number of threads in the server's main job pool. |
-| `load_factor`                       | Number                    | The load-scaled open ledger transaction cost the server is currently enforcing, as a multiplier on the base transaction cost. For example, at `1000` load factor and a reference transaction cost of 10 drops of CSC, the load-scaled transaction cost is 10,000 drops (0.000001 CSC). The load factor is determined by the highest of the [individual server's load factor](concept-transaction-cost.html#local-load-cost), the cluster's load factor, the [open ledger cost](concept-transaction-cost.html#open-ledger-cost) and the overall network's load factor. |
+| `load_factor`                       | Number                    | The load-scaled open ledger transaction cost the server is currently enforcing, as a multiplier on the base transaction cost. For example, at `1000` load factor and a reference transaction cost of 10 drops of STM, the load-scaled transaction cost is 10,000 drops (0.000001 STM). The load factor is determined by the highest of the [individual server's load factor](concept-transaction-cost.html#local-load-cost), the cluster's load factor, the [open ledger cost](concept-transaction-cost.html#open-ledger-cost) and the overall network's load factor. |
 | `load_factor_local`                 | Number                    | (May be omitted) Current multiplier to the [transaction cost][] based on load to this server. |
 | `load_factor_net`                   | Number                    | (May be omitted) Current multiplier to the [transaction cost][] being used by the rest of the network (estimated from other servers' reported load values). |
-| `load_factor_cluster`               | Number                    | (May be omitted) Current multiplier to the [transaction cost][] based on load to servers in [this cluster](tutorial-casinocoind-setup.html#clustering). |
+| `load_factor_cluster`               | Number                    | (May be omitted) Current multiplier to the [transaction cost][] based on load to servers in [this cluster](tutorial-stoxumd-setup.html#clustering). |
 | `load_factor_fee_escalation`        | Number                    | (May be omitted) The current multiplier to the [transaction cost][] that a transaction must pay to get into the open ledger. |
 | `load_factor_fee_queue`             | Number                    | (May be omitted) The current multiplier to the [transaction cost][] that a transaction must pay to get into the queue, if the queue is full. |
 | `load_factor_server`                | Number                    | (May be omitted) The load factor the server is enforcing, not including the [open ledger cost](concept-transaction-cost.html#open-ledger-cost). |
-| `peers`                             | Number                    | How many other `casinocoind` servers this one is currently connected to. |
+| `peers`                             | Number                    | How many other `stoxumd` servers this one is currently connected to. |
 | `pubkey_node`                       | String                    | Public key used to verify this server for peer-to-peer communications. This key is automatically generated by the server the first time it starts up. (If deleted, the server can create a new pair of keys.) |
 | `pubkey_validator`                  | String                    | _(Admin only)_ Public key used by this node to sign ledger validations. |
 | `server_state`                      | String                    | A string indicating to what extent the server is participating in the network. See [Possible Server States](#possible-server-states) for more details. |
@@ -8967,15 +8967,15 @@ The `info` object may have some arrangement of the following fields:
 | `uptime`                            | Number                    | Number of consecutive seconds that the server has been operational. |
 | `validated_ledger`                  | Object                    | (May be omitted) Information about the most recent fully-validated ledger. If the most recent validated ledger is not available, the response omits this field and includes `closed_ledger` instead. |
 | `validated_ledger.age`              | Number                    | The time since the ledger was closed, in seconds. |
-| `validated_ledger.base_fee_csc`     | Number                    | Base fee, in CSC. This may be represented in scientific notation such as `1e-05` for 0.00005. |
+| `validated_ledger.base_fee_stm`     | Number                    | Base fee, in STM. This may be represented in scientific notation such as `1e-05` for 0.00005. |
 | `validated_ledger.hash`             | String                    | Unique hash for the ledger, as hex |
-| `validated_ledger.reserve_base_csc` | Unsigned Integer          | Minimum amount of CSC (not drops) necessary for every account to keep in reserve |
-| `validated_ledger.reserve_inc_csc`  | Unsigned Integer          | Amount of CSC (not drops) added to the account reserve for each object an account owns in the ledger |
+| `validated_ledger.reserve_base_stm` | Unsigned Integer          | Minimum amount of STM (not drops) necessary for every account to keep in reserve |
+| `validated_ledger.reserve_inc_stm`  | Unsigned Integer          | Amount of STM (not drops) added to the account reserve for each object an account owns in the ledger |
 | `validated_ledger.seq`              | Number - [Ledger Index][] | The ledger index of the latest validate ledger |
 | `validation_quorum`                 | Number                    | Minimum number of trusted validations required to validate a ledger version. Some circumstances may cause the server to require more validations. |
 | `validator_list_expires`            | String                    | _(Admin only)_ Either the human readable time when the current validator list will expire, the string `unknown` if the server has yet to load a published validator list or the string `never` if the server uses a static validator list. |
 
-**Note:** If the `closed_ledger` field is present and has a small `seq` value (less than 8 digits), that indicates `casinocoind` does not currently have a copy of the validated ledger from the peer-to-peer network. This could mean your server is still syncing. Typically, it takes about 5 minutes to sync with the network, depending on your connection speed and hardware specs.
+**Note:** If the `closed_ledger` field is present and has a small `seq` value (less than 8 digits), that indicates `stoxumd` does not currently have a copy of the validated ledger from the peer-to-peer network. This could mean your server is still syncing. Typically, it takes about 5 minutes to sync with the network, depending on your connection speed and hardware specs.
 
 [transaction cost]: concept-transaction-cost.html
 
@@ -8986,9 +8986,9 @@ The `info` object may have some arrangement of the following fields:
 
 
 ## server_state
-[[Source]<br>](https://github.com/casinocoin/casinocoind/blob/master/src/casinocoin/rpc/handlers/ServerState.cpp "Source")
+[[Source]<br>](https://github.com/stoxum/stoxumd/src/stoxum/rpc/handlers/ServerState.cpp "Source")
 
-The `server_state` command asks the server for various machine-readable information about the `casinocoind` server's current state. The results are almost the same as [`server_info`](#server-info), but using units that are easier to process instead of easier to read. (For example, CSC values are given in integer drops instead of scientific notation or decimal values, and time is given in milliseconds instead of seconds.)
+The `server_state` command asks the server for various machine-readable information about the `stoxumd` server's current state. The results are almost the same as [`server_info`](#server-info), but using units that are easier to process instead of easier to read. (For example, STM values are given in integer drops instead of scientific notation or decimal values, and time is given in milliseconds instead of seconds.)
 
 #### Request Format
 An example of the request format:
@@ -9019,12 +9019,12 @@ An example of the request format:
 
 ```
 #Syntax: server_state
-casinocoind server_state
+stoxumd server_state
 ```
 
 <!-- MULTICODE_BLOCK_END -->
 
-[Try it! >](casinocoin-api-tool.html#server_state)
+[Try it! >](stoxum-api-tool.html#server_state)
 
 The request does not takes any parameters.
 
@@ -9237,10 +9237,10 @@ The `state` object may have some arrangement of the following fields:
 
 | `Field`                          | Type             | Description            |
 |:---------------------------------|:-----------------|:-----------------------|
-| `build_version`                  | String           | The version number of the running `casinocoind` version. |
-| `complete_ledgers`               | String           | Range expression indicating the sequence numbers of the ledger versions the local `casinocoind` has in its database. It is possible to be a disjoint sequence, e.g. "2500-5000,32570-7695432". |
+| `build_version`                  | String           | The version number of the running `stoxumd` version. |
+| `complete_ledgers`               | String           | Range expression indicating the sequence numbers of the ledger versions the local `stoxumd` has in its database. It is possible to be a disjoint sequence, e.g. "2500-5000,32570-7695432". |
 | `closed_ledger`                  | Object           | (May be omitted) Information on the most recently closed ledger that has not been validated by consensus. If the most recently validated ledger is available, the response omits this field and includes `validated_ledger` instead. The member fields are the same as the `validated_ledger` field. |
-| `io_latency_ms`                  | Number           | Amount of time spent waiting for I/O operations, in milliseconds. If this number is not very, very low, then the `casinocoind` server is probably having serious load issues. |
+| `io_latency_ms`                  | Number           | Amount of time spent waiting for I/O operations, in milliseconds. If this number is not very, very low, then the `stoxumd` server is probably having serious load issues. |
 | `load`                           | Object           | _(Admin only)_ Detailed information about the current load state of the server |
 | `load.job_types`                 | Array            | _(Admin only)_ Information about the rate of different types of jobs the server is doing and how much time it spends on each. |
 | `load.threads`                   | Number           | _(Admin only)_ The number of threads in the server's main job pool. |
@@ -9250,7 +9250,7 @@ The `state` object may have some arrangement of the following fields:
 | `load_factor_fee_queue`          | Integer          | (May be omitted) The current multiplier to the [transaction cost][] to get into the queue, if the queue is full, in [fee levels][]. |
 | `load_factor_fee_reference`      | Integer          | (May be omitted) The [transaction cost][] with no load scaling, in [fee levels][]. |
 | `load_factor_server`             | Number           | (May be omitted) The load factor the server is enforcing, not including the [open ledger cost](concept-transaction-cost.html#open-ledger-cost). |
-| `peers`                          | Number           | How many other `casinocoind` servers this one is currently connected to. |
+| `peers`                          | Number           | How many other `stoxumd` servers this one is currently connected to. |
 | `pubkey_node`                    | String           | Public key used to verify this server for peer-to-peer communications. This key pair is automatically generated by the server the first time it starts up. (If deleted, the server can create a new pair of keys.) |
 | `pubkey_validator`               | String           | _(Admin only)_ Public key of the keypair used by this server to sign proposed ledgers for validation. |
 | `server_state`                   | String           | A string indicating to what extent the server is participating in the network. See [Possible Server States](#possible-server-states) for more details. |
@@ -9259,14 +9259,14 @@ The `state` object may have some arrangement of the following fields:
 | `state_accounting.*.transitions` | Number           | The number of times the server has transitioned into this state. |
 | `uptime`                         | Number           | Number of consecutive seconds that the server has been operational. |
 | `validated_ledger`               | Object           | (May be omitted) Information about the most recent fully-validated ledger. If the most recent validated ledger is not available, the response omits this field and includes `closed_ledger` instead. |
-| `validated_ledger.base_fee`      | Unsigned Integer | Base fee, in drops of CSC, for propagating a transaction to the network. |
-| `validated_ledger.close_time`    | Number           | Time this ledger was closed, in seconds since the [CasinoCoin Epoch](#specifying-time) |
+| `validated_ledger.base_fee`      | Unsigned Integer | Base fee, in drops of STM, for propagating a transaction to the network. |
+| `validated_ledger.close_time`    | Number           | Time this ledger was closed, in seconds since the [Stoxum Epoch](#specifying-time) |
 | `validated_ledger.hash`          | String           | Unique hash of this ledger version, as hex |
-| `validated_ledger.reserve_base`  | Unsigned Integer | Minimum amount, in drops of CSC, necessary for every account to keep in reserve |
-| `validated_ledger.reserve_inc`   | Unsigned Integer | Amount, in drops of CSC, that is added to the account reserve for each item the account owns in the ledger. |
+| `validated_ledger.reserve_base`  | Unsigned Integer | Minimum amount, in drops of STM, necessary for every account to keep in reserve |
+| `validated_ledger.reserve_inc`   | Unsigned Integer | Amount, in drops of STM, that is added to the account reserve for each item the account owns in the ledger. |
 | `validated_ledger.seq`           | Unsigned Integer | Unique sequence number of this ledger |
 | `validation_quorum`              | Number           | Minimum number of trusted validations required to validate a ledger version. Some circumstances may cause the server to require more validations. |
-| `validator_list_expires`         | Number           | _(Admin only)_ When the current validator list will expire, in seconds since the [CasinoCoin Epoch](#specifying-time), or 0 if the server has yet to load a published validator list. |
+| `validator_list_expires`         | Number           | _(Admin only)_ When the current validator list will expire, in seconds since the [Stoxum Epoch](#specifying-time), or 0 if the server has yet to load a published validator list. |
 
 [fee levels]: concept-transaction-cost.html#fee-levels
 
@@ -9276,11 +9276,11 @@ The `state` object may have some arrangement of the following fields:
 
 
 ## can_delete
-[[Source]<br>](https://github.com/casinocoin/casinocoind/blob/develop/src/casinocoin/rpc/handlers/CanDelete.cpp "Source")
+[[Source]<br>](https://github.com/stoxum/stoxumd/blob/develop/src/stoxum/rpc/handlers/CanDelete.cpp "Source")
 
-With `online_delete` and `advisory_delete` configuration options enabled, the `can_delete` method informs the casinocoind server of the latest ledger which may be deleted.
+With `online_delete` and `advisory_delete` configuration options enabled, the `can_delete` method informs the stoxumd server of the latest ledger which may be deleted.
 
-_The `can_delete` method is an [admin command](#connecting-to-casinocoind) that cannot be run by unprivileged users._
+_The `can_delete` method is an [admin command](#connecting-to-stoxumd) that cannot be run by unprivileged users._
 
 #### Request Format
 
@@ -9315,7 +9315,7 @@ An example of the request format:
 
 ```
 #Syntax can_delete [<ledger_index>|<ledger_hash>|now|always|never]
-casinocoind can_delete 11320417
+stoxumd can_delete 11320417
 ```
 
 <!-- MULTICODE_BLOCK_END -->
@@ -9347,11 +9347,11 @@ Use this command with no parameter to query the existing `can_delete` setting.
 
 
 ## consensus_info
-[[Source]<br>](https://github.com/casinocoin/casinocoind/blob/4.0.1/src/casinocoin/rpc/handlers/ConsensusInfo.cpp "Source")
+[[Source]<br>](https://github.com/stoxum/stoxumd/src/stoxum/rpc/handlers/ConsensusInfo.cpp "Source")
 
 The `consensus_info` command provides information about the consensus process for debugging purposes.
 
-_The `consensus_info` method is an [admin command](#connecting-to-casinocoind) that cannot be run by unprivileged users._
+_The `consensus_info` method is an [admin command](#connecting-to-stoxumd) that cannot be run by unprivileged users._
 
 #### Request Format
 An example of the request format:
@@ -9382,7 +9382,7 @@ An example of the request format:
 
 ```
 #Syntax: consensus_info
-casinocoind consensus_info
+stoxumd consensus_info
 ```
 
 <!-- MULTICODE_BLOCK_END -->
@@ -9473,7 +9473,7 @@ An example of a successful response:
 *Commandline*
 
 ```
-Loading: "/etc/casinocoind.cfg"
+Loading: "/etc/stoxumd.cfg"
 Connecting to 127.0.0.1:5005
 {
    "result" : {
@@ -9577,11 +9577,11 @@ The results of the `consensus_info` command can vary dramatically if you run it 
 
 
 ## fetch_info
-[[Source]<br>](https://github.com/casinocoin/casinocoind/blob/4.0.1/src/casinocoin/rpc/handlers/FetchInfo.cpp "Source")
+[[Source]<br>](https://github.com/stoxum/stoxumd/src/stoxum/rpc/handlers/FetchInfo.cpp "Source")
 
 The `fetch_info` command returns information about objects that this server is currently fetching from the network, and how many peers have that information. It can also be used to reset current fetches.
 
-_The `fetch_info` method is an [admin command](#connecting-to-casinocoind) that cannot be run by unprivileged users._
+_The `fetch_info` method is an [admin command](#connecting-to-stoxumd) that cannot be run by unprivileged users._
 
 #### Request Format
 An example of the request format:
@@ -9615,7 +9615,7 @@ An example of the request format:
 
 ```
 #Syntax: fetch_info [clear]
-casinocoind fetch_info
+stoxumd fetch_info
 ```
 
 <!-- MULTICODE_BLOCK_END -->
@@ -9673,7 +9673,7 @@ An example of a successful response:
 *Commandline*
 
 ```
-Loading: "/etc/casinocoind.cfg"
+Loading: "/etc/stoxumd.cfg"
 Connecting to 127.0.0.1:5005
 {
    "result" : {
@@ -9735,13 +9735,13 @@ The fields describing a fetch in progress are subject to change without notice. 
 
 
 ## feature
-[[Source]<br>](https://github.com/casinocoin/casinocoind/blob/develop/src/casinocoin/rpc/handlers/Feature1.cpp "Source")
+[[Source]<br>](https://github.com/stoxum/stoxumd/blob/develop/src/stoxum/rpc/handlers/Feature1.cpp "Source")
 
 The `feature` command returns information about [amendments](concept-amendments.html) this server knows about, including whether they are enabled and whether the server is voting in favor of those amendments in the [amendment process](concept-amendments.html#amendment-process).
 
-You can use the `feature` command to temporarily configure the server to vote against or in favor of an amendment. This change does not persist if you restart the server. To make lasting changes in amendment voting, use the `casinocoind.cfg` file. See [Configuring Amendment Voting](concept-amendments.html#configuring-amendment-voting) for more information.
+You can use the `feature` command to temporarily configure the server to vote against or in favor of an amendment. This change does not persist if you restart the server. To make lasting changes in amendment voting, use the `stoxumd.cfg` file. See [Configuring Amendment Voting](concept-amendments.html#configuring-amendment-voting) for more information.
 
-_The `feature` method is an [admin command](#connecting-to-casinocoind) that cannot be run by unprivileged users._
+_The `feature` method is an [admin command](#connecting-to-stoxumd) that cannot be run by unprivileged users._
 
 #### Request Format
 An example of the request format:
@@ -9786,7 +9786,7 @@ An example of the request format:
 
 ```
 #Syntax: feature [<feature_id> [accept|reject]]
-casinocoind feature 4C97EBA926031A7CF7D7B36FDE3ED66DDA5421192D63DE53FFB46E43B9DC8373 accept
+stoxumd feature 4C97EBA926031A7CF7D7B36FDE3ED66DDA5421192D63DE53FFB46E43B9DC8373 accept
 ```
 
 <!-- MULTICODE_BLOCK_END -->
@@ -9798,7 +9798,7 @@ The request includes the following parameters:
 | `feature` | String  | _(Optional)_ The unique ID of an amendment, as hexadecimal; or the short name of the amendment. If provided, limits the response to one amendment. Otherwise, the response lists all amendments. |
 | `vetoed`  | Boolean | (Optional; ignored unless `feature` also specified) If true, instructs the server to vote against the amendment specified by `feature`. If false, instructs the server to vote in favor of the amendment. |
 
-**Note:** You can configure your server to vote in favor of a new amendment, even if the server does not currently know how to apply that amendment, by specifying the amendment ID in the `feature` field. For example, you might want to do this if you plan to upgrade soon to a new `casinocoind` version that _does_ support the amendment.
+**Note:** You can configure your server to vote in favor of a new amendment, even if the server does not currently know how to apply that amendment, by specifying the amendment ID in the `feature` field. For example, you might want to do this if you plan to upgrade soon to a new `stoxumd` version that _does_ support the amendment.
 
 #### Response Format
 
@@ -9890,7 +9890,7 @@ An example of a successful response:
 *Commandline*
 
 ```
-Loading: "/etc/casinocoind.cfg"
+Loading: "/etc/stoxumd.cfg"
 Connecting to 127.0.0.1:5005
 {
     "result": {
@@ -9926,7 +9926,7 @@ The response follows the [standard format](#response-formatting), with a success
 
 
 ## fee
-[[Source]<br>](https://github.com/casinocoin/casinocoind/blob/master/src/casinocoin/rpc/handlers/Fee1.cpp "Source")
+[[Source]<br>](https://github.com/stoxum/stoxumd/src/stoxum/rpc/handlers/Fee1.cpp "Source")
 
 The `fee` command reports the current state of the open-ledger requirements for the [transaction cost](concept-transaction-cost.html). This requires the [FeeEscalation amendment](reference-amendments.html#feeescalation) to be enabled.
 
@@ -9959,7 +9959,7 @@ An example of the request format:
 
 ```
 #Syntax: fee
-casinocoind fee
+stoxumd fee
 ```
 
 <!-- MULTICODE_BLOCK_END -->
@@ -10032,7 +10032,7 @@ An example of a successful response:
 *Commandline*
 
 ```
-Loading: "/etc/casinocoind.cfg"
+Loading: "/etc/stoxumd.cfg"
 Connecting to 127.0.0.1:5005
 {
    "result" : {
@@ -10066,11 +10066,11 @@ The response follows the [standard format](#response-formatting), with a success
 |:---------------------------|:-----------------|:-----------------------------|
 | `current_ledger_size`      | String (Integer) | Number of transactions provisionally included in the in-progress ledger. |
 | `current_queue_size`       | String (Integer) | Number of transactions currently queued for the next ledger. |
-| `drops`                    | Object           | Various information about the transaction cost (the `Fee` field of a transaction), in [drops of csc](#specifying-currency-amounts). |
-| `drops.base_fee`           | String (Integer) | The transaction cost required for a [reference transaction](concept-transaction-cost.html#reference-transaction-cost) to be included in a ledger under minimum load, represented in drops of CSC. |
-| `drops.median_fee`         | String (Integer) | An approximation of the median transaction cost among transactions included in the previous validated ledger, represented in drops of CSC. |
-| `drops.minimum_fee`        | String (Integer) | The minimum transaction cost for a [reference transaction](concept-transaction-cost.html#reference-transaction-cost) to be queued for a later ledger, represented in drops of CSC. If greater than `base_fee`, the transaction queue is full. |
-| `drops.open_ledger_fee`    | String (Integer) | The minimum transaction cost that a [reference transaction](concept-transaction-cost.html#reference-transaction-cost) must pay to be included in the current open ledger, represented in drops of CSC. |
+| `drops`                    | Object           | Various information about the transaction cost (the `Fee` field of a transaction), in [drops of stm](#specifying-currency-amounts). |
+| `drops.base_fee`           | String (Integer) | The transaction cost required for a [reference transaction](concept-transaction-cost.html#reference-transaction-cost) to be included in a ledger under minimum load, represented in drops of STM. |
+| `drops.median_fee`         | String (Integer) | An approximation of the median transaction cost among transactions included in the previous validated ledger, represented in drops of STM. |
+| `drops.minimum_fee`        | String (Integer) | The minimum transaction cost for a [reference transaction](concept-transaction-cost.html#reference-transaction-cost) to be queued for a later ledger, represented in drops of STM. If greater than `base_fee`, the transaction queue is full. |
+| `drops.open_ledger_fee`    | String (Integer) | The minimum transaction cost that a [reference transaction](concept-transaction-cost.html#reference-transaction-cost) must pay to be included in the current open ledger, represented in drops of STM. |
 | `expected_ledger_size`     | String (Integer) | The approximate number of transactions expected to be included in the current ledger. This is based on the number of transactions in the previous ledger. |
 | `ledger_current_index`     | Number           | The [Ledger Index][] of the current open ledger these stats describe. |
 | `levels`                   | Object           | Various information about the transaction cost, in [fee levels][]. The ratio in fee levels applies to any transaction relative to the minimum cost of that particular transaction. |
@@ -10087,11 +10087,11 @@ The response follows the [standard format](#response-formatting), with a success
 
 
 ## get_counts
-[[Source]<br>](https://github.com/casinocoin/casinocoind/blob/4.0.1/src/casinocoin/rpc/handlers/GetCounts.cpp "Source")
+[[Source]<br>](https://github.com/stoxum/stoxumd/src/stoxum/rpc/handlers/GetCounts.cpp "Source")
 
 The `get_counts` command provides various stats about the health of the server, mostly the number of objects of different types that it currently holds in memory.
 
-_The `get_counts` method is an [admin command](#connecting-to-casinocoind) that cannot be run by unprivileged users._
+_The `get_counts` method is an [admin command](#connecting-to-stoxumd) that cannot be run by unprivileged users._
 
 #### Request Format
 An example of the request format:
@@ -10125,7 +10125,7 @@ An example of the request format:
 
 ```
 #Syntax: get_counts [min_count]
-casinocoind get_counts 100
+stoxumd get_counts 100
 ```
 
 <!-- MULTICODE_BLOCK_END -->
@@ -10182,7 +10182,7 @@ An example of a successful response:
 *Commandline*
 
 ```
-Loading: "/etc/casinocoind.cfg"
+Loading: "/etc/stoxumd.cfg"
 Connecting to 127.0.0.1:5005
 {
    "result" : {
@@ -10237,11 +10237,11 @@ For most other entries, the value indicates the number of objects of that type c
 
 
 ## ledger_cleaner
-[[Source]<br>](https://github.com/casinocoin/casinocoind/blob/4.0.1/src/casinocoin/rpc/handlers/LedgerCleaner.cpp "Source")
+[[Source]<br>](https://github.com/stoxum/stoxumd/src/stoxum/rpc/handlers/LedgerCleaner.cpp "Source")
 
-The `ledger_cleaner` command controls the [Ledger Cleaner](https://github.com/casinocoin/casinocoind/blob/4.0.1/src/casinocoin/app/ledger/README.md#the-ledger-cleaner), an asynchronous maintenance process that can find and repair corruption in `casinocoind`'s database of ledgers.
+The `ledger_cleaner` command controls the [Ledger Cleaner](https://github.com/stoxum/stoxumd/src/stoxum/app/ledger/README.md#the-ledger-cleaner), an asynchronous maintenance process that can find and repair corruption in `stoxumd`'s database of ledgers.
 
-_The `ledger_cleaner` method is an [admin command](#connecting-to-casinocoind) that cannot be run by unprivileged users._
+_The `ledger_cleaner` method is an [admin command](#connecting-to-stoxumd) that cannot be run by unprivileged users._
 
 #### Request Format
 An example of the request format:
@@ -10307,11 +10307,11 @@ The response follows the [standard format](#response-formatting), with a success
 
 
 ## log_level
-[[Source]<br>](https://github.com/casinocoin/casinocoind/blob/4.0.1/src/casinocoin/rpc/handlers/LogLevel.cpp "Source")
+[[Source]<br>](https://github.com/stoxum/stoxumd/src/stoxum/rpc/handlers/LogLevel.cpp "Source")
 
-The `log_level` command changes the `casinocoind` server's logging verbosity, or returns the current logging level for each category (called a _partition_) of log messages.
+The `log_level` command changes the `stoxumd` server's logging verbosity, or returns the current logging level for each category (called a _partition_) of log messages.
 
-_The `log_level` method is an [admin command](#connecting-to-casinocoind) that cannot be run by unprivileged users._
+_The `log_level` method is an [admin command](#connecting-to-stoxumd) that cannot be run by unprivileged users._
 
 #### Request Format
 An example of the request format:
@@ -10333,7 +10333,7 @@ An example of the request format:
 
 ```
 #Syntax: log_level [[partition] severity]
-casinocoind log_level PathRequest debug
+stoxumd log_level PathRequest debug
 ```
 
 <!-- MULTICODE_BLOCK_END -->
@@ -10354,7 +10354,7 @@ Examples of successful responses:
 *Commandline (set log level)*
 
 ```
-Loading: "/etc/casinocoind.cfg"
+Loading: "/etc/stoxumd.cfg"
 Connecting to 127.0.0.1:5005
 {
    "result" : {
@@ -10366,7 +10366,7 @@ Connecting to 127.0.0.1:5005
 *Commandline (check log levels)*
 
 ```
-Loading: "/etc/casinocoind.cfg"
+Loading: "/etc/stoxumd.cfg"
 Connecting to 127.0.0.1:5005
 {
    "result" : {
@@ -10403,7 +10403,7 @@ Connecting to 127.0.0.1:5005
          "RPCManager" : "Error",
          "Resolver" : "Error",
          "Resource" : "Error",
-         "CasinocoinCalc" : "Error",
+         "StoxumCalc" : "Error",
          "SHAMap" : "Error",
          "SHAMapStore" : "Error",
          "SNTPClient" : "Error",
@@ -10444,11 +10444,11 @@ Otherwise, the request contains the following field:
 
 
 ## logrotate
-[[Source]<br>](https://github.com/casinocoin/casinocoind/blob/4.0.1/src/casinocoin/rpc/handlers/LogRotate.cpp "Source")
+[[Source]<br>](https://github.com/stoxum/stoxumd/src/stoxum/rpc/handlers/LogRotate.cpp "Source")
 
 The `logrotate` command closes and reopens the log file. This is intended to help with log rotation on Linux file systems.
 
-_The `logrotate` method is an [admin command](#connecting-to-casinocoind) that cannot be run by unprivileged users._
+_The `logrotate` method is an [admin command](#connecting-to-stoxumd) that cannot be run by unprivileged users._
 
 #### Request Format
 An example of the request format:
@@ -10467,7 +10467,7 @@ An example of the request format:
 *Commandline*
 
 ```
-casinocoind logrotate
+stoxumd logrotate
 ```
 
 <!-- MULTICODE_BLOCK_END -->
@@ -10496,7 +10496,7 @@ An example of a successful response:
 *Commandline*
 
 ```
-Loading: "/etc/casinocoind.cfg"
+Loading: "/etc/stoxumd.cfg"
 Connecting to 127.0.0.1:5005
 {
    "result" : {
@@ -10521,11 +10521,11 @@ The response follows the [standard format](#response-formatting), with a success
 
 
 ## validation_create
-[[Source]<br>](https://github.com/casinocoin/casinocoind/blob/4.0.1/src/casinocoin/rpc/handlers/ValidationCreate.cpp "Source")
+[[Source]<br>](https://github.com/stoxum/stoxumd/src/stoxum/rpc/handlers/ValidationCreate.cpp "Source")
 
-Use the `validation_create` command to generate the keys for a casinocoind [validator](tutorial-casinocoind-setup.html#validator-setup). Similar to the [wallet_propose](#wallet-propose) command, this command makes no real changes, but only generates a set of keys in the proper format.
+Use the `validation_create` command to generate the keys for a stoxumd [validator](tutorial-stoxumd-setup.html#validator-setup). Similar to the [wallet_propose](#wallet-propose) command, this command makes no real changes, but only generates a set of keys in the proper format.
 
-_The `validation_create` method is an [admin command](#connecting-to-casinocoind) that cannot be run by unprivileged users._
+_The `validation_create` method is an [admin command](#connecting-to-stoxumd) that cannot be run by unprivileged users._
 
 #### Request Format
 An example of the request format:
@@ -10559,7 +10559,7 @@ An example of the request format:
 
 ```
 #Syntax: validation_create [secret]
-casinocoind validation_create "BAWL MAN JADE MOON DOVE GEM SON NOW HAD ADEN GLOW TIRE"
+stoxumd validation_create "BAWL MAN JADE MOON DOVE GEM SON NOW HAD ADEN GLOW TIRE"
 ```
 
 <!-- MULTICODE_BLOCK_END -->
@@ -10568,9 +10568,9 @@ The request includes the following parameters:
 
 | `Field`  | Type   | Description                                              |
 |:---------|:-------|:---------------------------------------------------------|
-| `secret` | String | _(Optional)_ Use this value as a seed to generate the credentials. The same secret always generates the same credentials. You can provide the seed in [RFC-1751](https://tools.ietf.org/html/rfc1751) format or CasinoCoin's [base58][] format. If omitted, generate a random seed. |
+| `secret` | String | _(Optional)_ Use this value as a seed to generate the credentials. The same secret always generates the same credentials. You can provide the seed in [RFC-1751](https://tools.ietf.org/html/rfc1751) format or Stoxum's [base58][] format. If omitted, generate a random seed. |
 
-**Note:** The security of your validator depends on the entropy of your seed. Do not use a secret value for real business purposes unless it is generated with a strong source of randomness. CasinoCoin recommends omitting the `secret` when generating new credentials for the first time.
+**Note:** The security of your validator depends on the entropy of your seed. Do not use a secret value for real business purposes unless it is generated with a strong source of randomness. Stoxum recommends omitting the `secret` when generating new credentials for the first time.
 
 #### Response Format
 
@@ -10594,7 +10594,7 @@ An example of a successful response:
 *Commandline*
 
 ```
-Loading: "/etc/casinocoind.cfg"
+Loading: "/etc/stoxumd.cfg"
 Connecting to 127.0.0.1:5005
 {
    "result" : {
@@ -10613,8 +10613,8 @@ The response follows the [standard format](#response-formatting), with a success
 | `Field`                 | Type   | Description                               |
 |:------------------------|:-------|:------------------------------------------|
 | `validation_key`        | String | The secret key for these validation credentials, in [RFC-1751](https://tools.ietf.org/html/rfc1751) format. |
-| `validation_public_key` | String | The public key for these validation credentials, in CasinoCoin's [base58][] encoded string format. |
-| `validation_seed`       | String | The secret key for these validation credentials, in CasinoCoin's [base58][] encoded string format. |
+| `validation_public_key` | String | The public key for these validation credentials, in Stoxum's [base58][] encoded string format. |
+| `validation_seed`       | String | The secret key for these validation credentials, in Stoxum's [base58][] encoded string format. |
 
 #### Possible Errors
 
@@ -10623,11 +10623,11 @@ The response follows the [standard format](#response-formatting), with a success
 
 
 ## validation_seed
-[[Source]<br>](https://github.com/casinocoin/casinocoind/blob/4.0.1/src/casinocoin/rpc/handlers/ValidationSeed.cpp "Source")
+[[Source]<br>](https://github.com/stoxum/stoxumd/src/stoxum/rpc/handlers/ValidationSeed.cpp "Source")
 
-The `validation_seed` command temporarily sets the secret value that casinocoind uses to sign validations. This value resets based on the config file when you restart the server.
+The `validation_seed` command temporarily sets the secret value that stoxumd uses to sign validations. This value resets based on the config file when you restart the server.
 
-*The `validation_seed` request is an [admin command](#connecting-to-casinocoind) that cannot be run by unprivileged users!*
+*The `validation_seed` request is an [admin command](#connecting-to-stoxumd) that cannot be run by unprivileged users!*
 
 #### Request Format
 An example of the request format:
@@ -10648,7 +10648,7 @@ An example of the request format:
 
 ```
 #Syntax: validation_seed [secret]
-casinocoind validation_seed 'BAWL MAN JADE MOON DOVE GEM SON NOW HAD ADEN GLOW TIRE'
+stoxumd validation_seed 'BAWL MAN JADE MOON DOVE GEM SON NOW HAD ADEN GLOW TIRE'
 ```
 
 <!-- MULTICODE_BLOCK_END -->
@@ -10682,7 +10682,7 @@ An example of a successful response:
 *Commandline*
 
 ```
-Loading: "/etc/casinocoind.cfg"
+Loading: "/etc/stoxumd.cfg"
 Connecting to 127.0.0.1:5005
 {
    "result" : {
@@ -10701,8 +10701,8 @@ The response follows the [standard format](#response-formatting), with a success
 | `Field`                 | Type   | Description                               |
 |:------------------------|:-------|:------------------------------------------|
 | `validation_key`        | String | (Omitted if proposing disabled) The secret key for these validation credentials, in [RFC-1751](https://tools.ietf.org/html/rfc1751) format. |
-| `validation_public_key` | String | (Omitted if proposing disabled) The public key for these validation credentials, in CasinoCoin's [base58][] encoded string format. |
-| `validation_seed`       | String | (Omitted if proposing disabled) The secret key for these validation credentials, in CasinoCoin's [base58][] encoded string format. |
+| `validation_public_key` | String | (Omitted if proposing disabled) The public key for these validation credentials, in Stoxum's [base58][] encoded string format. |
+| `validation_seed`       | String | (Omitted if proposing disabled) The secret key for these validation credentials, in Stoxum's [base58][] encoded string format. |
 
 #### Possible Errors
 
@@ -10710,11 +10710,11 @@ The response follows the [standard format](#response-formatting), with a success
 * `badSeed` - The request provided an invalid secret value. This usually means that the secret value appears to be a valid string of a different format, such as an account address or validation public key.
 
 ## validators
-[[Source]<br>](https://github.com/casinocoin/casinocoind/blob/master/src/casinocoin/rpc/handlers/Validators.cpp "Source")
+[[Source]<br>](https://github.com/stoxum/stoxumd/src/stoxum/rpc/handlers/Validators.cpp "Source")
 
 The `validators` command returns human readable information about the current list of published and trusted validators used by the server.
 
-*The `validators` request is an [admin command](#connecting-to-casinocoind) that cannot be run by unprivileged users!*
+*The `validators` request is an [admin command](#connecting-to-stoxumd) that cannot be run by unprivileged users!*
 
 #### Request Format
 An example of the request format:
@@ -10745,7 +10745,7 @@ An example of the request format:
 
 ```
 #Syntax: validators
-casinocoind validators
+stoxumd validators
 ```
 
 <!-- MULTICODE_BLOCK_END -->
@@ -10828,7 +10828,7 @@ An example of a successful response:
 *Commandline*
 
 ```
-Loading: "/etc/casinocoind.cfg"
+Loading: "/etc/stoxumd.cfg"
 Connecting to 127.0.0.1:5005
 {
     "result":{
@@ -10889,11 +10889,11 @@ Each member of the `publisher_lists` array is an object with the following field
 
 
 ## validator_list_sites
-[[Source]<br>](https://github.com/casinocoin/casinocoind/blob/master/src/casinocoin/rpc/handlers/ValidatorListSites.cpp "Source")
+[[Source]<br>](https://github.com/stoxum/stoxumd/src/stoxum/rpc/handlers/ValidatorListSites.cpp "Source")
 
 The `validator_list_sites` command returns status information of sites serving validator lists.
 
-*The `validator_list_sites` request is an [admin command](#connecting-to-casinocoind) that cannot be run by unprivileged users!*
+*The `validator_list_sites` request is an [admin command](#connecting-to-stoxumd) that cannot be run by unprivileged users!*
 
 #### Request Format
 An example of the request format:
@@ -10924,7 +10924,7 @@ An example of the request format:
 
 ```
 #Syntax: validator_list_sites
-casinocoind validator_list_sites
+stoxumd validator_list_sites
 ```
 
 <!-- MULTICODE_BLOCK_END -->
@@ -10980,7 +10980,7 @@ An example of a successful response:
 *Commandline*
 
 ```
-Loading: "/etc/casinocoind.cfg"
+Loading: "/etc/stoxumd.cfg"
 Connecting to 127.0.0.1:5005
 {
     "result": {
@@ -11009,7 +11009,7 @@ Each member of the `validator_sites` field array is an object with the following
 
 | `Field`                | Type             | Description                     |
 |:-----------------------|:-----------------|:--------------------------------|
-| `last_refresh_status`  | String           | If present, the[`ListDisposition`](https://github.com/casinocoin/casinocoind/blob/master/src/casinocoin/app/misc/ValidatorList.h) of the most recent refresh of the site. If missing, the site has not yet been succesfully queried. |
+| `last_refresh_status`  | String           | If present, the[`ListDisposition`](https://github.com/stoxum/stoxumd/src/stoxum/app/misc/ValidatorList.h) of the most recent refresh of the site. If missing, the site has not yet been succesfully queried. |
 | `last_refresh_time`    | String           | Human readable time when the site was last queried. If missing, the site has not yet been succesfully queried. |
 | `refresh_interval_min` | Unsigned Integer | The number of minutes between refresh attempts. |
 | `uri`                  | String           | The URI of the site. |
@@ -11020,11 +11020,11 @@ Each member of the `validator_sites` field array is an object with the following
 
 
 ## peers
-[[Source]<br>](https://github.com/casinocoin/casinocoind/blob/4.0.1/src/casinocoin/rpc/handlers/Peers.cpp "Source")
+[[Source]<br>](https://github.com/stoxum/stoxumd/src/stoxum/rpc/handlers/Peers.cpp "Source")
 
-The `peers` command returns a list of all other `casinocoind` servers currently connected to this one, including information on their connection and sync status.
+The `peers` command returns a list of all other `stoxumd` servers currently connected to this one, including information on their connection and sync status.
 
-*The `peers` request is an [admin command](#connecting-to-casinocoind) that cannot be run by unprivileged users!*
+*The `peers` request is an [admin command](#connecting-to-stoxumd) that cannot be run by unprivileged users!*
 
 #### Request Format
 An example of the request format:
@@ -11043,7 +11043,7 @@ An example of the request format:
 *Commandline*
 
 ```
-casinocoind peers
+stoxumd peers
 ```
 
 <!-- MULTICODE_BLOCK_END -->
@@ -11074,7 +11074,7 @@ An example of a successful response:
         "load": 54,
         "public_key": "n9KNYm52mgcUQ7R2RA4kyw9Nk1yc6S35PaiuyqjYsy6UjhCXpw12",
         "uptime": 55036,
-        "version": "casinocoind-0.30.0-hf1"
+        "version": "stoxumd-0.30.0-hf1"
       },
       {
         "address": "54.186.248.91:51235",
@@ -11084,7 +11084,7 @@ An example of a successful response:
         "load": 62,
         "public_key": "n9MT5EjnV912KGuBUqPs4tpdhzMPGcnDBrTuWkD9sWQHJ1kDcUcz",
         "uptime": 83814,
-        "version": "casinocoind-0.30.1"
+        "version": "stoxumd-0.30.1"
       },
       {
         "address": "54.84.21.230:51235",
@@ -11094,7 +11094,7 @@ An example of a successful response:
         "load": 60,
         "public_key": "n9KJb7NMxGySRcjCqh69xEPMUhwJx22qntYYXsnUqYgjsJhNoW7g",
         "uptime": 99625,
-        "version": "casinocoind-0.30.1"
+        "version": "stoxumd-0.30.1"
       },
       {
         "address": "72.251.233.162:51235",
@@ -11104,7 +11104,7 @@ An example of a successful response:
         "load": 66,
         "public_key": "n9M8RSk6hrvXZKFQ6CxPbJsjt73xW1xsnjn7G69VAMbE2j4sBQNQ",
         "uptime": 99619,
-        "version": "casinocoind-0.30.1"
+        "version": "stoxumd-0.30.1"
       },
       {
         "address": "162.217.98.136:51235",
@@ -11114,7 +11114,7 @@ An example of a successful response:
         "load": 69,
         "public_key": "n944PcXEoZaiEHnwFD92xA4bxsS7jjYb27WcdDQwkHYyk1MWTEsX",
         "uptime": 99625,
-        "version": "casinocoind-0.30.1"
+        "version": "stoxumd-0.30.1"
       },
       {
         "address": "72.251.233.163:51235",
@@ -11124,7 +11124,7 @@ An example of a successful response:
         "load": 61,
         "public_key": "n94ne2Z5dX8qcJNa8cPtAbtn21gEaCoEduS8TwdGAhi1iLfCUMDm",
         "uptime": 99625,
-        "version": "casinocoind-0.30.1"
+        "version": "stoxumd-0.30.1"
       },
       {
         "address": "54.186.73.52:51235",
@@ -11134,7 +11134,7 @@ An example of a successful response:
         "load": 60,
         "public_key": "n9JySgyBVcQKvyDoeRKg7s2Mm6ZcFHk22vUZb3o1HSosWxcj9xPt",
         "uptime": 99625,
-        "version": "casinocoind-0.30.1"
+        "version": "stoxumd-0.30.1"
       },
       {
         "address": "72.251.233.165:51235",
@@ -11144,7 +11144,7 @@ An example of a successful response:
         "load": 63,
         "public_key": "n9M77Uc9CSaSFZqt5V7sxPR4kFwbha7hwUFBD5v5kZt2SQjBeoDs",
         "uptime": 99625,
-        "version": "casinocoind-0.30.1"
+        "version": "stoxumd-0.30.1"
       },
       {
         "address": "72.251.232.173:51235",
@@ -11154,7 +11154,7 @@ An example of a successful response:
         "load": 71,
         "public_key": "n9JveA1hHDGjZECaYC7KM4JP8NXXzNXAxixbzcLTGnrsFZsA9AD1",
         "uptime": 99625,
-        "version": "casinocoind-0.31.0-b6"
+        "version": "stoxumd-0.31.0-b6"
       },
       {
         "address": "98.167.120.212:51235",
@@ -11164,7 +11164,7 @@ An example of a successful response:
         "load": 60,
         "public_key": "n9LDBRoqPYY7RdkNXbX1dqZXVtUKcSqzs2CZPhTH7ymA9X7Xzmpj",
         "uptime": 99625,
-        "version": "casinocoind-0.30.1-rc4"
+        "version": "stoxumd-0.30.1-rc4"
       }
     ]
   }
@@ -11186,7 +11186,7 @@ An example of a successful response:
             "load" : 47,
             "public_key" : "n9KNYm52mgcUQ7R2RA4kyw9Nk1yc6S35PaiuyqjYsy6UjhCXpw12",
             "uptime" : 54976,
-            "version" : "casinocoind-0.30.0-hf1"
+            "version" : "stoxumd-0.30.0-hf1"
          },
          {
             "address" : "54.186.248.91:51235",
@@ -11196,7 +11196,7 @@ An example of a successful response:
             "load" : 56,
             "public_key" : "n9MT5EjnV912KGuBUqPs4tpdhzMPGcnDBrTuWkD9sWQHJ1kDcUcz",
             "uptime" : 83754,
-            "version" : "casinocoind-0.30.1"
+            "version" : "stoxumd-0.30.1"
          },
          {
             "address" : "54.84.21.230:51235",
@@ -11206,7 +11206,7 @@ An example of a successful response:
             "load" : 54,
             "public_key" : "n9KJb7NMxGySRcjCqh69xEPMUhwJx22qntYYXsnUqYgjsJhNoW7g",
             "uptime" : 99565,
-            "version" : "casinocoind-0.30.1"
+            "version" : "stoxumd-0.30.1"
          },
          {
             "address" : "72.251.233.162:51235",
@@ -11216,7 +11216,7 @@ An example of a successful response:
             "load" : 61,
             "public_key" : "n9M8RSk6hrvXZKFQ6CxPbJsjt73xW1xsnjn7G69VAMbE2j4sBQNQ",
             "uptime" : 99560,
-            "version" : "casinocoind-0.30.1"
+            "version" : "stoxumd-0.30.1"
          },
          {
             "address" : "162.217.98.136:51235",
@@ -11226,7 +11226,7 @@ An example of a successful response:
             "load" : 55,
             "public_key" : "n944PcXEoZaiEHnwFD92xA4bxsS7jjYb27WcdDQwkHYyk1MWTEsX",
             "uptime" : 99566,
-            "version" : "casinocoind-0.30.1"
+            "version" : "stoxumd-0.30.1"
          },
          {
             "address" : "72.251.233.163:51235",
@@ -11236,7 +11236,7 @@ An example of a successful response:
             "load" : 56,
             "public_key" : "n94ne2Z5dX8qcJNa8cPtAbtn21gEaCoEduS8TwdGAhi1iLfCUMDm",
             "uptime" : 99566,
-            "version" : "casinocoind-0.30.1"
+            "version" : "stoxumd-0.30.1"
          },
          {
             "address" : "54.186.73.52:51235",
@@ -11246,7 +11246,7 @@ An example of a successful response:
             "load" : 56,
             "public_key" : "n9JySgyBVcQKvyDoeRKg7s2Mm6ZcFHk22vUZb3o1HSosWxcj9xPt",
             "uptime" : 99566,
-            "version" : "casinocoind-0.30.1"
+            "version" : "stoxumd-0.30.1"
          },
          {
             "address" : "72.251.233.165:51235",
@@ -11256,7 +11256,7 @@ An example of a successful response:
             "load" : 56,
             "public_key" : "n9M77Uc9CSaSFZqt5V7sxPR4kFwbha7hwUFBD5v5kZt2SQjBeoDs",
             "uptime" : 99566,
-            "version" : "casinocoind-0.30.1"
+            "version" : "stoxumd-0.30.1"
          },
          {
             "address" : "72.251.232.173:51235",
@@ -11266,7 +11266,7 @@ An example of a successful response:
             "load" : 81,
             "public_key" : "n9JveA1hHDGjZECaYC7KM4JP8NXXzNXAxixbzcLTGnrsFZsA9AD1",
             "uptime" : 99566,
-            "version" : "casinocoind-0.31.0-b6"
+            "version" : "stoxumd-0.31.0-b6"
          },
          {
             "address" : "98.167.120.212:51235",
@@ -11276,7 +11276,7 @@ An example of a successful response:
             "load" : 54,
             "public_key" : "n9LDBRoqPYY7RdkNXbX1dqZXVtUKcSqzs2CZPhTH7ymA9X7Xzmpj",
             "uptime" : 99566,
-            "version" : "casinocoind-0.30.1-rc4"
+            "version" : "stoxumd-0.30.1-rc4"
          }
       ],
       "status" : "success"
@@ -11287,7 +11287,7 @@ An example of a successful response:
 *Commandline*
 
 ```
-Loading: "/etc/casinocoind.cfg"
+Loading: "/etc/stoxumd.cfg"
 Connecting to 127.0.0.1:5005
 {
    "result" : {
@@ -11301,7 +11301,7 @@ Connecting to 127.0.0.1:5005
             "load" : 20,
             "public_key" : "n9JveA1hHDGjZECaYC7KM4JP8NXXzNXAxixbzcLTGnrsFZsA9AD1",
             "uptime" : 26,
-            "version" : "casinocoind-0.31.0-b6"
+            "version" : "stoxumd-0.31.0-b6"
          },
          {
             "address" : "169.53.155.36:51235",
@@ -11310,7 +11310,7 @@ Connecting to 127.0.0.1:5005
             "load" : 16,
             "public_key" : "n9L42gouyppsmsMXXUdByXnVDUZv1eu6KLZUWUkNHsukzv3pr7po",
             "uptime" : 18,
-            "version" : "casinocoind-0.30.0-hf1"
+            "version" : "stoxumd-0.30.0-hf1"
          },
          {
             "address" : "169.53.155.44:51235",
@@ -11320,7 +11320,7 @@ Connecting to 127.0.0.1:5005
             "load" : 49,
             "public_key" : "n94BpoEqEf1PxpAv3Bmyy2WoKHyeMpHPH4tcj6P9NW98zdzEyRhi",
             "uptime" : 50,
-            "version" : "casinocoind-0.30.0-hf1"
+            "version" : "stoxumd-0.30.0-hf1"
          },
          {
             "address" : "192.170.145.77:51235",
@@ -11330,7 +11330,7 @@ Connecting to 127.0.0.1:5005
             "load" : 29,
             "public_key" : "n9LwcmtjDAJQz4u8DZCMGQ9GXHuMEV4Cf8KpPL9NgqAV2puxdYc2",
             "uptime" : 51,
-            "version" : "casinocoind-0.30.1"
+            "version" : "stoxumd-0.30.1"
          },
          {
             "address" : "162.217.98.136:51235",
@@ -11340,7 +11340,7 @@ Connecting to 127.0.0.1:5005
             "load" : 30,
             "public_key" : "n944PcXEoZaiEHnwFD92xA4bxsS7jjYb27WcdDQwkHYyk1MWTEsX",
             "uptime" : 50,
-            "version" : "casinocoind-0.30.1"
+            "version" : "stoxumd-0.30.1"
          },
          {
             "address" : "184.172.237.241:51235",
@@ -11350,7 +11350,7 @@ Connecting to 127.0.0.1:5005
             "load" : 29,
             "public_key" : "n9L3LdCTVYUhCKtQtxiHrQ5ocNXVqZFiEJpF5pX9DXahYLrvi5R7",
             "uptime" : 51,
-            "version" : "casinocoind-0.30.0-hf1"
+            "version" : "stoxumd-0.30.0-hf1"
          },
          {
             "address" : "99.110.49.91:51301",
@@ -11360,7 +11360,7 @@ Connecting to 127.0.0.1:5005
             "load" : 55,
             "public_key" : "n9LGv3xKVqhxq6vcTfmJZhxyhjywsZbvJvpFbZRXzzz5uQ64xTLy",
             "uptime" : 51,
-            "version" : "casinocoind-0.31.0-b6"
+            "version" : "stoxumd-0.31.0-b6"
          },
          {
             "address" : "169.53.155.45:51235",
@@ -11370,7 +11370,7 @@ Connecting to 127.0.0.1:5005
             "load" : 30,
             "public_key" : "n9MRiHyMk43YpqATWeT8Zyu4HJq1btb5oNKmnHTkLJKQg9LQQq3v",
             "uptime" : 51,
-            "version" : "casinocoind-0.30.0-hf1"
+            "version" : "stoxumd-0.30.0-hf1"
          },
          {
             "address" : "54.186.248.91:51235",
@@ -11380,7 +11380,7 @@ Connecting to 127.0.0.1:5005
             "load" : 36,
             "public_key" : "n9MT5EjnV912KGuBUqPs4tpdhzMPGcnDBrTuWkD9sWQHJ1kDcUcz",
             "uptime" : 51,
-            "version" : "casinocoind-0.30.1"
+            "version" : "stoxumd-0.30.1"
          }
       ],
       "status" : "success"
@@ -11395,10 +11395,10 @@ The response follows the [standard format](#response-formatting), with a success
 
 | `Field`   | Type   | Description                                             |
 |:----------|:-------|:--------------------------------------------------------|
-| `cluster` | Object | Summary of other `casinocoind` servers in the same cluster, if [configured as a cluster](tutorial-casinocoind-setup.html#clustering). |
+| `cluster` | Object | Summary of other `stoxumd` servers in the same cluster, if [configured as a cluster](tutorial-stoxumd-setup.html#clustering). |
 | `peers`   | Array  | Array of peer objects.                                  |
 
-Each field of the `cluster` object is the public key of that `casinocoind` server's identifying keypair. (This is the same value that that server returns as `pubkey_node` in the [`server_info` command](#server-info).) The contents of that field are an object with the following fields:
+Each field of the `cluster` object is the public key of that `stoxumd` server's identifying keypair. (This is the same value that that server returns as `pubkey_node` in the [`server_info` command](#server-info).) The contents of that field are an object with the following fields:
 
 | `Field` | Type   | Description                                               |
 |:--------|:-------|:----------------------------------------------------------|
@@ -11411,9 +11411,9 @@ Each member of the `peers` array is a peer object with the following fields:
 | `Field`            | Type    | Description                                   |
 |:-------------------|:--------|:----------------------------------------------|
 | `address`          | String  | The IP address and port where this peer is connected |
-| `cluster`          | Boolean | (May be omitted) If `true`, the current server and the peer server are part of the same `casinocoind` cluster. |
+| `cluster`          | Boolean | (May be omitted) If `true`, the current server and the peer server are part of the same `stoxumd` cluster. |
 | `name`             | String  | (May be omitted) If the peer is part of the same cluster, this is the display name for that server as defined in the config file. |
-| `complete_ledgers` | String  | Range expression indicating the sequence numbers of the ledger versions the peer `casinocoind` has available |
+| `complete_ledgers` | String  | Range expression indicating the sequence numbers of the ledger versions the peer `stoxumd` has available |
 | `inbound`          | Boolean | (May be omitted) If `true`, the peer is connecting to the local server. |
 | `latency`          | Number  | The network latency to the peer (in milliseconds) |
 | `ledger`           | String  | The hash of the peer's most recently closed ledger |
@@ -11422,8 +11422,8 @@ Each member of the `peers` array is a peer object with the following fields:
 | `public_key`       | String  | (May be omitted) A public key that can be used to verify the integrity of the peer's messages. This is not the same key that is used for validations, but it follows the same format. |
 | `sanity`           | String  | (May be omitted) Whether this peer is following the same rules and ledger sequence as the current server. A value of `insane` probably indicates that the peer is part of a parallel network. The value `unknown` indicates that the current server is unsure whether the peer is compatible. <!-- STYLE_OVERRIDE: insane --> |
 | `status`           | String  | (May be omitted) The most recent status message from the peer. Could be `connecting`, `connected`, `monitoring`, `validating`, or `shutting`. |
-| `uptime`           | Number  | The number of seconds that your `casinocoind` server has been continuously connected to this peer. |
-| `version`          | string  | (May be omitted) The `casinocoind` version number of the peer server |
+| `uptime`           | Number  | The number of seconds that your `stoxumd` server has been continuously connected to this peer. |
+| `version`          | string  | (May be omitted) The `stoxumd` version number of the peer server |
 
 #### Possible Errors
 
@@ -11431,11 +11431,11 @@ Each member of the `peers` array is a peer object with the following fields:
 
 
 ## print
-[[Source]<br>](https://github.com/casinocoin/casinocoind/blob/4.0.1/src/casinocoin/rpc/handlers/Print.cpp "Source")
+[[Source]<br>](https://github.com/stoxum/stoxumd/src/stoxum/rpc/handlers/Print.cpp "Source")
 
 The `print` command returns the current status of various internal subsystems, including peers, the ledger cleaner, and the resource manager.
 
-*The `print` request is an [admin command](#connecting-to-casinocoind) that cannot be run by unprivileged users!*
+*The `print` request is an [admin command](#connecting-to-stoxumd) that cannot be run by unprivileged users!*
 
 #### Request Format
 An example of the request format:
@@ -11454,7 +11454,7 @@ An example of the request format:
 *Commandline*
 
 ```
-casinocoind print
+stoxum print
 ```
 
 <!-- MULTICODE_BLOCK_END -->
@@ -11470,7 +11470,7 @@ An example of a successful response:
 *Commandline*
 
 ```
-Loading: "/etc/casinocoind.cfg"
+Loading: "/etc/stoxumd.cfg"
 Connecting to 127.0.0.1:5005
 {
    "result" : {
@@ -11656,7 +11656,7 @@ Connecting to 127.0.0.1:5005
 
 <!-- MULTICODE_BLOCK_END -->
 
-The response follows the [standard format](#response-formatting). Additional fields in the result depend on the internal state of the `casinocoind` server. The results of this command are subject to change without notice.
+The response follows the [standard format](#response-formatting). Additional fields in the result depend on the internal state of the `stoxumd` server. The results of this command are subject to change without notice.
 
 #### Possible Errors
 
@@ -11666,10 +11666,10 @@ The response follows the [standard format](#response-formatting). Additional fie
 
 # Convenience Functions
 
-The casinocoind server also provides a few commands purely for convenience.
+The stoxumd server also provides a few commands purely for convenience.
 
 ## ping
-[[Source]<br>](https://github.com/casinocoin/casinocoind/blob/master/src/casinocoin/rpc/handlers/Ping.cpp "Source")
+[[Source]<br>](https://github.com/stoxum/stoxumd/src/stoxum/rpc/handlers/Ping.cpp "Source")
 
 The `ping` command returns an acknowledgement, so that clients can test the connection status and latency.
 
@@ -11702,12 +11702,12 @@ An example of the request format:
 
 ```
 #Syntax: ping
-casinocoind ping
+stoxum ping
 ```
 
 <!-- MULTICODE_BLOCK_END -->
 
-[Try it! >](casinocoin-api-tool.html#ping)
+[Try it! >](stoxum-api-tool.html#ping)
 
 The request includes no parameters.
 
@@ -11749,7 +11749,7 @@ The response follows the [standard format](#response-formatting), with a success
 
 
 ## random
-[[Source]<br>](https://github.com/casinocoin/casinocoind/blob/master/src/casinocoin/rpc/handlers/Random.cpp "Source")
+[[Source]<br>](https://github.com/stoxum/stoxum/src/stoxum/rpc/handlers/Random.cpp "Source")
 
 The `random` command provides a random number to be used as a source of entropy for random number generation by clients.
 
@@ -11782,7 +11782,7 @@ An example of the request format:
 
 ```
 #Syntax: random
-casinocoind random
+stoxum random
 ```
 
 <!-- MULTICODE_BLOCK_END -->
@@ -11847,7 +11847,7 @@ An example of the request format:
 
 ```
 # Syntax: json method json_stanza
-casinocoind -q json ledger_closed '{}'
+stoxumd -q json ledger_closed '{}'
 ```
 
 <!-- MULTICODE_BLOCK_END -->
@@ -11876,11 +11876,11 @@ The response follows the [standard format](#response-formatting), with whichever
 
 
 ## connect
-[[Source]<br>](https://github.com/casinocoin/casinocoind/blob/4.0.1/src/casinocoin/rpc/handlers/Connect.cpp "Source")
+[[Source]<br>](https://github.com/stoxum/stoxumd/src/stoxum/rpc/handlers/Connect.cpp "Source")
 
-The `connect` command forces the casinocoind server to connect to a specific peer casinocoind server.
+The `connect` command forces the stoxumd server to connect to a specific peer stoxumd server.
 
-*The `connect` request is an [admin command](#connecting-to-casinocoind) that cannot be run by unprivileged users!*
+*The `connect` request is an [admin command](#connecting-to-stoxumd) that cannot be run by unprivileged users!*
 
 #### Request Format
 An example of the request format:
@@ -11916,7 +11916,7 @@ An example of the request format:
 
 ```
 #Syntax: connect ip [port]
-casinocoind connect 192.170.145.88 51235
+stoxumd connect 192.170.145.88 51235
 ```
 
 <!-- MULTICODE_BLOCK_END -->
@@ -11948,7 +11948,7 @@ An example of a successful response:
 *Commandline*
 
 ```
-Loading: "/etc/casinocoind.cfg"
+Loading: "/etc/stoxumd.cfg"
 Connecting to 127.0.0.1:5005
 {
    "result" : {
@@ -11974,11 +11974,11 @@ The response follows the [standard format](#response-formatting), with a success
 
 
 ## stop
-[[Source]<br>](https://github.com/casinocoin/casinocoind/blob/develop/src/casinocoin/rpc/handlers/Stop.cpp "Source")
+[[Source]<br>](https://github.com/stoxum/stoxumd/blob/develop/src/stoxum/rpc/handlers/Stop.cpp "Source")
 
 Gracefully shuts down the server.
 
-*The `stop` request is an [admin command](#connecting-to-casinocoind) that cannot be run by unprivileged users!*
+*The `stop` request is an [admin command](#connecting-to-stoxumd) that cannot be run by unprivileged users!*
 
 #### Request Format
 An example of the request format:
@@ -12008,7 +12008,7 @@ An example of the request format:
 *Commandline*
 
 ```
-casinocoind stop
+stoxumd stop
 ```
 
 <!-- MULTICODE_BLOCK_END -->
@@ -12026,7 +12026,7 @@ An example of a successful response:
 ```
 {
    "result" : {
-      "message" : "casinocoin server stopping",
+      "message" : "stoxum server stopping",
       "status" : "success"
    }
 }
@@ -12035,11 +12035,11 @@ An example of a successful response:
 *Commandline*
 
 ```
-Loading: "/etc/casinocoind.cfg"
+Loading: "/etc/stoxumd.cfg"
 Connecting to 127.0.0.1:5005
 {
    "result" : {
-      "message" : "casinocoin server stopping",
+      "message" : "stoxum server stopping",
       "status" : "success"
    }
 }
@@ -12051,7 +12051,7 @@ The response follows the [standard format](#response-formatting), with a success
 
 | `Field`   | Type   | Description                          |
 |:----------|:-------|:-------------------------------------|
-| `message` | String | `casinocoin server stopping` on success. |
+| `message` | String | `stoxum server stopping` on success. |
 
 #### Possible Errors
 
@@ -12062,13 +12062,13 @@ The response follows the [standard format](#response-formatting), with a success
 
 # Peer Protocol
 
-Servers in the CSC Ledger communicate to each other using the CSC Ledger peer protocol, also known as RTXP. Peer servers connect via HTTPS and then do an [HTTP upgrade](https://tools.ietf.org/html/rfc7230#section-6.7) to switch to RTXP. (For more information, see the [Overlay Network](https://github.com/casinocoin/casinocoind/blob/4.0.1/src/casinocoin/overlay/README.md#handshake) article in the [`casinocoind` repository](https://github.com/casinocoin/casinocoind).)
+Servers in the STM Ledger communicate to each other using the STM Ledger peer protocol, also known as RTXP. Peer servers connect via HTTPS and then do an [HTTP upgrade](https://tools.ietf.org/html/rfc7230#section-6.7) to switch to RTXP. (For more information, see the [Overlay Network](https://github.com/stoxum/stoxumd/src/stoxum/overlay/README.md#handshake) article in the [`stoxumd` repository](https://github.com/stoxum/stoxumd).)
 
 ## Configuring the Peer Protocol
 
-To participate in the CSC Ledger, `casinocoind` servers connects to arbitrary peers using the peer protocol. (All such peers are treated as untrusted, unless they are [clustered](tutorial-casinocoind-setup.html#clustering) with the current server.)
+To participate in the STM Ledger, `stoxumd` servers connects to arbitrary peers using the peer protocol. (All such peers are treated as untrusted, unless they are [clustered](tutorial-stoxumd-setup.html#clustering) with the current server.)
 
-Ideally, the server should be able to send _and_ receive connections on the peer port. You should forward the port used for the peer protocol through your firewall to the `casinocoind` server. The [default `casinocoind` configuration file](https://github.com/casinocoin/casinocoind/blob/develop/doc/casinocoind-example.cfg) listens for incoming peer protocol connections on port 51235 on all network interfaces. You can change the port used by editing the appropriate stanza in your `casinocoind.cfg` file.
+Ideally, the server should be able to send _and_ receive connections on the peer port. You should forward the port used for the peer protocol through your firewall to the `stoxumd` server. The [default `stoxumd` configuration file](https://github.com/stoxum/stoxumd/blob/develop/doc/stoxumd-example.cfg) listens for incoming peer protocol connections on port 51235 on all network interfaces. You can change the port used by editing the appropriate stanza in your `stoxumd.cfg` file.
 
 Example:
 
@@ -12081,7 +12081,7 @@ protocol = peer
 
 ## Peer Crawler
 
-The Peer Crawler asks a `casinocoind` server to report information about the other `casinocoind` servers it is connected to as peers. The [`peers` command](#peers) in the [WebSocket and JSON-RPC APIs](#websocket-and-json-rpc-apis) also returns a similar, more comprehensive set of information, but requires [administrative access](#connecting-to-casinocoind) to the server. The Peer Crawler response is available to other servers on a non-privileged basis through the Peer Protocol (RTXP) port.
+The Peer Crawler asks a `stoxumd` server to report information about the other `stoxumd` servers it is connected to as peers. The [`peers` command](#peers) in the [WebSocket and JSON-RPC APIs](#websocket-and-json-rpc-apis) also returns a similar, more comprehensive set of information, but requires [administrative access](#connecting-to-stoxumd) to the server. The Peer Crawler response is available to other servers on a non-privileged basis through the Peer Protocol (RTXP) port.
 
 #### Request Format
 
@@ -12089,10 +12089,10 @@ To request the Peer Crawler information, make the following HTTP request:
 
 * **Protocol:** https
 * **HTTP Method:** GET
-* **Host:** (any `casinocoind` server, by hostname or IP address)
-* **Port:** (port number where the `casinocoind` server uses the Peer Protocol, typically 51235)
+* **Host:** (any `stoxumd` server, by hostname or IP address)
+* **Port:** (port number where the `stoxumd` server uses the Peer Protocol, typically 51235)
 * **Path:** `/crawl`
-* **Notes:** Most `casinocoind` servers use a self-signed certificate to respond to the request. By default, most tools (including web browsers) flag or block such responses for being untrusted. You must ignore the certificate checking (for example, if using cURL, add the `--insecure` flag) to display a response from those servers.
+* **Notes:** Most `stoxumd` servers use a self-signed certificate to respond to the request. By default, most tools (including web browsers) flag or block such responses for being untrusted. You must ignore the certificate checking (for example, if using cURL, add the `--insecure` flag) to display a response from those servers.
 
 #### Response Format
 
@@ -12113,7 +12113,7 @@ Each member of the `active` array is a Peer Object with the following fields:
 | `public_key` | String (Base-64 Encoded) | The public key of the ECDSA key pair used by this peer to sign RTXP messages. (This is the same data as the `pubkey_node` reported in the peer server's [`server_info` command](#server-info).) |
 | `type`       | String                   | The value `in` or `out`, indicating whether the TCP connection to the peer is incoming or outgoing. |
 | `uptime`     | Number                   | The number of seconds the server has been has been connected to this peer. |
-| `version`    | String                   | The `casinocoind` version number the peer reports to be using. |
+| `version`    | String                   | The `stoxumd` version number the peer reports to be using. |
 
 #### Example
 
@@ -12124,13 +12124,13 @@ Request:
 *HTTP*
 
 ```
-GET https://ws01.casinocoin.org:51235/crawl
+GET https://ws01.stoxum.org:51235/crawl
 ```
 
 *cURL*
 
 ```
-curl -k https://ws01.casinocoin.org:51235/crawl
+curl -k https://ws01.stoxum.org:51235/crawl
 ```
 
 <!-- MULTICODE_BLOCK_END -->
@@ -12147,70 +12147,70 @@ Response:
             "public_key": "A2GayQNaj7qbqLFiCFW2UXtAnEPghP/KWVqix2gUa6dM",
             "type": "out",
             "uptime": 107926,
-            "version": "casinocoind-0.31.0-rc1"
+            "version": "stoxumd-0.31.0-rc1"
         }, {
             "ip": "184.172.237.226",
             "port": "51235",
             "public_key": "Asv/wKq/dqMWbP2M4eR+QvkuojYMLRXhKhIPnW40bsaF",
             "type": "out",
             "uptime": 247376,
-            "version": "casinocoind-0.31.0-rc1"
+            "version": "stoxumd-0.31.0-rc1"
         }, {
             "ip": "54.186.73.52",
             "port": "51235",
             "public_key": "AjikFnq0P2XybCyREr2KPiqXqJteqwPwVRVbVK+93+3o",
             "type": "out",
             "uptime": 328776,
-            "version": "casinocoind-0.31.0-rc1"
+            "version": "stoxumd-0.31.0-rc1"
         }, {
             "ip": "169.53.155.59",
             "port": "51235",
             "public_key": "AyIcVhAhOGnP0vtfCt+HKUrx9B2fDvP/4XUkOtVQ37g/",
             "type": "out",
             "uptime": 328776,
-            "version": "casinocoind-0.31.1"
+            "version": "stoxumd-0.31.1"
         }, {
             "ip": "169.53.155.44",
             "port": "51235",
             "public_key": "AuVZszWXgMgM8YuTVhQsGE9OciEeBD8aMVe1mFid3n63",
             "type": "out",
             "uptime": 328776,
-            "version": "casinocoind-0.32.0-b12"
+            "version": "stoxumd-0.32.0-b12"
         }, {
             "ip": "184.173.45.39",
             "port": "51235",
             "public_key": "Ao2GbGbp2QYQ2B4S9ckCtON7CsZdXqdK5Yon4x7qmWFm",
             "type": "out",
             "uptime": 63336,
-            "version": "casinocoind-0.31.0-rc1"
+            "version": "stoxumd-0.31.0-rc1"
         }, {
             "ip": "169.53.155.34",
             "port": "51235",
             "public_key": "A3inNJsIQzO7z7SS7uB9DyvN0wsiS9it/RGY/kNx6KEG",
             "type": "out",
             "uptime": 328776,
-            "version": "casinocoind-0.31.0-rc1"
+            "version": "stoxumd-0.31.0-rc1"
         }, {
             "ip": "169.53.155.45",
             "port": "51235",
             "public_key": "AglUUjwXTC2kUlK41WjDs2eAVN0SnlMpzYA9lEgB0UGP",
             "type": "out",
             "uptime": 65443,
-            "version": "casinocoind-0.31.0-rc1"
+            "version": "stoxumd-0.31.0-rc1"
         }, {
             "ip": "99.110.49.91",
             "port": "51301",
             "public_key": "AuQDH0o+4fpl2n+pR5U0Y4FTj0oGr4iEKe0MObPcSYj9",
             "type": "out",
             "uptime": 328776,
-            "version": "casinocoind-0.32.0-b9"
+            "version": "stoxumd-0.32.0-b9"
         }, {
             "ip": "169.53.155.36",
             "port": "51235",
             "public_key": "AsR4xub7MLg2Zl5Fwd/n7dTz7mhbBoSyCc/v9bnubrVy",
             "type": "out",
             "uptime": 328776,
-            "version": "casinocoind-0.31.0-rc1"
+            "version": "stoxumd-0.31.0-rc1"
         }]
     }
 }
@@ -12218,13 +12218,13 @@ Response:
 
 ### Concealing Peer Information
 
-You can use the `[peer_private]` stanza of the `casinocoind` config file to request that peer servers do not report your IP address in the Peer Crawler response. You cannot force peers you do not control to follow this request, if they run custom software. However, you can use this to hide the IP addresses of `casinocoind` servers you control that _only_ connect to peers you control (using `[ips_fixed]` and a firewall). This can help to protect important [validating servers](tutorial-casinocoind-setup.html#types-of-casinocoind-servers).
+You can use the `[peer_private]` stanza of the `stoxumd` config file to request that peer servers do not report your IP address in the Peer Crawler response. You cannot force peers you do not control to follow this request, if they run custom software. However, you can use this to hide the IP addresses of `stoxumd` servers you control that _only_ connect to peers you control (using `[ips_fixed]` and a firewall). This can help to protect important [validating servers](tutorial-stoxumd-setup.html#types-of-stoxumd-servers).
 
 Example:
 
 ```
 # Configuration on a private server that only connects through
-# a second casinocoind server at IP address 10.1.10.55
+# a second stoxumd server at IP address 10.1.10.55
 [ips_fixed]
 10.1.10.55
 
@@ -12233,5 +12233,5 @@ Example:
 ```
 
 
-{% include 'snippets/casinocoind_versions.md' %}
+{% include 'snippets/stoxumd_versions.md' %}
 {% include 'snippets/tx-type-links.md' %}

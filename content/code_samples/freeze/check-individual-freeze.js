@@ -1,7 +1,7 @@
-const {CasinocoinAPI} = require('casinocoin-libjs');
+const { CasinocoinAPI } = require('casinocoin-libjs');
 
 const api = new CasinocoinAPI({
-  server: 'wss://ws01.casinocoin.org', // Public rippled server
+  server: 'wss://ws01.stoxum.io/', // Public rippled server
   port: 4443
 });
 api.on('error', (errorCode, errorMessage) => {
@@ -15,10 +15,12 @@ const frozen_currency = 'USD';
 api.connect().then(() => {
 
   // Look up current state of trust line
-  const options = {counterparty: counterparty_address,
-                   currency: frozen_currency};
+  const options = {
+    counterparty: counterparty_address,
+    currency: frozen_currency
+  };
   console.log('looking up', frozen_currency, 'trust line from',
-              my_address, 'to', counterparty_address);
+    my_address, 'to', counterparty_address);
   return api.getTrustlines(my_address, options);
 
 }).then(data => {
@@ -29,9 +31,9 @@ api.connect().then(() => {
 
   const trustline = data[0];
   console.log('Trust line frozen from our side?',
-              trustline.specification.frozen === true);
+    trustline.specification.frozen === true);
   console.log('Trust line frozen from counterparty\'s side?',
-              trustline.counterparty.frozen === true);
+    trustline.counterparty.frozen === true);
 
 }).then(() => {
   return api.disconnect();

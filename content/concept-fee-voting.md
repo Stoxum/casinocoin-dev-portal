@@ -1,14 +1,14 @@
 # Fee Voting
 
-Validators can vote for changes to basic [transaction cost](concept-transaction-cost.html) as well as [reserve requirements](concept-reserves.html). If the preferences in a validator's configuration are different than the network's current settings, the validator expresses its preferences to the network periodically. If a quorum of validators agrees on a change, they can apply a change that takes effect thereafter. Validators may do this for various reasons, especially to adjust to long-term changes in the value of CSC.
+Validators can vote for changes to basic [transaction cost](concept-transaction-cost.html) as well as [reserve requirements](concept-reserves.html). If the preferences in a validator's configuration are different than the network's current settings, the validator expresses its preferences to the network periodically. If a quorum of validators agrees on a change, they can apply a change that takes effect thereafter. Validators may do this for various reasons, especially to adjust to long-term changes in the value of STM.
 
-Operators of [`casinocoind` validators](tutorial-casinocoind-setup.html#running-a-validator) can set their preferences for the transaction cost and reserve requirements in the `[voting]` stanza of the `casinocoind.cfg` file. **Caution:** insufficient requirements could expose the CSC Ledger peer-to-peer network to denial-of-service attacks. The parameters you can set are as follows:
+Operators of [`stoxumd` validators](tutorial-stoxumd-setup.html#running-a-validator) can set their preferences for the transaction cost and reserve requirements in the `[voting]` stanza of the `stoxumd.cfg` file. **Caution:** insufficient requirements could expose the STM Ledger peer-to-peer network to denial-of-service attacks. The parameters you can set are as follows:
 
 | Parameter | Description | Recommended Value |
 |-----------|-------------|-------------------|
-| `reference_fee` | Amount of CSC, in _drops_, that must be destroyed to send the reference transaction, the cheapest possible transaction. (1 CSC = 100 million drops.) The actual transaction cost is a multiple of this value, scaled dynamically based on the load of individual servers. | `10` (0.0000001 CSC) |
-| `account_reserve` | Minimum amount of CSC, in _drops_, that an account must have on reserve. This is the smallest amount that can be sent to fund a new account in the ledger. | `1000000000` (10 CSC) |
-| `owner_reserve` | How much more CSC, in _drops_, that an address must hold for _each_ object it owns in the ledger. | `500000000` (5 CSC) |
+| `reference_fee` | Amount of STM, in _drops_, that must be destroyed to send the reference transaction, the cheapest possible transaction. (1 STM = 100 million drops.) The actual transaction cost is a multiple of this value, scaled dynamically based on the load of individual servers. | `10` (0.0000001 STM) |
+| `account_reserve` | Minimum amount of STM, in _drops_, that an account must have on reserve. This is the smallest amount that can be sent to fund a new account in the ledger. | `1000000000` (10 STM) |
+| `owner_reserve` | How much more STM, in _drops_, that an address must hold for _each_ object it owns in the ledger. | `500000000` (5 STM) |
 
 ## Voting Process
 
@@ -29,8 +29,8 @@ In short:
 
 The maximum possible values for the fees are limited by the internal data types stored in the [FeeSettings ledger object](reference-ledger-format.html#feesettings). These values are as follows:
 
-| Parameter | Maximum Value (drops) | Maximum Value (CSC)
+| Parameter | Maximum Value (drops) | Maximum Value (STM)
 |-----------|-----------------------|----|
-| `reference_fee` | 2**64 | (More CSC than has ever existed.) |
-| `account_reserve` | 2^32 drops | Approximately 4294 CSC |
-| `owner_reserve` | 2^32 drops | Approximately 4294 CSC |
+| `reference_fee` | 2**64 | (More STM than has ever existed.) |
+| `account_reserve` | 2^32 drops | Approximately 4294 STM |
+| `owner_reserve` | 2^32 drops | Approximately 4294 STM |

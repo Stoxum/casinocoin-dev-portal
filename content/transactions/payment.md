@@ -1,5 +1,5 @@
 ## Payment
-[[Source]<br>](https://github.com/casinocoin/casinocoind/blob/4.0.1/src/casinocoin/app/transactors/Payment.cpp "Source")
+[[Source]<br>](https://github.com/stoxum/stoxumd/src/stoxum/app/transactors/Payment.cpp "Source")
 
 A Payment transaction represents a transfer of value from one account to another. (Depending on the path taken, this can involve additional exchanges of value, which occur atomically.)
 
@@ -25,17 +25,17 @@ Example payment:
 
 | Field          | JSON Type            | [Internal Type][] | Description      |
 |:---------------|:---------------------|:------------------|:-----------------|
-| Amount         | [Currency Amount][]  | Amount            | The amount of currency to deliver. For non-CSC amounts, the nested field names MUST be lower-case. If the [**tfPartialPayment** flag](#payment-flags) is set, deliver _up to_ this amount instead. |
+| Amount         | [Currency Amount][]  | Amount            | The amount of currency to deliver. For non-STM amounts, the nested field names MUST be lower-case. If the [**tfPartialPayment** flag](#payment-flags) is set, deliver _up to_ this amount instead. |
 | Destination    | String               | Account           | The unique address of the account receiving the payment. |
 | DestinationTag | Unsigned Integer     | UInt32            | _(Optional)_ Arbitrary tag that identifies the reason for the payment to the destination, or a hosted recipient to pay. |
 | InvoiceID      | String               | Hash256           | _(Optional)_ Arbitrary 256-bit hash representing a specific reason or identifier for this payment. |
-| Paths          | Array of path arrays | PathSet           | (Optional, auto-fillable) Array of [payment paths](concept-paths.html) to be used for this transaction. Must be omitted for CSC-to-CSC transactions. |
-| SendMax        | [Currency Amount][]  | Amount            | _(Optional)_ Highest amount of source currency this transaction is allowed to cost, including [transfer fees](concept-transfer-fees.html), exchange rates, and [slippage](http://en.wikipedia.org/wiki/Slippage_%28finance%29). Does not include the [CSC destroyed as a cost for submitting the transaction](#transaction-cost). For non-CSC amounts, the nested field names MUST be lower-case. Must be supplied for cross-currency/cross-issue payments. Must be omitted for CSC-to-CSC payments. |
-| DeliverMin     | [Currency Amount][]  | Amount            | _(Optional)_ Minimum amount of destination currency this transaction should deliver. Only valid if this is a [partial payment](#partial-payments). For non-CSC amounts, the nested field names are lower-case. |
+| Paths          | Array of path arrays | PathSet           | (Optional, auto-fillable) Array of [payment paths](concept-paths.html) to be used for this transaction. Must be omitted for STM-to-STM transactions. |
+| SendMax        | [Currency Amount][]  | Amount            | _(Optional)_ Highest amount of source currency this transaction is allowed to cost, including [transfer fees](concept-transfer-fees.html), exchange rates, and [slippage](http://en.wikipedia.org/wiki/Slippage_%28finance%29). Does not include the [STM destroyed as a cost for submitting the transaction](#transaction-cost). For non-STM amounts, the nested field names MUST be lower-case. Must be supplied for cross-currency/cross-issue payments. Must be omitted for STM-to-STM payments. |
+| DeliverMin     | [Currency Amount][]  | Amount            | _(Optional)_ Minimum amount of destination currency this transaction should deliver. Only valid if this is a [partial payment](#partial-payments). For non-STM amounts, the nested field names are lower-case. |
 
 ### Special issuer Values for SendMax and Amount
 
-Most of the time, the `issuer` field of a non-CSC [Currency Amount][] indicates a financial institution's [issuing address](concept-issuing-and-operational-addresses.html). However, when describing payments, there are special rules for the `issuer` field in the `Amount` and `SendMax` fields of a payment.
+Most of the time, the `issuer` field of a non-STM [Currency Amount][] indicates a financial institution's [issuing address](concept-issuing-and-operational-addresses.html). However, when describing payments, there are special rules for the `issuer` field in the `Amount` and `SendMax` fields of a payment.
 
 * There is only ever one balance for the same currency between two addresses. This means that, sometimes, the `issuer` field of an amount actually refers to a counterparty that is redeeming issuances, instead of the address that created the issuances.
 * When the `issuer` field of the destination `Amount` field matches the `Destination` address, it is treated as a special case meaning "any issuer that the destination accepts." This includes all addresses to which the destination has extended trust lines, as well as issuances created by the destination which are held on other trust lines.
@@ -43,9 +43,9 @@ Most of the time, the `issuer` field of a non-CSC [Currency Amount][] indicates 
 
 ### Creating Accounts
 
-The Payment transaction type is the only way to create new accounts in the CSC Ledger. To do so, send an amount of CSC that is equal or greater than the [account reserve](concept-reserves.html) to a mathematically-valid account address that does not exist yet. When the Payment is processed, a new [AccountRoot object](reference-ledger-format.html#accountroot) is added to the ledger.
+The Payment transaction type is the only way to create new accounts in the STM Ledger. To do so, send an amount of STM that is equal or greater than the [account reserve](concept-reserves.html) to a mathematically-valid account address that does not exist yet. When the Payment is processed, a new [AccountRoot object](reference-ledger-format.html#accountroot) is added to the ledger.
 
-If you send an insufficient amount of CSC, or any other currency, the Payment fails.
+If you send an insufficient amount of STM, or any other currency, the Payment fails.
 
 ### Paths
 
@@ -53,7 +53,7 @@ If present, the `Paths` field must contain a _path set_ - an array of path array
 
 You must omit the `Paths` field for direct payments, including:
 
-* An CSC-to-CSC transfer.
+* An STM-to-STM transfer.
 * A direct transfer on a trust line that connects the sender and receiver.
 
 If the `Paths` field is provided, the server decides at transaction processing time which paths to use, from the provided set plus a _default path_ (the most direct way possible to connect the specified accounts). This decision is deterministic and attempts to minimize costs, but it is not guaranteed to be perfect.
@@ -68,7 +68,7 @@ Transactions of the Payment type support additional values in the [`Flags` field
 
 | Flag Name        | Hex Value  | Decimal Value | Description                  |
 |:-----------------|:-----------|:--------------|:-----------------------------|
-| tfNoDirectCasinocoin | 0x00010000 | 65536         | Do not use the default path; only use paths included in the `Paths` field. This is intended to force the transaction to take arbitrage opportunities. Most clients do not need this. |
+| tfNoDirectStoxum | 0x00010000 | 65536         | Do not use the default path; only use paths included in the `Paths` field. This is intended to force the transaction to take arbitrage opportunities. Most clients do not need this. |
 | tfPartialPayment | 0x00020000 | 131072        | If the specified `Amount` cannot be sent without spending more than `SendMax`, reduce the received amount instead of failing outright. See [Partial Payments](#partial-payments) for more details. |
 | tfLimitQuality   | 0x00040000 | 262144        | Only take paths where all the conversions have an input:output ratio that is equal or better than the ratio of `Amount`:`SendMax`. See [Limit Quality](#limit-quality) for details. |
 
@@ -85,7 +85,7 @@ For more information, see the full article on [Partial Payments](concept-partial
 
 ### Limit Quality
 
-The CSC Ledger defines the "quality" of a currency exchange as the ratio of the numeric amount in to the numeric amount out. For example, if you spend $2 USD to receive £1 GBP, then the "quality" of that exchange is `0.5`.
+The STM Ledger defines the "quality" of a currency exchange as the ratio of the numeric amount in to the numeric amount out. For example, if you spend $2 USD to receive £1 GBP, then the "quality" of that exchange is `0.5`.
 
 The [*tfLimitQuality* flag](#payment-flags) allows you to set a minimum quality of conversions that you are willing to take. This limit quality is defined as the destination `Amount` divided by the `SendMax` amount (the numeric amounts only, regardless of currency). When set, the payment processing engine avoids using any paths whose quality (conversion rate) is worse (numerically lower) than the limit quality.
 

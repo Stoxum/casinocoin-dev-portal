@@ -1,6 +1,6 @@
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-# CasinocoinAPI Reference
+# StoxumAPI Reference
 
 - [Introduction](#introduction)
   - [Boilerplate](#boilerplate)
@@ -77,26 +77,26 @@
 
 # Introduction
 
-CasinocoinAPI is the official client library to the CSC Ledger. Currently, CasinocoinAPI is only available in JavaScript.
-Using CasinocoinAPI, you can:
+StoxumAPI is the official client library to the STM Ledger. Currently, StoxumAPI is only available in JavaScript.
+Using StoxumAPI, you can:
 
-* [Query transactions from the CSC Ledger history](#gettransaction)
+* [Query transactions from the STM Ledger history](#gettransaction)
 * [Sign](#sign) transactions securely without connecting to any server
-* [Submit](#submit) transactions to the CSC Ledger, including [Payments](#payment), [Orders](#order), [Settings changes](#settings), and [other types](#transaction-types)
-* [Generate a new CSC Ledger Address](#generateaddress)
+* [Submit](#submit) transactions to the STM Ledger, including [Payments](#payment), [Orders](#order), [Settings changes](#settings), and [other types](#transaction-types)
+* [Generate a new STM Ledger Address](#generateaddress)
 * ... and [much more](#api-methods).
 
-CasinocoinAPI only provides access to *validated*, *immutable* transaction data.
+StoxumAPI only provides access to *validated*, *immutable* transaction data.
 
 ## Boilerplate
 
-Use the following [boilerplate code](https://en.wikipedia.org/wiki/Boilerplate_code) to wrap your custom code using CasinocoinAPI.
+Use the following [boilerplate code](https://en.wikipedia.org/wiki/Boilerplate_code) to wrap your custom code using StoxumAPI.
 
 ```javascript
-const CasinocoinAPI = require('casinocoin-libjs').CasinocoinAPI;
+const StoxumAPI = require('stoxum-libjs').StoxumAPI;
 
-const api = new CasinocoinAPI({
-  server: 'wss://ws01.casinocoin.org', // Public casinocoind server hosted by CasinoCoin, Inc.
+const api = new StoxumAPI({
+  server: 'wss://ws01.stoxum.org', // Public stoxumd server hosted by Stoxum, Inc.
   port: 4443
 });
 api.on('error', (errorCode, errorMessage) => {
@@ -117,9 +117,9 @@ api.connect().then(() => {
 }).catch(console.error);
 ```
 
-CasinocoinAPI is designed to work in [Node.js](https://nodejs.org) version **6.9.0** or later. CasinocoinAPI may work on older Node.js versions if you use [Babel](https://babeljs.io/) for [ECMAScript 6](https://babeljs.io/docs/learn-es2015/) support.
+StoxumAPI is designed to work in [Node.js](https://nodejs.org) version **6.9.0** or later. StoxumAPI may work on older Node.js versions if you use [Babel](https://babeljs.io/) for [ECMAScript 6](https://babeljs.io/docs/learn-es2015/) support.
 
-The code samples in this documentation are written with ECMAScript 6 (ES6) features, but `CasinocoinAPI` also works with ECMAScript 5 (ES5). Regardless of whether you use ES5 or ES6, the methods that return Promises return [ES6-style promises](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise).
+The code samples in this documentation are written with ECMAScript 6 (ES6) features, but `StoxumAPI` also works with ECMAScript 5 (ES5). Regardless of whether you use ES5 or ES6, the methods that return Promises return [ES6-style promises](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise).
 
 <aside class="notice">
 All the code snippets in this documentation assume that you have surrounded them with this boilerplate.
@@ -135,49 +135,49 @@ The "error" event is emitted whenever an error occurs that cannot be associated 
 
 ### Parameters
 
-The CasinocoinAPI constructor optionally takes one argument, an object with the following options:
+The StoxumAPI constructor optionally takes one argument, an object with the following options:
 
 Name | Type | Description
 ---- | ---- | -----------
-authorization | string | *Optional* Username and password for HTTP basic authentication to the casinocoind server in the format **username:password**.
+authorization | string | *Optional* Username and password for HTTP basic authentication to the stoxumd server in the format **username:password**.
 certificate | string | *Optional* A string containing the certificate key of the client in PEM format. (Can be an array of certificates).
 feeCushion | number | *Optional* Factor to multiply estimated fee by to provide a cushion in case the required fee rises during submission of a transaction. Defaults to `1.2`.
 key | string | *Optional* A string containing the private key of the client in PEM format. (Can be an array of keys).
 passphrase | string | *Optional* The passphrase for the private key of the client.
-proxy | uri string | *Optional* URI for HTTP/HTTPS proxy to use to connect to the casinocoind server.
+proxy | uri string | *Optional* URI for HTTP/HTTPS proxy to use to connect to the stoxumd server.
 proxyAuthorization | string | *Optional* Username and password for HTTP basic authentication to the proxy in the format **username:password**.
-server | uri string | *Optional* URI for casinocoind websocket port to connect to. Must start with `wss://` or `ws://`.
+server | uri string | *Optional* URI for stoxumd websocket port to connect to. Must start with `wss://` or `ws://`.
 timeout | integer | *Optional* Timeout in milliseconds before considering a request to have failed.
-trace | boolean | *Optional* If true, log casinocoind requests and responses to stdout.
+trace | boolean | *Optional* If true, log stoxumd requests and responses to stdout.
 trustedCertificates | array\<string\> | *Optional* Array of PEM-formatted SSL certificates to trust when connecting to a proxy. This is useful if you want to use a self-signed certificate on the proxy server. Note: Each element must contain a single certificate; concatenated certificates are not valid.
 
-If you omit the `server` parameter, CasinocoinAPI operates [offline](#offline-functionality).
+If you omit the `server` parameter, StoxumAPI operates [offline](#offline-functionality).
 
 
 ### Installation ###
 
 1. Install [Node.js](https://nodejs.org) and the Node Package Manager (npm). Most Linux distros have a package for Node.js, but make sure you have version **6.9.0** or higher.
-2. Use npm to install CasinocoinAPI:
-      `npm install casinocoin-libjs`
+2. Use npm to install StoxumAPI:
+      `npm install stoxum-libjs`
 
-After you have installed casinocoin-libjs, you can create scripts using the [boilerplate](#boilerplate) and run them using the Node.js executable, typically named `node`:
+After you have installed stoxum-libjs, you can create scripts using the [boilerplate](#boilerplate) and run them using the Node.js executable, typically named `node`:
 
       `node script.js`
 
 ## Offline functionality
 
-CasinocoinAPI can also function without internet connectivity. This can be useful in order to generate secrets and sign transactions from a secure, isolated machine.
+StoxumAPI can also function without internet connectivity. This can be useful in order to generate secrets and sign transactions from a secure, isolated machine.
 
-To instantiate CasinocoinAPI in offline mode, use the following boilerplate code:
+To instantiate StoxumAPI in offline mode, use the following boilerplate code:
 
 ```javascript
-const CasinocoinAPI = require('casinocoin-libjs').CasinocoinAPI;
+const StoxumAPI = require('stoxum-libjs').StoxumAPI;
 
-const api = new CasinocoinAPI();
+const api = new StoxumAPI();
 /* insert code here */
 ```
 
-Methods that depend on the state of the CSC Ledger are unavailable in offline mode. To prepare transactions offline, you **must** specify  the `fee`, `sequence`, and `maxLedgerVersion` parameters in the [transaction instructions](#transaction-instructions). You can use the following methods while offline:
+Methods that depend on the state of the STM Ledger are unavailable in offline mode. To prepare transactions offline, you **must** specify  the `fee`, `sequence`, and `maxLedgerVersion` parameters in the [transaction instructions](#transaction-instructions). You can use the following methods while offline:
 
 * [preparePayment](#preparepayment)
 * [prepareTrustline](#preparetrustline)
@@ -199,22 +199,22 @@ Methods that depend on the state of the CSC Ledger are unavailable in offline mo
 "cDarPNJEpCnpBZSfmcquydockkePkjPGA2"
 ```
 
-Every CSC Ledger account has an *address*, which is a base58-encoding of a hash of the account's public key. CSC Ledger addresses always start with the lowercase letter `r`.
+Every STM Ledger account has an *address*, which is a base58-encoding of a hash of the account's public key. STM Ledger addresses always start with the lowercase letter `r`.
 
 ## Account Sequence Number
 
-Every CSC Ledger account has a *sequence number* that is used to keep transactions in order. Every transaction must have a sequence number. A transaction can only be executed if it has the next sequence number in order, of the account sending it. This prevents one transaction from executing twice and transactions executing out of order. The sequence number starts at `1` and increments for each transaction that the account makes.
+Every STM Ledger account has a *sequence number* that is used to keep transactions in order. Every transaction must have a sequence number. A transaction can only be executed if it has the next sequence number in order, of the account sending it. This prevents one transaction from executing twice and transactions executing out of order. The sequence number starts at `1` and increments for each transaction that the account makes.
 
 ## Currency
 
-Currencies are represented as either 3-character currency codes or 40-character uppercase hexadecimal strings. We recommend using uppercase [ISO 4217 Currency Codes](http://www.xe.com/iso4217.php) only. The string "CSC" is disallowed on trustlines because it is reserved for the CSC Ledger's native currency. The following characters are permitted: all uppercase and lowercase letters, digits, as well as the symbols `?`, `!`, `@`, `#`, `$`, `%`, `^`, `&`, `*`, `<`, `>`, `(`, `)`, `{`, `}`, `[`, `]`, and `|`.
+Currencies are represented as either 3-character currency codes or 40-character uppercase hexadecimal strings. We recommend using uppercase [ISO 4217 Currency Codes](http://www.xe.com/iso4217.php) only. The string "STM" is disallowed on trustlines because it is reserved for the STM Ledger's native currency. The following characters are permitted: all uppercase and lowercase letters, digits, as well as the symbols `?`, `!`, `@`, `#`, `$`, `%`, `^`, `&`, `*`, `<`, `>`, `(`, `)`, `{`, `}`, `[`, `]`, and `|`.
 
 ## Value
-A *value* is a quantity of a currency represented as a decimal string. Be careful: JavaScript's native number format does not have sufficient precision to represent all values. CSC has different precision from other currencies.
+A *value* is a quantity of a currency represented as a decimal string. Be careful: JavaScript's native number format does not have sufficient precision to represent all values. STM has different precision from other currencies.
 
-**CSC** has 6 significant digits past the decimal point. In other words, CSC cannot be divided into positive values smaller than `0.000001` (1e-6). CSC has a maximum value of `100000000000` (1e11).
+**STM** has 6 significant digits past the decimal point. In other words, STM cannot be divided into positive values smaller than `0.000001` (1e-6). STM has a maximum value of `100000000000` (1e11).
 
-**Non-CSC values** have 16 decimal digits of precision, with a maximum value of `9999999999999999e80`. The smallest positive non-CSC value is `1e-81`.
+**Non-STM values** have 16 decimal digits of precision, with a maximum value of `9999999999999999e80`. The smallest positive non-STM value is `1e-81`.
 
 
 ## Amount
@@ -229,15 +229,15 @@ Example amount:
 }
 ```
 
-Example CSC amount:
+Example STM amount:
 ```json
 {
-  "currency": "CSC",
+  "currency": "STM",
   "value": "2000"
 }
 ```
 
-An *amount* is data structure representing a currency, a quantity of that currency, and the counterparty on the trustline that holds the value. For CSC, there is no counterparty.
+An *amount* is data structure representing a currency, a quantity of that currency, and the counterparty on the trustline that holds the value. For STM, there is no counterparty.
 
 A *lax amount* allows the counterparty to be omitted for all currencies. If the counterparty is not specified in an amount within a transaction specification, then any counterparty may be used for that amount.
 
@@ -248,7 +248,7 @@ A *balance* is an amount than can have a negative value.
 Name | Type | Description
 ---- | ---- | -----------
 currency | [currency](#currency) | The three-character code or hexadecimal string used to denote currencies
-counterparty | [address](#address) | *Optional* The CasinoCoin address of the account that owes or is owed the funds (omitted if `currency` is "CSC")
+counterparty | [address](#address) | *Optional* The Stoxum address of the account that owes or is owed the funds (omitted if `currency` is "STM")
 value | [value](#value) | *Optional* The quantity of the currency, denoted as a string to retain floating point precision
 
 # Transaction Overview
@@ -259,18 +259,18 @@ A transaction type is specified by the strings in the first column in the table 
 
 Type | Description
 ---- | -----------
-[payment](#payment) | A `payment` transaction represents a transfer of value from one account to another. Depending on the [path](https://casinocoin.org/build/paths/) taken, additional exchanges of value may occur atomically to facilitate the payment.
-[order](#order) | An `order` transaction creates a limit order. It defines an intent to exchange currencies, and creates an order in the CSC Ledger's order book if not completely fulfilled when placed. Orders can be partially fulfilled.
-[orderCancellation](#order-cancellation) | An `orderCancellation` transaction cancels an order in the CSC Ledger's order book.
+[payment](#payment) | A `payment` transaction represents a transfer of value from one account to another. Depending on the [path](https://stoxum.org/build/paths/) taken, additional exchanges of value may occur atomically to facilitate the payment.
+[order](#order) | An `order` transaction creates a limit order. It defines an intent to exchange currencies, and creates an order in the STM Ledger's order book if not completely fulfilled when placed. Orders can be partially fulfilled.
+[orderCancellation](#order-cancellation) | An `orderCancellation` transaction cancels an order in the STM Ledger's order book.
 [trustline](#trustline) | A `trustline` transactions creates or modifies a trust line between two accounts.
-[settings](#settings) | A `settings` transaction modifies the settings of an account in the CSC Ledger.
-[escrowCreation](#escrow-creation) | An `escrowCreation` transaction creates an escrow on the ledger, which locks CSC until a cryptographic condition is met or it expires. It is like an escrow service where the CSC Ledger acts as the escrow agent.
+[settings](#settings) | A `settings` transaction modifies the settings of an account in the STM Ledger.
+[escrowCreation](#escrow-creation) | An `escrowCreation` transaction creates an escrow on the ledger, which locks STM until a cryptographic condition is met or it expires. It is like an escrow service where the STM Ledger acts as the escrow agent.
 [escrowCancellation](#escrow-cancellation) | An `escrowCancellation` transaction unlocks the funds in an escrow and sends them back to the creator of the escrow, but it will only work after the escrow expires.
 [escrowExecution](#escrow-execution) | An `escrowExecution` transaction unlocks the funds in an escrow and sends them to the destination of the escrow, but it will only work if the cryptographic condition is provided.
 
 ## Transaction Flow
 
-Executing a transaction with `CasinocoinAPI` requires the following four steps:
+Executing a transaction with `StoxumAPI` requires the following four steps:
 
 1. Prepare - Create an unsigned transaction based on a [specification](#transaction-specifications) and [instructions](#transaction-instructions). There is a method to prepare each type of transaction:
     * [preparePayment](#preparepayment)
@@ -287,7 +287,7 @@ Executing a transaction with `CasinocoinAPI` requires the following four steps:
 
 ## Transaction Fees
 
-Every transaction must destroy a small amount of CSC as a cost to send the transaction. This is also called a *transaction fee*. The transaction cost is designed to increase along with the load on the CSC Ledger, making it very expensive to deliberately or inadvertently overload the peer-to-peer network that powers the CSC Ledger.
+Every transaction must destroy a small amount of STM as a cost to send the transaction. This is also called a *transaction fee*. The transaction cost is designed to increase along with the load on the STM Ledger, making it very expensive to deliberately or inadvertently overload the peer-to-peer network that powers the STM Ledger.
 
 You can choose the size of the fee you want to pay or let a default be used. You can get an estimate of the fee required to be included in the next ledger closing with the [getFee](#getfee) method.
 
@@ -304,7 +304,7 @@ maxLedgerVersionOffset | integer | *Optional* Offset from current validated legd
 sequence | [sequence](#account-sequence-number) | *Optional* The initiating account's sequence number for this transaction.
 signersCount | integer | *Optional* Number of signers that will be signing this transaction.
 
-We recommended that you specify a `maxLedgerVersion` so that you can quickly determine that a failed transaction will never succeeed in the future. It is impossible for a transaction to succeed after the CSC Ledger's consensus-validated ledger version exceeds the transaction's `maxLedgerVersion`. If you omit `maxLedgerVersion`, the "prepare*" method automatically supplies a `maxLedgerVersion` equal to the current ledger plus 3, which it includes in the return value from the "prepare*" method.
+We recommended that you specify a `maxLedgerVersion` so that you can quickly determine that a failed transaction will never succeeed in the future. It is impossible for a transaction to succeed after the STM Ledger's consensus-validated ledger version exceeds the transaction's `maxLedgerVersion`. If you omit `maxLedgerVersion`, the "prepare*" method automatically supplies a `maxLedgerVersion` equal to the current ledger plus 3, which it includes in the return value from the "prepare*" method.
 
 ## Transaction ID
 
@@ -339,19 +339,19 @@ Name | Type | Description
 source | object | The source of the funds to be sent.
 *source.* address | [address](#address) | The address to send from.
 *source.* amount | [laxAmount](#amount) | An exact amount to send. If the counterparty is not specified, amounts with any counterparty may be used. (This field is exclusive with source.maxAmount)
-*source.* tag | integer | *Optional* An arbitrary unsigned 32-bit integer that identifies a reason for payment or a non-CasinoCoin account.
+*source.* tag | integer | *Optional* An arbitrary unsigned 32-bit integer that identifies a reason for payment or a non-Stoxumcoin account.
 *source.* maxAmount | [laxAmount](#amount) | The maximum amount to send. (This field is exclusive with source.amount)
 destination | object | The destination of the funds to be sent.
 *destination.* address | [address](#address) | The address to receive at.
 *destination.* amount | [laxAmount](#amount) | An exact amount to deliver to the recipient. If the counterparty is not specified, amounts with any counterparty may be used. (This field is exclusive with destination.minAmount).
-*destination.* tag | integer | *Optional* An arbitrary unsigned 32-bit integer that identifies a reason for payment or a non-CasinoCoin account.
+*destination.* tag | integer | *Optional* An arbitrary unsigned 32-bit integer that identifies a reason for payment or a non-Stoxumcoin account.
 *destination.* address | [address](#address) | The address to send to.
 *destination.* minAmount | [laxAmount](#amount) | The minimum amount to be delivered. (This field is exclusive with destination.amount)
 allowPartialPayment | boolean | *Optional* A boolean that, if set to true, indicates that this payment should go through even if the whole amount cannot be delivered because of a lack of liquidity or funds in the source account account
 invoiceID | string | *Optional* A 256-bit hash that can be used to identify a particular payment.
 limitQuality | boolean | *Optional* Only take paths where all the conversions have an input:output ratio that is equal or better than the ratio of destination.amount:source.maxAmount.
 memos | [memos](#transaction-memos) | *Optional* Array of memos to attach to the transaction.
-noDirectCasinocoin | boolean | *Optional* A boolean that can be set to true if paths are specified and the sender would like the CasinoCoin Network to disregard any direct paths from the source account to the destination account. This may be used to take advantage of an arbitrage opportunity or by gateways wishing to issue balances from a hot wallet to a user who has mistakenly set a trustline directly to the hot wallet
+noDirectStoxum | boolean | *Optional* A boolean that can be set to true if paths are specified and the sender would like the Stoxum Network to disregard any direct paths from the source account to the destination account. This may be used to take advantage of an arbitrage opportunity or by gateways wishing to issue balances from a hot wallet to a user who has mistakenly set a trustline directly to the hot wallet
 paths | string | *Optional* The paths of trustlines and orders to use in executing the payment.
 
 ### Example
@@ -393,7 +393,7 @@ frozen | boolean | *Optional* If true, the trustline is frozen, which means that
 memos | [memos](#transaction-memos) | *Optional* Array of memos to attach to the transaction.
 qualityIn | number | *Optional* Incoming balances on this trustline are valued at this ratio.
 qualityOut | number | *Optional* Outgoing balances on this trustline are valued at this ratio.
-ripplingDisabled | boolean | *Optional* If true, payments cannot casinocoin through this trustline.
+ripplingDisabled | boolean | *Optional* If true, payments cannot stoxumcoin through this trustline.
 
 ### Example
 
@@ -446,7 +446,7 @@ passive | boolean | *Optional* If enabled, the offer will not consume offers tha
     "value": "10.1"
   },
   "totalPrice": {
-    "currency": "CSC",
+    "currency": "STM",
     "value": "2"
   },
   "passive": true,
@@ -480,15 +480,15 @@ See [Transaction Types](#transaction-types) for a description.
 
 Name | Type | Description
 ---- | ---- | -----------
-defaultCasinocoin | boolean | *Optional* Enable [rippling](https://ripple.com/knowledge_center/understanding-the-nocasinocoin-flag/) on this account’s trust lines by default.
+defaultStoxumcoin | boolean | *Optional* Enable [rippling](https://ripple.com/knowledge_center/understanding-the-nostoxumcoin-flag/) on this account’s trust lines by default.
 disableMasterKey | boolean | *Optional* Disallows use of the master key to sign transactions for this account.
-disallowIncomingCSC | boolean | *Optional* Indicates that client applications should not send CSC to this account. Not enforced by casinocoind.
+disallowIncomingSTM | boolean | *Optional* Indicates that client applications should not send STM to this account. Not enforced by stoxumd.
 domain | string | *Optional*  The domain that owns this account, as a hexadecimal string representing the ASCII for the domain in lowercase.
 emailHash | string,null | *Optional* Hash of an email address to be used for generating an avatar image. Conventionally, clients use Gravatar to display this image. Use `null` to clear.
 enableTransactionIDTracking | boolean | *Optional* Track the ID of this account’s most recent transaction.
 globalFreeze | boolean | *Optional* Freeze all assets issued by this account.
 memos | [memos](#transaction-memos) | *Optional* Array of memos to attach to the transaction.
-messageKey | string | *Optional* Public key for sending encrypted messages to this account. Conventionally, it should be a secp256k1 key, the same encryption that is used by the rest of CasinoCoin.
+messageKey | string | *Optional* Public key for sending encrypted messages to this account. Conventionally, it should be a secp256k1 key, the same encryption that is used by the rest of Stoxum.
 noFreeze | boolean | *Optional* Permanently give up the ability to freeze individual trust lines. This flag can never be disabled after being enabled.
 passwordSpent | boolean | *Optional* Indicates that the account has used its free SetRegularKey transaction.
 regularKey | [address](#address),null | *Optional* The public key of a new keypair, to use as the regular key to this account, as a base-58-encoded string in the same format as an account address. Use `null` to remove the regular key.
@@ -498,7 +498,7 @@ signers | object | *Optional* Settings that determine what sets of accounts can 
 *signers.* threshold | integer | *Optional* A target number for the signer weights. A multi-signature from this list is valid only if the sum weights of the signatures provided is equal or greater than this value. To delete the signers setting, use the value `0`.
 *signers.* weights | array | *Optional* Weights of signatures for each signer.
 *signers.* weights[] | object | An association of an address and a weight.
-*signers.weights[].* address | [address](#address) | A CasinoCoin account address
+*signers.weights[].* address | [address](#address) | A Stoxum account address
 *signers.weights[].* weight | integer | The weight that the signature of this account counts as towards the threshold.
 transferRate | number,null | *Optional*  The fee to charge when users transfer this account’s issuances, as the decimal amount that must be sent to deliver 1 unit. Has precision up to 9 digits beyond the decimal point. Use `null` to set no fee.
 
@@ -507,7 +507,7 @@ transferRate | number,null | *Optional*  The fee to charge when users transfer t
 
 ```json
 {
-  "domain": "casinocoin.org",
+  "domain": "stoxum.org",
   "memos": [
     {
       "type": "test",
@@ -525,8 +525,8 @@ See [Transaction Types](#transaction-types) for a description.
 
 Name | Type | Description
 ---- | ---- | -----------
-amount | [value](#value) | Amount of CSC for sender to escrow.
-destination | [address](#address) | Address to receive escrowed CSC.
+amount | [value](#value) | Amount of STM for sender to escrow.
+destination | [address](#address) | Address to receive escrowed STM.
 allowCancelAfter | date-time string | *Optional* If present, the escrow may be cancelled after this time.
 allowExecuteAfter | date-time string | *Optional* If present, the escrow can not be executed before this time.
 condition | string | *Optional* A hex value representing a [PREIMAGE-SHA-256 crypto-condition](https://tools.ietf.org/html/draft-thomas-crypto-conditions-02#section-8.1). If present, `fulfillment` is required upon execution.
@@ -598,9 +598,9 @@ See [Transaction Types](#transaction-types) for a description.
 
 Name | Type | Description
 ---- | ---- | -----------
-amount | [value](#value) | Amount of CSC for sender to set aside in this channel.
-destination | [address](#address) | Address to receive CSC claims against this channel.
-settleDelay | number | Amount of seconds the source address must wait before closing the channel if it has unclaimed CSC.
+amount | [value](#value) | Amount of STM for sender to set aside in this channel.
+destination | [address](#address) | Address to receive STM claims against this channel.
+settleDelay | number | Amount of seconds the source address must wait before closing the channel if it has unclaimed STM.
 publicKey | string | Public key of the key pair the source will use to sign claims against this channel.
 cancelAfter | date-time string | *Optional* Time when this channel expires.
 destinationTag | integer | *Optional* Destination tag.
@@ -625,7 +625,7 @@ See [Transaction Types](#transaction-types) for a description.
 
 Name | Type | Description
 ---- | ---- | -----------
-amount | [value](#value) | Amount of CSC to fund the channel with.
+amount | [value](#value) | Amount of STM to fund the channel with.
 channel | string | 256-bit hexadecimal channel identifier.
 expiration | date-time string | *Optional* New expiration for this channel.
 
@@ -647,8 +647,8 @@ See [Transaction Types](#transaction-types) for a description.
 Name | Type | Description
 ---- | ---- | -----------
 channel | string | 256-bit hexadecimal channel identifier.
-amount | [value](#value) | *Optional* CSC balance of this channel after claim is processed.
-balance | [value](#value) | *Optional* Amount of CSC authorized by signature.
+amount | [value](#value) | *Optional* STM balance of this channel after claim is processed.
+balance | [value](#value) | *Optional* Amount of STM authorized by signature.
 close | boolean | *Optional* Request to close the channel.
 publicKey | string | *Optional* Public key of the channel's sender
 renew | boolean | *Optional* Clear the channel's expiration time.
@@ -670,7 +670,7 @@ signature | string | *Optional* Signature of this claim.
 
 `connect(): Promise<void>`
 
-Tells the CasinocoinAPI instance to connect to its casinocoind server.
+Tells the StoxumAPI instance to connect to its stoxumd server.
 
 ### Parameters
 
@@ -688,7 +688,7 @@ See [Boilerplate](#boilerplate) for code sample.
 
 `disconnect(): Promise<void>`
 
-Tells the CasinocoinAPI instance to disconnect from its casinocoind server.
+Tells the StoxumAPI instance to disconnect from its stoxumd server.
 
 ### Parameters
 
@@ -706,7 +706,7 @@ See [Boilerplate](#boilerplate) for code sample
 
 `isConnected(): boolean`
 
-Checks if the CasinocoinAPI instance is connected to its casinocoind server.
+Checks if the StoxumAPI instance is connected to its stoxumd server.
 
 ### Parameters
 
@@ -730,7 +730,7 @@ true
 
 `getServerInfo(): Promise<object>`
 
-Get status information about the server that the CasinocoinAPI instance is connected to.
+Get status information about the server that the StoxumAPI instance is connected to.
 
 ### Parameters
 
@@ -742,28 +742,28 @@ This method returns a promise that resolves with an object with the following st
 
 Name | Type | Description
 ---- | ---- | -----------
-buildVersion | string | The version number of the running casinocoind version.
-completeLedgers | string | Range expression indicating the sequence numbers of the ledger versions the local casinocoind has in its database. It is possible to be a disjoint sequence, e.g. “2500-5000,32570-7695432”.
-hostID | string | On an admin request, returns the hostname of the server running the casinocoind instance; otherwise, returns a unique four letter word.
-ioLatencyMs | number | Amount of time spent waiting for I/O operations to be performed, in milliseconds. If this number is not very, very low, then the casinocoind server is probably having serious load issues.
+buildVersion | string | The version number of the running stoxumd version.
+completeLedgers | string | Range expression indicating the sequence numbers of the ledger versions the local stoxumd has in its database. It is possible to be a disjoint sequence, e.g. “2500-5000,32570-7695432”.
+hostID | string | On an admin request, returns the hostname of the server running the stoxumd instance; otherwise, returns a unique four letter word.
+ioLatencyMs | number | Amount of time spent waiting for I/O operations to be performed, in milliseconds. If this number is not very, very low, then the stoxumd server is probably having serious load issues.
 lastClose | object | Information about the last time the server closed a ledger.
 *lastClose.* convergeTimeS | number | The time it took to reach a consensus for the last ledger closing, in seconds.
 *lastClose.* proposers | integer | Number of trusted validators participating in the ledger closing.
 loadFactor | number | The load factor the server is currently enforcing, as a multiplier on the base transaction fee. The load factor is determined by the highest of the individual server’s load factor, cluster’s load factor, and the overall network’s load factor.
-peers | integer | How many other casinocoind servers the node is currently connected to.
+peers | integer | How many other stoxumd servers the node is currently connected to.
 pubkeyNode | string | Public key used to verify this node for internal communications; this key is automatically generated by the server the first time it starts up. (If deleted, the node can just create a new pair of keys.)
-serverState | string | A string indicating to what extent the server is participating in the network. See [Possible Server States](https://casinocoin.org/build/casinocoind-apis/#possible-server-states) for more details.
+serverState | string | A string indicating to what extent the server is participating in the network. See [Possible Server States](https://stoxum.org/build/stoxumd-apis/#possible-server-states) for more details.
 validatedLedger | object | Information about the fully-validated ledger with the highest sequence number (the most recent).
 *validatedLedger.* age | integer | The time since the ledger was closed, in seconds.
-*validatedLedger.* baseFeeCSC | [value](#value) | Base fee, in CSC. This may be represented in scientific notation such as 1e-05 for 0.00005.
+*validatedLedger.* baseFeeSTM | [value](#value) | Base fee, in STM. This may be represented in scientific notation such as 1e-05 for 0.00005.
 *validatedLedger.* hash | string | Unique hash for the ledger, as an uppercase hexadecimal string.
-*validatedLedger.* reserveBaseCSC | [value](#value) | Minimum amount of CSC necessary for every account to keep in reserve.
-*validatedLedger.* reserveIncrementCSC | [value](#value) | Amount of CSC added to the account reserve for each object an account is responsible for in the ledger.
+*validatedLedger.* reserveBaseSTM | [value](#value) | Minimum amount of STM necessary for every account to keep in reserve.
+*validatedLedger.* reserveIncrementSTM | [value](#value) | Amount of STM added to the account reserve for each object an account is responsible for in the ledger.
 *validatedLedger.* ledgerVersion | integer | Identifying sequence number of this ledger version.
 validationQuorum | number | Minimum number of trusted validations required in order to validate a ledger version. Some circumstances may cause the server to require more validations.
 load | object | *Optional* *(Admin only)* Detailed information about the current load state of the server.
 *load.* jobTypes | array\<object\> | *(Admin only)* Information about the rate of different types of jobs being performed by the server and how much time it spends on each.
-*load.* threads | number | *(Admin only)* The number of threads in the server’s main job pool, performing various CasinoCoin Network operations.
+*load.* threads | number | *(Admin only)* The number of threads in the server’s main job pool, performing various Stoxum Network operations.
 pubkeyValidator | string | *Optional* *(Admin only)* Public key used by this node to sign ledger validations.
 
 ### Example
@@ -789,10 +789,10 @@ return api.getServerInfo().then(info => {/* ... */});
   "serverState": "full",
   "validatedLedger": {
     "age": 5,
-    "baseFeeCSC": "0.00001",
+    "baseFeeSTM": "0.00001",
     "hash": "4482DEE5362332F54A4036ED57EE1767C9F33CF7CE5A6670355C16CECE381D46",
-    "reserveBaseCSC": "20",
-    "reserveIncrementCSC": "5",
+    "reserveBaseSTM": "20",
+    "reserveIncrementSTM": "5",
     "ledgerVersion": 6595042
   },
   "validationQuorum": 3
@@ -804,7 +804,7 @@ return api.getServerInfo().then(info => {/* ... */});
 
 `getFee(): Promise<number>`
 
-Returns the estimated transaction fee for the casinocoind server the CasinocoinAPI instance is connected to.
+Returns the estimated transaction fee for the stoxumd server the StoxumAPI instance is connected to.
 
 ### Parameters
 
@@ -812,7 +812,7 @@ This method has no parameters.
 
 ### Return Value
 
-This method returns a promise that resolves with a string encoded floating point value representing the estimated fee to submit a transaction, expressed in CSC.
+This method returns a promise that resolves with a string encoded floating point value representing the estimated fee to submit a transaction, expressed in STM.
 
 ### Example
 
@@ -878,10 +878,10 @@ sequence | [sequence](#account-sequence-number) | The account sequence number of
 type | [transactionType](#transaction-types) | The type of the transaction.
 specification | object | A specification that would produce the same outcome as this transaction. The structure of the specification depends on the value of the `type` field (see [Transaction Types](#transaction-types) for details). *Note:* This is **not** necessarily the same as the original specification.
 outcome | object | The outcome of the transaction (what effects it had).
-*outcome.* result | string | Result code returned by casinocoind. See [Transaction Results](https://casinocoin.org/build/transactions/#full-transaction-response-list) for a complete list.
-*outcome.* fee | [value](#value) | The CSC fee that was charged for the transaction.
-*outcome.balanceChanges.* \* | array\<[balance](#amount)\> | Key is the casinocoin address; value is an array of signed amounts representing changes of balances for that address.
-*outcome.orderbookChanges.* \* | array | Key is the maker's casinocoin address; value is an array of changes
+*outcome.* result | string | Result code returned by stoxumd. See [Transaction Results](https://stoxum.org/build/transactions/#full-transaction-response-list) for a complete list.
+*outcome.* fee | [value](#value) | The STM fee that was charged for the transaction.
+*outcome.balanceChanges.* \* | array\<[balance](#amount)\> | Key is the stoxumcoin address; value is an array of signed amounts representing changes of balances for that address.
+*outcome.orderbookChanges.* \* | array | Key is the maker's stoxumcoin address; value is an array of changes
 *outcome.orderbookChanges.* \*[] | object | A change to an order.
 *outcome.orderbookChanges.\*[].* direction | string | Equal to "buy" for buy orders and "sell" for sell orders.
 *outcome.orderbookChanges.\*[].* quantity | [amount](#amount) | The amount to be bought or sold by the maker.
@@ -915,7 +915,7 @@ return api.getTransaction(id).then(transaction => {
     "source": {
       "address": "cDarPNJEpCnpBZSfmcquydockkePkjPGA2",
       "maxAmount": {
-        "currency": "CSC",
+        "currency": "STM",
         "value": "1.112209"
       }
     },
@@ -959,13 +959,13 @@ return api.getTransaction(id).then(transaction => {
       ],
       "cDarPNJEpCnpBZSfmcquydockkePkjPGA2": [
         {
-          "currency": "CSC",
+          "currency": "STM",
           "value": "-1.101208"
         }
       ],
       "c9tGqzZgKxVFvzKFdUqXAqTzazWBUia8Qr": [
         {
-          "currency": "CSC",
+          "currency": "STM",
           "value": "1.101198"
         },
         {
@@ -980,7 +980,7 @@ return api.getTransaction(id).then(transaction => {
         {
           "direction": "buy",
           "quantity": {
-            "currency": "CSC",
+            "currency": "STM",
             "value": "1.101198"
           },
           "totalPrice": {
@@ -1055,7 +1055,7 @@ return api.getTransactions(address).then(transaction => {
       "source": {
         "address": "cDarPNJEpCnpBZSfmcquydockkePkjPGA2",
         "maxAmount": {
-          "currency": "CSC",
+          "currency": "STM",
           "value": "1.112209"
         }
       },
@@ -1098,13 +1098,13 @@ return api.getTransactions(address).then(transaction => {
         ],
         "cDarPNJEpCnpBZSfmcquydockkePkjPGA2": [
           {
-            "currency": "CSC",
+            "currency": "STM",
             "value": "-1.101208"
           }
         ],
         "c9tGqzZgKxVFvzKFdUqXAqTzazWBUia8Qr": [
           {
-            "currency": "CSC",
+            "currency": "STM",
             "value": "1.101198"
           },
           {
@@ -1119,7 +1119,7 @@ return api.getTransactions(address).then(transaction => {
           {
             "direction": "buy",
             "quantity": {
-              "currency": "CSC",
+              "currency": "STM",
               "value": "1.101198"
             },
             "totalPrice": {
@@ -1152,7 +1152,7 @@ return api.getTransactions(address).then(transaction => {
       "source": {
         "address": "cDarPNJEpCnpBZSfmcquydockkePkjPGA2",
         "maxAmount": {
-          "currency": "CSC",
+          "currency": "STM",
           "value": "1.112209"
         }
       },
@@ -1195,13 +1195,13 @@ return api.getTransactions(address).then(transaction => {
         ],
         "cDarPNJEpCnpBZSfmcquydockkePkjPGA2": [
           {
-            "currency": "CSC",
+            "currency": "STM",
             "value": "-1.101208"
           }
         ],
         "c9tGqzZgKxVFvzKFdUqXAqTzazWBUia8Qr": [
           {
-            "currency": "CSC",
+            "currency": "STM",
             "value": "1.101198"
           },
           {
@@ -1216,7 +1216,7 @@ return api.getTransactions(address).then(transaction => {
           {
             "direction": "buy",
             "quantity": {
-              "currency": "CSC",
+              "currency": "STM",
               "value": "1.101198"
             },
             "totalPrice": {
@@ -1266,7 +1266,7 @@ counterparty | object | Properties of the trustline from the perspective of the 
 *counterparty.* limit | [value](#value) | The maximum amount that the counterparty can be owed through the trustline.
 *counterparty.* authorized | boolean | *Optional* If true, the counterparty authorizes this party to hold issuances from the counterparty.
 *counterparty.* frozen | boolean | *Optional* If true, the trustline is frozen, which means that funds can only be sent to the counterparty.
-*counterparty.* ripplingDisabled | boolean | *Optional* If true, payments cannot casinocoin through this trustline.
+*counterparty.* ripplingDisabled | boolean | *Optional* If true, payments cannot stoxumcoin through this trustline.
 state | object | Properties of the trustline regarding it's current state that are not part of the specification.
 *state.* balance | [signedValue](#value) | The balance on the trustline, representing which party owes the other and by how much.
 
@@ -1407,7 +1407,7 @@ Name | Type | Description
 ---- | ---- | -----------
 currency | [currency](#currency) | The three-character code or hexadecimal string used to denote currencies
 value | [signedValue](#value) | The balance on the trustline
-counterparty | [address](#address) | *Optional* The CasinoCoin address of the account that owes or is owed the funds.
+counterparty | [address](#address) | *Optional* The Stoxum address of the account that owes or is owed the funds.
 
 ### Example
 
@@ -1422,7 +1422,7 @@ return api.getBalances(address).then(balances =>
 [
   {
     "value": "922.913243",
-    "currency": "CSC"
+    "currency": "STM"
   },
   {
     "value": "0",
@@ -1558,7 +1558,7 @@ Returns aggregate balances by currency plus a breakdown of assets and obligation
 
 Name | Type | Description
 ---- | ---- | -----------
-address | [address](#address) | The CasinoCoin address of the account to get the balance sheet of.
+address | [address](#address) | The Stoxum address of the account to get the balance sheet of.
 options | object | *Optional* Options to determine how the balances will be calculated.
 *options.* excludeAddresses | array\<[address](#address)\> | *Optional* Addresses to exclude from the balance totals.
 *options.* ledgerVersion | integer | *Optional* Get the balance sheet as of this historical ledger version.
@@ -1655,7 +1655,7 @@ Name | Type | Description
 ---- | ---- | -----------
 pathfind | object | Specification of a pathfind request.
 *pathfind.* source | object | Properties of the source of funds.
-*pathfind.source.* address | [address](#address) | The CasinoCoin address of the account where funds will come from.
+*pathfind.source.* address | [address](#address) | The Stoxum address of the account where funds will come from.
 *pathfind.source.* amount | [laxAmount](#amount) | *Optional* The amount of funds to send.
 *pathfind.source.* currencies | array | *Optional* An array of currencies (with optional counterparty) that may be used in the payment paths.
 *pathfind.source.* currencies[] | object | A currency with optional counterparty.
@@ -1674,12 +1674,12 @@ Name | Type | Description
 source | object | Properties of the source of the payment.
 *source.* address | [address](#address) | The address to send from.
 *source.* amount | [laxAmount](#amount) | An exact amount to send. If the counterparty is not specified, amounts with any counterparty may be used. (This field is exclusive with source.maxAmount)
-*source.* tag | integer | *Optional* An arbitrary unsigned 32-bit integer that identifies a reason for payment or a non-CasinoCoin account.
+*source.* tag | integer | *Optional* An arbitrary unsigned 32-bit integer that identifies a reason for payment or a non-Stoxumcoin account.
 *source.* maxAmount | [laxAmount](#amount) | The maximum amount to send. (This field is exclusive with source.amount)
 destination | object | Properties of the destination of the payment.
 *destination.* address | [address](#address) | The address to receive at.
 *destination.* amount | [laxAmount](#amount) | An exact amount to deliver to the recipient. If the counterparty is not specified, amounts with any counterparty may be used. (This field is exclusive with destination.minAmount).
-*destination.* tag | integer | *Optional* An arbitrary unsigned 32-bit integer that identifies a reason for payment or a non-CasinoCoin account.
+*destination.* tag | integer | *Optional* An arbitrary unsigned 32-bit integer that identifies a reason for payment or a non-Stoxumcoin account.
 *destination.* address | [address](#address) | The address to send to.
 *destination.* minAmount | [laxAmount](#amount) | The minimum amount to be delivered. (This field is exclusive with destination.amount)
 paths | string | The paths of trustlines and orders to use in executing the payment.
@@ -1723,7 +1723,7 @@ return api.getPaths(pathfind)
         "value": "100"
       }
     },
-    "paths": "[[{\"account\":\"cMAz5ZnK73nyNUL4foAvaxdreczCkG3vA6\"},{\"currency\":\"USD\",\"issuer\":\"cJzUdHEh7MF7xwzxF7Tww7H6uWvfKRX5wJ\"},{\"account\":\"cJzUdHEh7MF7xwzxF7Tww7H6uWvfKRX5wJ\"}],[{\"account\":\"cMAz5ZnK73nyNUL4foAvaxdreczCkG3vA6\"},{\"currency\":\"CSC\"},{\"currency\":\"USD\",\"issuer\":\"cJzUdHEh7MF7xwzxF7Tww7H6uWvfKRX5wJ\"},{\"account\":\"cJzUdHEh7MF7xwzxF7Tww7H6uWvfKRX5wJ\"}],[{\"account\":\"cMAz5ZnK73nyNUL4foAvaxdreczCkG3vA6\"},{\"currency\":\"CSC\"},{\"currency\":\"USD\",\"issuer\":\"cpHgehzdpfWRXKvSv6duKvVuo1aZVimdaT\"},{\"account\":\"cpHgehzdpfWRXKvSv6duKvVuo1aZVimdaT\"},{\"account\":\"cJzUdHEh7MF7xwzxF7Tww7H6uWvfKRX5wJ\"}],[{\"account\":\"cMAz5ZnK73nyNUL4foAvaxdreczCkG3vA6\"},{\"currency\":\"CSC\"},{\"currency\":\"USD\",\"issuer\":\"cHHa9t2kLQyXRbdLkSzEgkzwf9unmFgZs9\"},{\"account\":\"cHHa9t2kLQyXRbdLkSzEgkzwf9unmFgZs9\"},{\"account\":\"cJzUdHEh7MF7xwzxF7Tww7H6uWvfKRX5wJ\"}]]"
+    "paths": "[[{\"account\":\"cMAz5ZnK73nyNUL4foAvaxdreczCkG3vA6\"},{\"currency\":\"USD\",\"issuer\":\"cJzUdHEh7MF7xwzxF7Tww7H6uWvfKRX5wJ\"},{\"account\":\"cJzUdHEh7MF7xwzxF7Tww7H6uWvfKRX5wJ\"}],[{\"account\":\"cMAz5ZnK73nyNUL4foAvaxdreczCkG3vA6\"},{\"currency\":\"STM\"},{\"currency\":\"USD\",\"issuer\":\"cJzUdHEh7MF7xwzxF7Tww7H6uWvfKRX5wJ\"},{\"account\":\"cJzUdHEh7MF7xwzxF7Tww7H6uWvfKRX5wJ\"}],[{\"account\":\"cMAz5ZnK73nyNUL4foAvaxdreczCkG3vA6\"},{\"currency\":\"STM\"},{\"currency\":\"USD\",\"issuer\":\"cpHgehzdpfWRXKvSv6duKvVuo1aZVimdaT\"},{\"account\":\"cpHgehzdpfWRXKvSv6duKvVuo1aZVimdaT\"},{\"account\":\"cJzUdHEh7MF7xwzxF7Tww7H6uWvfKRX5wJ\"}],[{\"account\":\"cMAz5ZnK73nyNUL4foAvaxdreczCkG3vA6\"},{\"currency\":\"STM\"},{\"currency\":\"USD\",\"issuer\":\"cHHa9t2kLQyXRbdLkSzEgkzwf9unmFgZs9\"},{\"account\":\"cHHa9t2kLQyXRbdLkSzEgkzwf9unmFgZs9\"},{\"account\":\"cJzUdHEh7MF7xwzxF7Tww7H6uWvfKRX5wJ\"}]]"
   },
   {
     "source": {
@@ -1741,13 +1741,13 @@ return api.getPaths(pathfind)
         "value": "100"
       }
     },
-    "paths": "[[{\"account\":\"cJzUdHEh7MF7xwzxF7Tww7H6uWvfKRX5wJ\"}],[{\"account\":\"cMwjYedjc7qqtKYVLiAccJSmCwih4LnE2q\"},{\"currency\":\"USD\",\"issuer\":\"cJzUdHEh7MF7xwzxF7Tww7H6uWvfKRX5wJ\"},{\"account\":\"cJzUdHEh7MF7xwzxF7Tww7H6uWvfKRX5wJ\"}],[{\"account\":\"cMwjYedjc7qqtKYVLiAccJSmCwih4LnE2q\"},{\"currency\":\"CSC\"},{\"currency\":\"USD\",\"issuer\":\"cJzUdHEh7MF7xwzxF7Tww7H6uWvfKRX5wJ\"},{\"account\":\"cJzUdHEh7MF7xwzxF7Tww7H6uWvfKRX5wJ\"}],[{\"account\":\"cMwjYedjc7qqtKYVLiAccJSmCwih4LnE2q\"},{\"currency\":\"CSC\"},{\"currency\":\"USD\",\"issuer\":\"cpHgehzdpfWRXKvSv6duKvVuo1aZVimdaT\"},{\"account\":\"cpHgehzdpfWRXKvSv6duKvVuo1aZVimdaT\"},{\"account\":\"cJzUdHEh7MF7xwzxF7Tww7H6uWvfKRX5wJ\"}]]"
+    "paths": "[[{\"account\":\"cJzUdHEh7MF7xwzxF7Tww7H6uWvfKRX5wJ\"}],[{\"account\":\"cMwjYedjc7qqtKYVLiAccJSmCwih4LnE2q\"},{\"currency\":\"USD\",\"issuer\":\"cJzUdHEh7MF7xwzxF7Tww7H6uWvfKRX5wJ\"},{\"account\":\"cJzUdHEh7MF7xwzxF7Tww7H6uWvfKRX5wJ\"}],[{\"account\":\"cMwjYedjc7qqtKYVLiAccJSmCwih4LnE2q\"},{\"currency\":\"STM\"},{\"currency\":\"USD\",\"issuer\":\"cJzUdHEh7MF7xwzxF7Tww7H6uWvfKRX5wJ\"},{\"account\":\"cJzUdHEh7MF7xwzxF7Tww7H6uWvfKRX5wJ\"}],[{\"account\":\"cMwjYedjc7qqtKYVLiAccJSmCwih4LnE2q\"},{\"currency\":\"STM\"},{\"currency\":\"USD\",\"issuer\":\"cpHgehzdpfWRXKvSv6duKvVuo1aZVimdaT\"},{\"account\":\"cpHgehzdpfWRXKvSv6duKvVuo1aZVimdaT\"},{\"account\":\"cJzUdHEh7MF7xwzxF7Tww7H6uWvfKRX5wJ\"}]]"
   },
   {
     "source": {
       "address": "cDarPNJEpCnpBZSfmcquydockkePkjPGA2",
       "maxAmount": {
-        "currency": "CSC",
+        "currency": "STM",
         "value": "0.207669"
       }
     },
@@ -1775,7 +1775,7 @@ Returns open orders for the specified account. Open orders are orders that have 
 
 Name | Type | Description
 ---- | ---- | -----------
-address | [address](#address) | The CasinoCoin address of the account to get open orders for.
+address | [address](#address) | The Stoxum address of the account to get open orders for.
 options | object | *Optional* Options that determine what orders will be returned.
 *options.* ledgerVersion | integer | *Optional* Return orders as of this historical ledger version.
 *options.* limit | integer | *Optional* At most this many orders will be returned.
@@ -2007,7 +2007,7 @@ return api.getOrders(address).then(orders =>
     "specification": {
       "direction": "buy",
       "quantity": {
-        "currency": "CSC",
+        "currency": "STM",
         "value": "115760.19"
       },
       "totalPrice": {
@@ -2111,7 +2111,7 @@ return api.getOrders(address).then(orders =>
         "counterparty": "c9Dr5xwkeLegBeXq6ujinjSBLQzQ1zQGjH"
       },
       "totalPrice": {
-        "currency": "CSC",
+        "currency": "STM",
         "value": "2229.229447"
       }
     },
@@ -2157,8 +2157,8 @@ Name | Type | Description
 ---- | ---- | -----------
 address | [address](#address) | Address of an account to use as point-of-view. (This affects which unfunded offers are returned.)
 orderbook | object | The order book to get.
-*orderbook.* base | object | A currency-counterparty pair, or just currency if it's CSC
-*orderbook.* counter | object | A currency-counterparty pair, or just currency if it's CSC
+*orderbook.* base | object | A currency-counterparty pair, or just currency if it's STM
+*orderbook.* counter | object | A currency-counterparty pair, or just currency if it's STM
 options | object | *Optional* Options to determine what to return.
 *options.* ledgerVersion | integer | *Optional* Return the order book as of this historical ledger version.
 *options.* limit | integer | *Optional* Return at most this many orders from the order book.
@@ -2718,15 +2718,15 @@ This method returns a promise that resolves with an array of objects with the fo
 
 Name | Type | Description
 ---- | ---- | -----------
-defaultCasinocoin | boolean | *Optional* Enable [rippling](https://ripple.com/knowledge_center/understanding-the-nocasinocoin-flag/) on this account’s trust lines by default.
+defaultStoxumcoin | boolean | *Optional* Enable [rippling](https://ripple.com/knowledge_center/understanding-the-nostoxumcoin-flag/) on this account’s trust lines by default.
 disableMasterKey | boolean | *Optional* Disallows use of the master key to sign transactions for this account.
-disallowIncomingCSC | boolean | *Optional* Indicates that client applications should not send CSC to this account. Not enforced by casinocoind.
+disallowIncomingSTM | boolean | *Optional* Indicates that client applications should not send STM to this account. Not enforced by stoxumd.
 domain | string | *Optional*  The domain that owns this account, as a hexadecimal string representing the ASCII for the domain in lowercase.
 emailHash | string,null | *Optional* Hash of an email address to be used for generating an avatar image. Conventionally, clients use Gravatar to display this image. Use `null` to clear.
 enableTransactionIDTracking | boolean | *Optional* Track the ID of this account’s most recent transaction.
 globalFreeze | boolean | *Optional* Freeze all assets issued by this account.
 memos | [memos](#transaction-memos) | *Optional* Array of memos to attach to the transaction.
-messageKey | string | *Optional* Public key for sending encrypted messages to this account. Conventionally, it should be a secp256k1 key, the same encryption that is used by the rest of CasinoCoin.
+messageKey | string | *Optional* Public key for sending encrypted messages to this account. Conventionally, it should be a secp256k1 key, the same encryption that is used by the rest of Stoxum.
 noFreeze | boolean | *Optional* Permanently give up the ability to freeze individual trust lines. This flag can never be disabled after being enabled.
 passwordSpent | boolean | *Optional* Indicates that the account has used its free SetRegularKey transaction.
 regularKey | [address](#address),null | *Optional* The public key of a new keypair, to use as the regular key to this account, as a base-58-encoded string in the same format as an account address. Use `null` to remove the regular key.
@@ -2736,7 +2736,7 @@ signers | object | *Optional* Settings that determine what sets of accounts can 
 *signers.* threshold | integer | *Optional* A target number for the signer weights. A multi-signature from this list is valid only if the sum weights of the signatures provided is equal or greater than this value. To delete the signers setting, use the value `0`.
 *signers.* weights | array | *Optional* Weights of signatures for each signer.
 *signers.* weights[] | object | An association of an address and a weight.
-*signers.weights[].* address | [address](#address) | A CasinoCoin account address
+*signers.weights[].* address | [address](#address) | A Stoxum account address
 *signers.weights[].* weight | integer | The weight that the signature of this account counts as towards the threshold.
 transferRate | number,null | *Optional*  The fee to charge when users transfer this account’s issuances, as the decimal amount that must be sent to deliver 1 unit. Has precision up to 9 digits beyond the decimal point. Use `null` to set no fee.
 
@@ -2752,7 +2752,7 @@ return api.getSettings(address).then(settings =>
 ```json
 {
   "requireDestinationTag": true,
-  "disallowIncomingCSC": true,
+  "disallowIncomingSTM": true,
   "emailHash": "23463B99B62A72F26ED677CC556C44E8",
   "domain": "example.com",
   "transferRate": 1.002
@@ -2781,7 +2781,7 @@ This method returns a promise that resolves with an object with the following st
 Name | Type | Description
 ---- | ---- | -----------
 sequence | [sequence](#account-sequence-number) | The next (smallest unused) sequence number for this account.
-cscBalance | [value](#value) | The CSC balance owned by the account.
+stmBalance | [value](#value) | The STM balance owned by the account.
 ownerCount | integer | Number of other ledger entries (specifically, trust lines and offers) attributed to this account. This is used to calculate the total reserve required to use the account.
 previousAffectingTransactionID | string | Hash value representing the most recent transaction that affected this account node directly. **Note:** This does not include changes to the account’s trust lines and offers.
 previousAffectingTransactionLedgerVersion | integer | The ledger version that the transaction identified by the `previousAffectingTransactionID` was validated in.
@@ -2799,7 +2799,7 @@ return api.getAccountInfo(address).then(info =>
 ```json
 {
   "sequence": 23,
-  "cscBalance": "922.913243",
+  "stmBalance": "922.913243",
   "ownerCount": 1,
   "previousAffectingTransactionID": "19899273706A9E040FDB5885EE991A1DC2BAD878A0D6E7DBCFB714E63BF737F7",
   "previousAffectingTransactionLedgerVersion": 6614625
@@ -2826,10 +2826,10 @@ This method returns a promise that resolves with an object with the following st
 Name | Type | Description
 ---- | ---- | -----------
 account | [address](#address) | Address that created the payment channel.
-destination | [address](#address) | Address to receive CSC claims against this channel.
-amount | [value](#value) | The total amount of CSC funded in this channel.
-balance | [value](#value) | The total amount of CSC delivered by this channel.
-settleDelay | number | Amount of seconds the source address must wait before closing the channel if it has unclaimed CSC.
+destination | [address](#address) | Address to receive STM claims against this channel.
+amount | [value](#value) | The total amount of STM funded in this channel.
+balance | [value](#value) | The total amount of STM delivered by this channel.
+settleDelay | number | Amount of seconds the source address must wait before closing the channel if it has unclaimed STM.
 previousAffectingTransactionID | string | Hash value representing the most recent transaction that affected this payment channel.
 previousAffectingTransactionLedgerVersion | integer | The ledger version that the transaction identified by the `previousAffectingTransactionID` was validated in.
 cancelAfter | date-time string | *Optional* Time when this channel expires as specified at creation.
@@ -2892,10 +2892,10 @@ ledgerHash | string | Unique identifying hash of the entire ledger.
 ledgerVersion | integer | The ledger version of this ledger.
 parentLedgerHash | string | Unique identifying hash of the ledger that came immediately before this one.
 parentCloseTime | date-time string | The time at which the previous ledger was closed.
-totalDrops | [value](#value) | Total number of drops (1/100,000,000th of an CSC) in the network, as a quoted integer. (This decreases as transaction fees cause CSC to be destroyed.)
+totalDrops | [value](#value) | Total number of drops (1/100,000,000th of an STM) in the network, as a quoted integer. (This decreases as transaction fees cause STM to be destroyed.)
 transactionHash | string | Hash of the transaction information included in this ledger.
-rawState | string | *Optional* A JSON string containing all state data for this ledger in casinocoind JSON format.
-rawTransactions | string | *Optional* A JSON string containing casinocoind format transaction JSON for all transactions that were validated in this ledger.
+rawState | string | *Optional* A JSON string containing all state data for this ledger in stoxumd JSON format.
+rawTransactions | string | *Optional* A JSON string containing stoxumd format transaction JSON for all transactions that were validated in this ledger.
 stateHashes | array\<string\> | *Optional* An array of hashes of all state data in this ledger.
 transactionHashes | array\<[id](#transaction-id)\> | *Optional* An array of hashes of all transactions that were validated in this ledger.
 transactions | array\<[getTransaction](#gettransaction)\> | *Optional* Array of all transactions that were validated in this ledger. Transactions are represented in the same format as the return value of [getTransaction](#gettransaction).
@@ -2948,7 +2948,7 @@ All "prepare*" methods have the same return type.
 
 Name | Type | Description
 ---- | ---- | -----------
-txJSON | string | The prepared transaction in casinocoind JSON format.
+txJSON | string | The prepared transaction in stoxumd JSON format.
 instructions | object | The instructions for how to execute the transaction after adding automatic defaults.
 *instructions.* fee | [value](#value) | An exact fee to pay for the transaction. See [Transaction Fees](#transaction-fees) for more information.
 *instructions.* sequence | [sequence](#account-sequence-number) | The initiating account's sequence number for this transaction.
@@ -3017,7 +3017,7 @@ All "prepare*" methods have the same return type.
 
 Name | Type | Description
 ---- | ---- | -----------
-txJSON | string | The prepared transaction in casinocoind JSON format.
+txJSON | string | The prepared transaction in stoxumd JSON format.
 instructions | object | The instructions for how to execute the transaction after adding automatic defaults.
 *instructions.* fee | [value](#value) | An exact fee to pay for the transaction. See [Transaction Fees](#transaction-fees) for more information.
 *instructions.* sequence | [sequence](#account-sequence-number) | The initiating account's sequence number for this transaction.
@@ -3084,7 +3084,7 @@ All "prepare*" methods have the same return type.
 
 Name | Type | Description
 ---- | ---- | -----------
-txJSON | string | The prepared transaction in casinocoind JSON format.
+txJSON | string | The prepared transaction in stoxumd JSON format.
 instructions | object | The instructions for how to execute the transaction after adding automatic defaults.
 *instructions.* fee | [value](#value) | An exact fee to pay for the transaction. See [Transaction Fees](#transaction-fees) for more information.
 *instructions.* sequence | [sequence](#account-sequence-number) | The initiating account's sequence number for this transaction.
@@ -3102,7 +3102,7 @@ const order = {
     "value": "10.1"
   },
   "totalPrice": {
-    "currency": "CSC",
+    "currency": "STM",
     "value": "2"
   },
   "passive": true,
@@ -3149,7 +3149,7 @@ All "prepare*" methods have the same return type.
 
 Name | Type | Description
 ---- | ---- | -----------
-txJSON | string | The prepared transaction in casinocoind JSON format.
+txJSON | string | The prepared transaction in stoxumd JSON format.
 instructions | object | The instructions for how to execute the transaction after adding automatic defaults.
 *instructions.* fee | [value](#value) | An exact fee to pay for the transaction. See [Transaction Fees](#transaction-fees) for more information.
 *instructions.* sequence | [sequence](#account-sequence-number) | The initiating account's sequence number for this transaction.
@@ -3201,7 +3201,7 @@ All "prepare*" methods have the same return type.
 
 Name | Type | Description
 ---- | ---- | -----------
-txJSON | string | The prepared transaction in casinocoind JSON format.
+txJSON | string | The prepared transaction in stoxumd JSON format.
 instructions | object | The instructions for how to execute the transaction after adding automatic defaults.
 *instructions.* fee | [value](#value) | An exact fee to pay for the transaction. See [Transaction Fees](#transaction-fees) for more information.
 *instructions.* sequence | [sequence](#account-sequence-number) | The initiating account's sequence number for this transaction.
@@ -3212,7 +3212,7 @@ instructions | object | The instructions for how to execute the transaction afte
 ```javascript
 const address = 'cDarPNJEpCnpBZSfmcquydockkePkjPGA2';
 const settings = {
-  "domain": "casinocoin.org",
+  "domain": "stoxum.org",
   "memos": [
     {
       "type": "test",
@@ -3228,7 +3228,7 @@ return api.prepareSettings(address, settings)
 
 ```json
 {
-  "domain": "casinocoin.org",
+  "domain": "stoxum.org",
   "memos": [
     {
       "type": "test",
@@ -3264,7 +3264,7 @@ All "prepare*" methods have the same return type.
 
 Name | Type | Description
 ---- | ---- | -----------
-txJSON | string | The prepared transaction in casinocoind JSON format.
+txJSON | string | The prepared transaction in stoxumd JSON format.
 instructions | object | The instructions for how to execute the transaction after adding automatic defaults.
 *instructions.* fee | [value](#value) | An exact fee to pay for the transaction. See [Transaction Fees](#transaction-fees) for more information.
 *instructions.* sequence | [sequence](#account-sequence-number) | The initiating account's sequence number for this transaction.
@@ -3320,7 +3320,7 @@ All "prepare*" methods have the same return type.
 
 Name | Type | Description
 ---- | ---- | -----------
-txJSON | string | The prepared transaction in casinocoind JSON format.
+txJSON | string | The prepared transaction in stoxumd JSON format.
 instructions | object | The instructions for how to execute the transaction after adding automatic defaults.
 *instructions.* fee | [value](#value) | An exact fee to pay for the transaction. See [Transaction Fees](#transaction-fees) for more information.
 *instructions.* sequence | [sequence](#account-sequence-number) | The initiating account's sequence number for this transaction.
@@ -3375,7 +3375,7 @@ All "prepare*" methods have the same return type.
 
 Name | Type | Description
 ---- | ---- | -----------
-txJSON | string | The prepared transaction in casinocoind JSON format.
+txJSON | string | The prepared transaction in stoxumd JSON format.
 instructions | object | The instructions for how to execute the transaction after adding automatic defaults.
 *instructions.* fee | [value](#value) | An exact fee to pay for the transaction. See [Transaction Fees](#transaction-fees) for more information.
 *instructions.* sequence | [sequence](#account-sequence-number) | The initiating account's sequence number for this transaction.
@@ -3432,7 +3432,7 @@ All "prepare*" methods have the same return type.
 
 Name | Type | Description
 ---- | ---- | -----------
-txJSON | string | The prepared transaction in casinocoind JSON format.
+txJSON | string | The prepared transaction in stoxumd JSON format.
 instructions | object | The instructions for how to execute the transaction after adding automatic defaults.
 *instructions.* fee | [value](#value) | An exact fee to pay for the transaction. See [Transaction Fees](#transaction-fees) for more information.
 *instructions.* sequence | [sequence](#account-sequence-number) | The initiating account's sequence number for this transaction.
@@ -3489,7 +3489,7 @@ All "prepare*" methods have the same return type.
 
 Name | Type | Description
 ---- | ---- | -----------
-txJSON | string | The prepared transaction in casinocoind JSON format.
+txJSON | string | The prepared transaction in stoxumd JSON format.
 instructions | object | The instructions for how to execute the transaction after adding automatic defaults.
 *instructions.* fee | [value](#value) | An exact fee to pay for the transaction. See [Transaction Fees](#transaction-fees) for more information.
 *instructions.* sequence | [sequence](#account-sequence-number) | The initiating account's sequence number for this transaction.
@@ -3543,7 +3543,7 @@ All "prepare*" methods have the same return type.
 
 Name | Type | Description
 ---- | ---- | -----------
-txJSON | string | The prepared transaction in casinocoind JSON format.
+txJSON | string | The prepared transaction in stoxumd JSON format.
 instructions | object | The instructions for how to execute the transaction after adding automatic defaults.
 *instructions.* fee | [value](#value) | An exact fee to pay for the transaction. See [Transaction Fees](#transaction-fees) for more information.
 *instructions.* sequence | [sequence](#account-sequence-number) | The initiating account's sequence number for this transaction.
@@ -3584,7 +3584,7 @@ Sign a prepared transaction. The signed transaction must subsequently be [submit
 
 Name | Type | Description
 ---- | ---- | -----------
-txJSON | string | Transaction represented as a JSON string in casinocoind format.
+txJSON | string | Transaction represented as a JSON string in stoxumd format.
 secret | secret string | The secret of the account that is initiating the transaction.
 options | object | *Optional* Options that control the type of signature that will be generated.
 *options.* signAs | [address](#address) | *Optional* The account that the signature should count for in multisigning.
@@ -3671,7 +3671,7 @@ This method returns an object with the following structure:
 
 Name | Type | Description
 ---- | ---- | -----------
-resultCode | string | The result code returned by casinocoind. [List of transaction responses](https://casinocoin.org/build/transactions/#full-transaction-response-list)
+resultCode | string | The result code returned by stoxumd. [List of transaction responses](https://stoxum.org/build/transactions/#full-transaction-response-list)
 resultMessage | string | Human-readable explanation of the status of the transaction.
 
 ### Example
@@ -3695,7 +3695,7 @@ return api.submit(signedTransaction)
 
 `generateAddress(): {address: string, secret: string}`
 
-Generate a new CSC Ledger address and corresponding secret.
+Generate a new STM Ledger address and corresponding secret.
 
 ### Parameters
 
@@ -3711,7 +3711,7 @@ This method returns an object with the following structure:
 
 Name | Type | Description
 ---- | ---- | -----------
-address | [address](#address) | A randomly generated CasinoCoin account address.
+address | [address](#address) | A randomly generated Stoxum account address.
 secret | secret string | The secret corresponding to the `address`.
 
 ### Example
@@ -3740,7 +3740,7 @@ Sign a payment channel claim. The signature can be submitted in a subsequent [Pa
 Name | Type | Description
 ---- | ---- | -----------
 channel | string | 256-bit hexadecimal channel identifier.
-amount | [value](#value) | Amount of CSC authorized by the claim.
+amount | [value](#value) | Amount of STM authorized by the claim.
 privateKey | string | The private key to sign the payment channel claim.
 
 ### Return Value
@@ -3779,7 +3779,7 @@ Verify a payment channel claim signature.
 Name | Type | Description
 ---- | ---- | -----------
 channel | string | 256-bit hexadecimal channel identifier.
-amount | [value](#value) | Amount of CSC authorized by the claim.
+amount | [value](#value) | Amount of STM authorized by the claim.
 signature | string | Signature of this claim.
 publicKey | string | Public key of the channel's sender
 
@@ -3789,7 +3789,7 @@ This method returns `true` if the claim signature is valid.
 
 Name | Type | Description
 ---- | ---- | -----------
- | boolean | 
+ | boolean |
 
 ### Example
 
@@ -3830,10 +3830,10 @@ ledger | object | The ledger header to hash.
 *ledger.* ledgerVersion | integer | The ledger version of this ledger.
 *ledger.* parentLedgerHash | string | Unique identifying hash of the ledger that came immediately before this one.
 *ledger.* parentCloseTime | date-time string | The time at which the previous ledger was closed.
-*ledger.* totalDrops | [value](#value) | Total number of drops (1/100,000,000th of an CSC) in the network, as a quoted integer. (This decreases as transaction fees cause CSC to be destroyed.)
+*ledger.* totalDrops | [value](#value) | Total number of drops (1/100,000,000th of an STM) in the network, as a quoted integer. (This decreases as transaction fees cause STM to be destroyed.)
 *ledger.* transactionHash | string | Hash of the transaction information included in this ledger.
-*ledger.* rawState | string | *Optional* A JSON string containing all state data for this ledger in casinocoind JSON format.
-*ledger.* rawTransactions | string | *Optional* A JSON string containing casinocoind format transaction JSON for all transactions that were validated in this ledger.
+*ledger.* rawState | string | *Optional* A JSON string containing all state data for this ledger in stoxumd JSON format.
+*ledger.* rawTransactions | string | *Optional* A JSON string containing stoxumd format transaction JSON for all transactions that were validated in this ledger.
 *ledger.* stateHashes | array\<string\> | *Optional* An array of hashes of all state data in this ledger.
 *ledger.* transactionHashes | array\<[id](#transaction-id)\> | *Optional* An array of hashes of all transactions that were validated in this ledger.
 *ledger.* transactions | array\<[getTransaction](#gettransaction)\> | *Optional* Array of all transactions that were validated in this ledger. Transactions are represented in the same format as the return value of [getTransaction](#gettransaction).
@@ -3873,11 +3873,11 @@ This event is emitted whenever a new ledger version is validated on the connecte
 
 Name | Type | Description
 ---- | ---- | -----------
-baseFeeCSC | [value](#value) | Base fee, in CSC.
+baseFeeSTM | [value](#value) | Base fee, in STM.
 ledgerHash | string | Unique hash of the ledger that was closed, as hex.
 ledgerTimestamp | date-time string | The time at which this ledger closed.
-reserveBaseCSC | [value](#value) | The minimum reserve, in CSC, that is required for an account.
-reserveIncrementCSC | [value](#value) | The increase in account reserve that is added for each item the account owns, such as offers or trust lines.
+reserveBaseSTM | [value](#value) | The minimum reserve, in STM, that is required for an account.
+reserveIncrementSTM | [value](#value) | The increase in account reserve that is added for each item the account owns, such as offers or trust lines.
 transactionCount | integer | Number of new transactions included in this ledger.
 ledgerVersion | integer | Ledger version of the ledger that closed.
 validatedLedgerVersions | string | Range of ledgers that the server has available. This may be discontiguous.
@@ -3893,12 +3893,12 @@ api.on('ledger', ledger => {
 
 ```json
 {
-  "baseFeeCSC": "0.00001",
+  "baseFeeSTM": "0.00001",
   "ledgerVersion": 14804627,
   "ledgerHash": "9141FA171F2C0CE63E609466AF728FF66C12F7ACD4B4B50B0947A7F3409D593A",
   "ledgerTimestamp": "2015-07-23T05:50:40.000Z",
-  "reserveBaseCSC": "20",
-  "reserveIncrementCSC": "5",
+  "reserveBaseSTM": "20",
+  "reserveIncrementSTM": "5",
   "transactionCount": 19,
   "validatedLedgerVersions": "13983423-14804627"
 }
@@ -3912,16 +3912,16 @@ This event is emitted when there is an error on the connection to the server tha
 ### Return Value
 
 The first parameter is a string indicating the error type:
-* `badMessage` - casinocoind returned a malformed message
+* `badMessage` - stoxumd returned a malformed message
 * `websocket` - the websocket library emitted an error
-* one of the error codes found in the [casinocoind Universal Errors](https://casinocoin.org/build/casinocoind-apis/#universal-errors).
+* one of the error codes found in the [stoxumd Universal Errors](https://stoxumd.org/build/stoxumd-apis/#universal-errors).
 
 The second parameter is a message explaining the error.
 
 The third parameter is:
 * the message that caused the error for `badMessage`
 * the error object emitted for `websocket`
-* the parsed response for casinocoind errors
+* the parsed response for stoxumd errors
 
 ### Example
 

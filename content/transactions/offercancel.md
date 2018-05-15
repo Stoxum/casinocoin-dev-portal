@@ -1,8 +1,8 @@
 ## OfferCancel
 
-[[Source]<br>](https://github.com/casinocoin/casinocoind/blob/master/src/casinocoin/app/tx/impl/CancelOffer.cpp "Source")
+[[Source]<br>](https://github.com/stoxum/stoxumd/src/stoxum/app/tx/impl/CancelOffer.cpp "Source")
 
-An OfferCancel transaction removes an Offer object from the CSC Ledger.
+An OfferCancel transaction removes an Offer object from the STM Ledger.
 
 ```
 {

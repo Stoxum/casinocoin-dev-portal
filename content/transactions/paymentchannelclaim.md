@@ -1,21 +1,21 @@
 ## PaymentChannelClaim
-[[Source]<br>](https://github.com/casinocoin/casinocoind/blob/develop/src/casinocoin/app/tx/impl/PayChan.cpp "Source")
+[[Source]<br>](https://github.com/stoxum/stoxumd/src/stoxum/app/tx/impl/PayChan.cpp "Source")
 
 _Requires the [PayChan Amendment](reference-amendments.html#paychan)._
 
-Claim CSC from a payment channel, adjust the payment channel's expiration, or both. This transaction can be used differently depending on the transaction sender's role in the specified channel:
+Claim STM from a payment channel, adjust the payment channel's expiration, or both. This transaction can be used differently depending on the transaction sender's role in the specified channel:
 
 The **source address** of a channel can:
 
-- Send CSC from the channel to the destination with _or without_ a signed Claim.
+- Send STM from the channel to the destination with _or without_ a signed Claim.
 - Set the channel to expire as soon as the channel's `SettleDelay` has passed.
 - Clear a pending `Expiration` time.
-- Close a channel immediately, with or without processing a claim first. The source address cannot close the channel immediately if the channel has CSC remaining.
+- Close a channel immediately, with or without processing a claim first. The source address cannot close the channel immediately if the channel has STM remaining.
 
 The **destination address** of a channel can:
 
-- Receive CSC from the channel using a signed Claim.
-- Close the channel immediately after processing a Claim, refunding any unclaimed CSC to the channel's source.
+- Receive STM from the channel using a signed Claim.
+- Close the channel immediately after processing a Claim, refunding any unclaimed STM to the channel's source.
 
 **Any address** sending this transaction can:
 
@@ -38,10 +38,10 @@ Example PaymentChannelClaim:
 | Field       | JSON Type | [Internal Type][] | Description                    |
 |:------------|:----------|:------------------|:-------------------------------|
 | `Channel`   | String    | Hash256           | The unique ID of the channel, as a 64-character hexadecimal string. |
-| `Balance`   | String    | Amount            | _(Optional)_ Total amount of [CSC, in drops][Currency Amount], delivered by this channel after processing this claim. Required to deliver CSC. Must be more than the total amount delivered by the channel so far, but not greater than the `Amount` of the signed claim. Must be provided except when closing the channel. |
-| `Amount`    | String    | Amount            | _(Optional)_ The amount of [CSC, in drops][Currency Amount], authorized by the `Signature`. This must match the amount in the signed message. This is the cumulative amount of CSC that can be dispensed by the channel, including CSC previously redeemed. |
+| `Balance`   | String    | Amount            | _(Optional)_ Total amount of [STM, in drops][Currency Amount], delivered by this channel after processing this claim. Required to deliver STM. Must be more than the total amount delivered by the channel so far, but not greater than the `Amount` of the signed claim. Must be provided except when closing the channel. |
+| `Amount`    | String    | Amount            | _(Optional)_ The amount of [STM, in drops][Currency Amount], authorized by the `Signature`. This must match the amount in the signed message. This is the cumulative amount of STM that can be dispensed by the channel, including STM previously redeemed. |
 | `Signature` | String    | VariableLength    | _(Optional)_ The signature of this claim, as hexadecimal. The signed message contains the channel ID and the amount of the claim. Required unless the sender of the transaction is the source address of the channel. |
-| `PublicKey` | String    | PubKey            | _(Optional)_ The public key used for the signature, as hexadecimal. This must match the `PublicKey` stored in the ledger for the channel. Required unless the sender of the transaction is the source address of the channel and the `Signature` field is omitted. (The transaction includes the PubKey so that `casinocoind` can check the validity of the signature before trying to apply the transaction to the ledger.) |
+| `PublicKey` | String    | PubKey            | _(Optional)_ The public key used for the signature, as hexadecimal. This must match the `PublicKey` stored in the ledger for the channel. Required unless the sender of the transaction is the source address of the channel and the `Signature` field is omitted. (The transaction includes the PubKey so that `stoxumd` can check the validity of the signature before trying to apply the transaction to the ledger.) |
 
 
 ### PaymentChannelClaim Flags
@@ -51,4 +51,4 @@ Transactions of the PaymentChannelClaim type support additional values in the [`
 | Flag Name | Hex Value  | Decimal Value | Description                         |
 |:----------|:-----------|:--------------|:------------------------------------|
 | `tfRenew` | 0x00010000 | 65536         | Clear the channel's `Expiration` time. (`Expiration` is different from the channel's immutable `CancelAfter` time.) Only the source address of the payment channel can use this flag. |
-| `tfClose` | 0x00020000 | 131072        | Request to close the channel. Only the channel source and destination addresses can use this flag. This flag closes the channel immediately if it has no more CSC allocated to it after processing the current claim, or if the destination address uses it. If the source address uses this flag when the channel still holds CSC, this schedules the channel to close after `SettleDelay` seconds have passed. (Specifically, this sets the `Expiration` of the channel to the close time of the previous ledger plus the channel's `SettleDelay` time, unless the channel already has an earlier `Expiration` time.) If the destination address uses this flag when the channel still holds CSC, any CSC that remains after processing the claim is returned to the source address. |
+| `tfClose` | 0x00020000 | 131072        | Request to close the channel. Only the channel source and destination addresses can use this flag. This flag closes the channel immediately if it has no more STM allocated to it after processing the current claim, or if the destination address uses it. If the source address uses this flag when the channel still holds STM, this schedules the channel to close after `SettleDelay` seconds have passed. (Specifically, this sets the `Expiration` of the channel to the close time of the previous ledger plus the channel's `SettleDelay` time, unless the channel already has an earlier `Expiration` time.) If the destination address uses this flag when the channel still holds STM, any STM that remains after processing the claim is returned to the source address. |

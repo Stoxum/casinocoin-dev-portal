@@ -2,7 +2,7 @@
 const CasinocoinAPI = require('casinocoin-libjs').CasinocoinAPI;
 
 const api = new CasinocoinAPI({
-  server: 'wss://ws01.casinocoin.org', // Public rippled server
+  server: 'wss://ws01.stoxum.io/', // Public rippled server
   port: 4443
 });
 api.connect().then(() => {

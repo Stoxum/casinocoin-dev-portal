@@ -1,7 +1,7 @@
 # Known Amendments
-[[Source]<br>](https://github.com/casinocoin/casinocoind/blob/master/src/casinocoin/app/main/Amendments.cpp "Source")
+[[Source]<br>](https://github.com/stoxum/stoxumd/src/stoxum/app/main/Amendments.cpp "Source")
 
-The following is a comprehensive list of all known amendments and their status on the production CSC Ledger:
+The following is a comprehensive list of all known amendments and their status on the production STM Ledger:
 
 | Name                      | Introduced | Status                              |
 |:--------------------------|:-----------|:------------------------------------|
@@ -40,7 +40,7 @@ The following is a comprehensive list of all known amendments and their status o
 |:-----------------------------------------------------------------|:----------|
 | 157D2D480E006395B76F948E3E07A45A05FE10230D88A7993C71F97AE4B1F2D1 | In Development |
 
-Introduces "Checks" to the CSC Ledger. Checks work similarly to personal paper checks. The sender signs a transaction to create a Check for a specific maximum amount and destination. Later, the destination can cash the Check to receive up to the specified amount. The actual movement of money only occurs when the Check is cashed, so cashing the Check may fail depending on the sender's current balance and the available liquidity. If cashing the Check fails, the Check object remains in the ledger so it may be successfully cashed later.
+Introduces "Checks" to the STM Ledger. Checks work similarly to personal paper checks. The sender signs a transaction to create a Check for a specific maximum amount and destination. Later, the destination can cash the Check to receive up to the specified amount. The actual movement of money only occurs when the Check is cashed, so cashing the Check may fail depending on the sender's current balance and the available liquidity. If cashing the Check fails, the Check object remains in the ledger so it may be successfully cashed later.
 
 The sender or the receiver can cancel a Check at any time before it is cashed. A Check can also have an expiration time, after which it cannot be cashed, and anyone can cancel it.
 
@@ -56,7 +56,7 @@ This amendment also changes the OfferCreate transaction to return `tecEXPIRED` w
 |:-----------------------------------------------------------------|:----------|
 | 1562511F573A19AE9BD103B5D6B9E01B3B46805AEC5D3C4805C902B514399146 | Enabled   |
 
-Although this amendment is enabled, it has no effect unless the [SusPay](#suspay) amendment is also enabled. CasinoCoin does not expect SusPay to become enabled. Instead, CasinoCoin plans to incorporate crypto-conditions in the [Escrow](#escrow) amendment.
+Although this amendment is enabled, it has no effect unless the [SusPay](#suspay) amendment is also enabled. Stoxum does not expect SusPay to become enabled. Instead, Stoxum plans to incorporate crypto-conditions in the [Escrow](#escrow) amendment.
 
 
 
@@ -69,7 +69,7 @@ Although this amendment is enabled, it has no effect unless the [SusPay](#suspay
 
 Implements several types of crypto-conditions from the official [crypto-conditions specification](https://tools.ietf.org/html/draft-thomas-crypto-conditions-03) for use in [EscrowCreate][] and [EscrowFinish][] transactions. Without this amendment, only the PREIMAGE-SHA-256 type is supported.
 
-**Caution:** This amendment is still [in development](https://github.com/casinocoin/casinocoind/pull/2170). The version from `casinocoind` v0.60.0 to present does not implement the full functionality.
+**Caution:** This amendment is still [in development](https://github.com/stoxum/stoxumd/pull/2170). The version from `stoxumd` v0.60.0 to present does not implement the full functionality.
 
 
 
@@ -82,9 +82,9 @@ Implements several types of crypto-conditions from the official [crypto-conditio
 
 Adds a new account flag, `DepositAuth`, which lets an account strictly reject any incoming money from transactions sent by other accounts. Businesses can use this flag to comply with strict regulations that require due diligence before receiving money from any source.
 
-When an account enables this flag, Payment transactions fail if the account is the destination, regardless of whether the Payment would have delivered CSC or an issued currency. EscrowFinish and PaymentChannelClaim transactions fail if the account is the destination unless the destination account itself sends those transactions. If the [Checks][] amendment is enabled, the account can receive CSC or issued currencies by sending CheckCash transactions.
+When an account enables this flag, Payment transactions fail if the account is the destination, regardless of whether the Payment would have delivered STM or an issued currency. EscrowFinish and PaymentChannelClaim transactions fail if the account is the destination unless the destination account itself sends those transactions. If the [Checks][] amendment is enabled, the account can receive STM or issued currencies by sending CheckCash transactions.
 
-As an exception, accounts with `DepositAuth` enabled can receive Payment transactions for small amounts of CSC (equal or less than the minimum [account reserve](concept-reserves.html)) if their current CSC balance is below the account reserve.
+As an exception, accounts with `DepositAuth` enabled can receive Payment transactions for small amounts of STM (equal or less than the minimum [account reserve](concept-reserves.html)) if their current STM balance is below the account reserve.
 
 
 ## EnforceInvariants
@@ -94,17 +94,17 @@ As an exception, accounts with `DepositAuth` enabled can receive Payment transac
 |:-----------------------------------------------------------------|:----------|
 | DC9CA96AEA1DCF83E527D1AFC916EFAF5D27388ECA4060A88817C1238CAEE0BF | Enabled   |
 
-Adds sanity checks to transaction processing to ensure that certain conditions are always met. This provides an extra, independent layer of protection against bugs in transaction processing that could otherwise cause exploits and vulnerabilities in the CSC Ledger. CasinoCoin expects to add more invariant checks in future versions of `casinocoind` without additional amendments.
+Adds sanity checks to transaction processing to ensure that certain conditions are always met. This provides an extra, independent layer of protection against bugs in transaction processing that could otherwise cause exploits and vulnerabilities in the STM Ledger. Stoxum expects to add more invariant checks in future versions of `stoxumd` without additional amendments.
 
 Introduces two new transaction error codes, `tecINVARIANT_FAILED` and `tefINVARIANT_FAILED`. Changes transaction processing to add the new checks.
 
 Examples of invariant checks:
 
-- The total amount of CSC destroyed by a transaction must match the [transaction cost](concept-transaction-cost.html) exactly.
-- CSC cannot be created.
+- The total amount of STM destroyed by a transaction must match the [transaction cost](concept-transaction-cost.html) exactly.
+- STM cannot be created.
 - [`AccountRoot` objects in the ledger](reference-ledger-format.html#accountroot) cannot be deleted. (See also: [Permanence of Accounts](concept-accounts.html#permanence-of-accounts).)
 - [An object in the ledger](reference-ledger-format.html#ledger-object-types) cannot change its type. (The `LedgerEntryType` field is immutable.)
-- There cannot be a trust line for CSC.
+- There cannot be a trust line for STM.
 
 
 
@@ -117,7 +117,7 @@ Examples of invariant checks:
 
 Replaces the [SusPay](#suspay) and [CryptoConditions](#cryptoconditions) amendments.
 
-Provides "suspended payments" for CSC for escrow within the CSC Ledger, including support for [Interledger Protocol Crypto-Conditions](https://tools.ietf.org/html/draft-thomas-crypto-conditions-02). Creates a new ledger object type for suspended payments and new transaction types to create, execute, and cancel suspended payments.
+Provides "suspended payments" for STM for escrow within the STM Ledger, including support for [Interledger Protocol Crypto-Conditions](https://tools.ietf.org/html/draft-thomas-crypto-conditions-02). Creates a new ledger object type for suspended payments and new transaction types to create, execute, and cancel suspended payments.
 
 
 
@@ -131,7 +131,7 @@ Provides "suspended payments" for CSC for escrow within the CSC Ledger, includin
 
 Changes the way the [transaction cost](concept-transaction-cost.html) applies to proposed transactions. Modifies the consensus process to prioritize transactions that pay a higher transaction cost. <!-- STYLE_OVERRIDE: prioritize -->
 
-This amendment introduces a fixed-size transaction queue for transactions that were not able to be included in the previous consensus round. If the `casinocoind` servers in the consensus network are under heavy load, they queue the transactions with the lowest transaction cost for later ledgers. Each consensus round prioritizes transactions from the queue with the largest transaction cost (`Fee` value), and includes as many transactions as the consensus network can process. If the transaction queue is full, transactions drop from the queue entirely, starting with the ones that have the lowest transaction cost.
+This amendment introduces a fixed-size transaction queue for transactions that were not able to be included in the previous consensus round. If the `stoxumd` servers in the consensus network are under heavy load, they queue the transactions with the lowest transaction cost for later ledgers. Each consensus round prioritizes transactions from the queue with the largest transaction cost (`Fee` value), and includes as many transactions as the consensus network can process. If the transaction queue is full, transactions drop from the queue entirely, starting with the ones that have the lowest transaction cost.
 
 While the consensus network is under heavy load, legitimate users can pay a higher transaction cost to make sure their transactions get processed. The situation persists until the entire backlog of cheap transactions is processed or discarded.
 
@@ -196,7 +196,7 @@ With this amendment, the transactions fail with a more appropriate result code, 
 |:-----------------------------------------------------------------|:----------|
 | B9E739B8296B4A1BB29BE990B17D66E21B62A300A909F25AC55C22D6C72E1F9D | Enabled   |
 
-Adds tracking by destination account to [escrows](concept-escrow.html). Without this amendment, pending escrows are only tracked by sender. This amendment makes it possible to look up pending escrows by the destination address using the [`account_objects` command](reference-casinocoind.html#account-objects), excluding any pending escrows that were created before this amendment became enabled. This amendment also makes [EscrowCreate transactions][] appear in the destination's transaction history, as viewed with the [`account_tx` command](reference-casinocoind.html#account-tx).
+Adds tracking by destination account to [escrows](concept-escrow.html). Without this amendment, pending escrows are only tracked by sender. This amendment makes it possible to look up pending escrows by the destination address using the [`account_objects` command](reference-stoxumd.html#account-objects), excluding any pending escrows that were created before this amendment became enabled. This amendment also makes [EscrowCreate transactions][] appear in the destination's transaction history, as viewed with the [`account_tx` command](reference-stoxumd.html#account-tx).
 
 With this amendment, new escrows are added to the [owner directories](reference-ledger-format.html#directorynode) of both the sender and receiver. This amendment also adds a new `DestinationNode` field to [Escrow ledger objects](reference-ledger-format.html#escrow), indicating which page of the destination's owner directory contains the escrow.
 
@@ -235,7 +235,7 @@ The Flow Engine also makes it easier to improve and expand the payment engine wi
 |:-----------------------------------------------------------------|:----------|
 | 3012E8230864E95A58C60FD61430D7E1B4D3353195F2981DC12B0C7C0950FFAC | Released but not enabled |
 
-Streamlines the offer crossing logic in the CSC Ledger's decentralized exchange. Uses the updated code from the [Flow](#flow) amendment to power offer crossing, so [OfferCreate transactions][] and [Payment transactions][] share more code. This has subtle differences in how offers are processed:
+Streamlines the offer crossing logic in the STM Ledger's decentralized exchange. Uses the updated code from the [Flow](#flow) amendment to power offer crossing, so [OfferCreate transactions][] and [Payment transactions][] share more code. This has subtle differences in how offers are processed:
 
 - Rounding is slightly different in some cases.
 - Due to differences in rounding, some combinations of offers may be ranked higher or lower than by the old logic, and taken preferentially.
@@ -278,7 +278,7 @@ Fixes an inconsistency in the way [transfer fees](concept-transfer-fees.html) ar
 
 This Amendment requires the [Flow Amendment](#flow) to be enabled.
 
-**Note:** An incomplete version of this amendment was introduced in v0.33.0 and removed in v0.80.0. (It was never enabled.) CasinoCoin plans to re-add the amendment when the code is stable enough.
+**Note:** An incomplete version of this amendment was introduced in v0.33.0 and removed in v0.80.0. (It was never enabled.) Stoxum plans to re-add the amendment when the code is stable enough.
 
 
 
@@ -289,9 +289,9 @@ This Amendment requires the [Flow Amendment](#flow) to be enabled.
 |:-----------------------------------------------------------------|:----------|
 | 08DE7D96082187F6E6578530258C77FAABABE4C20474BDB82F04B021F1A68647 | Enabled   |
 
-Creates "Payment Channels" for CSC. Payment channels are a tool for facilitating repeated, unidirectional payments or temporary credit between two parties. CasinoCoin expects this feature to be useful for the [Interledger Protocol](https://interledger.org/). One party creates a Payment Channel and sets aside some CSC in that channel for a predetermined expiration. Then, through off-ledger secure communications, the sender can send "Claim" messages to the receiver. The receiver can redeem the Claim messages before the expiration, or choose not to in case the payment is not needed. The receiver can verify Claims individually without actually distributing them to the network and waiting for the consensus process to redeem them, then redeem the batched content of many small Claims later, as long as it is within the expiration.
+Creates "Payment Channels" for STM. Payment channels are a tool for facilitating repeated, unidirectional payments or temporary credit between two parties. Stoxum expects this feature to be useful for the [Interledger Protocol](https://interledger.org/). One party creates a Payment Channel and sets aside some STM in that channel for a predetermined expiration. Then, through off-ledger secure communications, the sender can send "Claim" messages to the receiver. The receiver can redeem the Claim messages before the expiration, or choose not to in case the payment is not needed. The receiver can verify Claims individually without actually distributing them to the network and waiting for the consensus process to redeem them, then redeem the batched content of many small Claims later, as long as it is within the expiration.
 
-Creates three new transaction types:[PaymentChannelCreate][], [PaymentChannelClaim][], and [PaymentChannelFund][]. Creates a new ledger object type, [PayChannel](reference-ledger-format.html#paychannel). Defines an off-ledger data structure called a `Claim`, used in the ChannelClaim transaction. Creates new `casinocoind` API methods: [`channel_authorize`](reference-casinocoind.html#channel-authorize) (creates a signed Claim), [`channel_verify`](reference-casinocoind.html#channel-verify) (verifies a signed Claim), and [`account_channels`](reference-casinocoind.html#account-channels) (lists Channels associated with an account).
+Creates three new transaction types:[PaymentChannelCreate][], [PaymentChannelClaim][], and [PaymentChannelFund][]. Creates a new ledger object type, [PayChannel](reference-ledger-format.html#paychannel). Defines an off-ledger data structure called a `Claim`, used in the ChannelClaim transaction. Creates new `stoxumd` API methods: [`channel_authorize`](reference-stoxumd.html#channel-authorize) (creates a signed Claim), [`channel_verify`](reference-stoxumd.html#channel-verify) (verifies a signed Claim), and [`account_channels`](reference-stoxumd.html#account-channels) (lists Channels associated with an account).
 
 For more information, see the [Payment Channels Tutorial](tutorial-paychan.html).
 
@@ -304,9 +304,9 @@ For more information, see the [Payment Channels Tutorial](tutorial-paychan.html)
 |:-----------------------------------------------------------------|:----------|
 | C6970A8B603D8778783B61C0D445C23D1633CCFAEF0D43E7DBCD1521D34BD7C3 | Released but not enabled |
 
-Changes the hash tree structure that `casinocoind` uses to represent a ledger. The new structure is more compact and efficient than the previous version. This affects how ledger hashes are calculated, but has no other user-facing consequences.
+Changes the hash tree structure that `stoxumd` uses to represent a ledger. The new structure is more compact and efficient than the previous version. This affects how ledger hashes are calculated, but has no other user-facing consequences.
 
-When this amendment is activated, the CSC Ledger will undergo a brief scheduled unavailability while the network calculates the changes to the hash tree structure. <!-- STYLE_OVERRIDE: will -->
+When this amendment is activated, the STM Ledger will undergo a brief scheduled unavailability while the network calculates the changes to the hash tree structure. <!-- STYLE_OVERRIDE: will -->
 
 
 
@@ -319,7 +319,7 @@ When this amendment is activated, the CSC Ledger will undergo a brief scheduled 
 
 Sorts the entries in [DirectoryNode ledger objects](reference-ledger-format.html#directorynode) and fixes a bug that occasionally caused pages of owner directories not to be deleted when they should have been.
 
-**Warning:** Older versions of `casinocoind` that do not know about this amendment may crash when they encounter a DirectoryNode sorted by the new rules. To avoid this problem, [upgrade](tutorial-casinocoind-setup.html#updating-casinocoind) to `casinocoind` version 0.80.0 or later.
+**Warning:** Older versions of `stoxumd` that do not know about this amendment may crash when they encounter a DirectoryNode sorted by the new rules. To avoid this problem, [upgrade](tutorial-stoxumd-setup.html#updating-stoxumd) to `stoxumd` version 0.80.0 or later.
 
 
 
@@ -331,7 +331,7 @@ Sorts the entries in [DirectoryNode ledger objects](reference-ledger-format.html
 |:-----------------------------------------------------------------|:----------|
 | DA1BD556B42D85EA9C84066D028D355B52416734D3283F85E216EA5DA6DB7E13 | Enabled on TestNet; not intended for production. |
 
-This amendment is currently enabled on the [CasinoCoin Test Net](https://casinocoin.org/build/casinocoin-test-net/). In production, CasinoCoin expects to enable similar functionality with the [Escrow](#escrow) amendment instead.
+This amendment is currently enabled on the [Stoxum Test Net](https://stoxum.org/build/stoxum-test-net/). In production, Stoxum expects to enable similar functionality with the [Escrow](#escrow) amendment instead.
 
 
 
@@ -357,7 +357,7 @@ Introduces Tickets as a way to reserve a transaction sequence number for later e
 
 Changes the way [Offers](reference-transaction-format.html#lifecycle-of-an-offer) are ranked in order books, so that currency issuers can configure how many significant digits are taken into account when ranking Offers by exchange rate. With this amendment, the exchange rates of Offers are rounded to the configured number of significant digits, so that more Offers have the same exact exchange rate. The intent of this change is to require a meaningful improvement in price to outrank a previous Offer. If used by major issuers, this should reduce the incentive to spam the ledger with Offers that are only a tiny fraction of a percentage point better than existing offers. It may also increase the efficiency of order book storage in the ledger, because Offers can be grouped into fewer exchange rates.
 
-Introduces a `TickSize` field to accounts, which can be set with the [AccountSet transaction type](reference-transaction-format.html#accountset). If a currency issuer sets the `TickSize` field, the CSC Ledger truncates the exchange rate (ratio of funds in to funds out) of Offers to trade the issuer's currency, and adjusts the amounts of the Offer to match the truncated exchange rate. If only one currency in the trade has a `TickSize` set, that number of significant digits applies. When trading two currencies that have different `TickSize` values, whichever `TickSize` indicates the fewest significant digits applies. CSC does not have a `TickSize`.
+Introduces a `TickSize` field to accounts, which can be set with the [AccountSet transaction type](reference-transaction-format.html#accountset). If a currency issuer sets the `TickSize` field, the STM Ledger truncates the exchange rate (ratio of funds in to funds out) of Offers to trade the issuer's currency, and adjusts the amounts of the Offer to match the truncated exchange rate. If only one currency in the trade has a `TickSize` set, that number of significant digits applies. When trading two currencies that have different `TickSize` values, whichever `TickSize` indicates the fewest significant digits applies. STM does not have a `TickSize`.
 
 
 
@@ -370,8 +370,8 @@ Introduces a `TickSize` field to accounts, which can be set with the [AccountSet
 
 Allows pre-authorization of accounting relationships (zero-balance trust lines) when using [Authorized Accounts](tutorial-gateway-guide.html#authorized-accounts).
 
-With this amendment enabled, a `TrustSet` transaction with [`tfSetfAuth` enabled](reference-transaction-format.html#trustset-flags) can create a new [`CasinocoinState` ledger object](reference-ledger-format.html#casinocoinstate) even if it keeps all the other values of the `CasinocoinState` node in their default state. The new `CasinocoinState` node has the [`lsfLowAuth` or `lsfHighAuth` flag](reference-ledger-format.html#casinocoinstate-flags) enabled, depending on whether the sender of the transaction is considered the low node or the high node. The sender of the transaction must have already enabled [`lsfRequireAuth`](reference-ledger-format.html#accountroot-flags) by sending an [AccountSet transaction](reference-transaction-format.html#accountset) with the [asfRequireAuth flag enabled](reference-transaction-format.html#accountset-flags).
+With this amendment enabled, a `TrustSet` transaction with [`tfSetfAuth` enabled](reference-transaction-format.html#trustset-flags) can create a new [`StoxumState` ledger object](reference-ledger-format.html#stoxumstate) even if it keeps all the other values of the `StoxumState` node in their default state. The new `StoxumState` node has the [`lsfLowAuth` or `lsfHighAuth` flag](reference-ledger-format.html#stoxumstate-flags) enabled, depending on whether the sender of the transaction is considered the low node or the high node. The sender of the transaction must have already enabled [`lsfRequireAuth`](reference-ledger-format.html#accountroot-flags) by sending an [AccountSet transaction](reference-transaction-format.html#accountset) with the [asfRequireAuth flag enabled](reference-transaction-format.html#accountset-flags).
 
 
-{% include 'snippets/casinocoind_versions.md' %}
+{% include 'snippets/stoxumd_versions.md' %}
 {% include 'snippets/tx-type-links.md' %}

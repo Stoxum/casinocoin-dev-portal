@@ -1,11 +1,11 @@
-# CasinoCoin Data API v2
+# Stoxum Data API v2
 
-The CasinoCoin Data API v2 provides access to information about changes in the CSC Ledger, including transaction history and processed analytical data. This information is stored in a dedicated database, which frees `casinocoind` servers to keep fewer historical ledger versions. The Data API v2 also acts as data source for applications such as [CSC Charts](https://xrpcharts.ripple.com/) and [ripple.com](https://www.ripple.com).
+The Stoxum Data API v2 provides access to information about changes in the STM Ledger, including transaction history and processed analytical data. This information is stored in a dedicated database, which frees `stoxumd` servers to keep fewer historical ledger versions. The Data API v2 also acts as data source for applications such as [STM Charts](https://xrpcharts.ripple.com/) and [ripple.com](https://www.ripple.com).
 
-CasinoCoin provides a live instance of the Data API with as complete a transaction record as possible at the following address:
+Stoxum provides a live instance of the Data API with as complete a transaction record as possible at the following address:
 
 ## More Information
-The CasinoCoin Data API v2 replaces the Historical Database v1 and the [Charts API](https://github.com/casinocoin/casinocoin-data-api/).
+The Stoxum Data API v2 replaces the Historical Database v1 and the [Charts API](https://github.com/stoxum/stoxum-data-api/).
 
 * [API Methods](#api-method-reference)
 * [API Conventions](#api-conventions)
@@ -43,7 +43,7 @@ Ledger Contents Methods:
 * [Get Exchange Volume - `GET /v2/network/exchange_volume`](#get-exchange-volume)
 * [Get Payment Volume - `GET /v2/network/payment_volume`](#get-payment-volume)
 * [Get Issued Value - `GET /v2/network/issued_value`](#get-issued-value)
-* [Get CSC Distribution - `GET /v2/network/csc_distribution`](#get-csc-distribution)
+* [Get STM Distribution - `GET /v2/network/stm_distribution`](#get-stm-distribution)
 * [Get Top Currencies - `GET /v2/network/top_currencies`](#get-top-currencies)
 * [Get Top Markets - `GET /v2/network/top_markets`](#get-top-markets)
 
@@ -64,7 +64,7 @@ Account Methods:
 
 External Information Methods:
 
-* [Get casinocoind Versions - `GET /v2/network/casinocoind_versions`](#get-casinocoind-versions)
+* [Get stoxumd Versions - `GET /v2/network/stoxumd_versions`](#get-stoxumd-versions)
 * [Get All Gateways - `GET /v2/gateways`](#get-all-gateways)
 * [Get Gateway - `GET /v2/gateways/{:gateway}`](#get-gateway)
 * [Get Currency Image - `GET /v2/currencies/{:currencyimage}`](#get-currency-image)
@@ -258,7 +258,7 @@ Response:
 ## Get Ledger Validation
 [[Source]<br>](https://github.com/ripple/rippled-historical-database/blob/develop/api/routes/getLedger.js "Source")
 
-Retrieve a validation vote recorded for a specific ledger hash by a specific validator.  This dataset includes ledger versions that are outside the validated ledger chain. 
+Retrieve a validation vote recorded for a specific ledger hash by a specific validator.  This dataset includes ledger versions that are outside the validated ledger chain.
 
 **Note:** The Data API does not have a comprehensive record of all validations. The response only includes data that the Data API has recorded. Some ledger versions, especially older ledgers, may have no validations even if they were validated by consensus.
 
@@ -587,7 +587,7 @@ Response:
 ## Get Payments
 [[Source]<br>](https://github.com/ripple/rippled-historical-database/blob/develop/api/routes/getPayments.js "Source")
 
-Retrieve Payments over time, where Payments are defined as `Payment` type transactions where the sender of the transaction is not also the destination. 
+Retrieve Payments over time, where Payments are defined as `Payment` type transactions where the sender of the transaction is not also the destination.
 
 Results can be returned as individual payments, or aggregated to a specific list of intervals if currency and issuer are provided.
 
@@ -615,7 +615,7 @@ This method uses the following URL parameters:
 
 | Field     | Value  | Description |
 |-----------|--------|-------------|
-| :currency | String | (Optional) Currency code, followed by `+` and a counterparty address. (Or `CSC` with no counterparty.) If omitted, return payments for all currencies. |
+| :currency | String | (Optional) Currency code, followed by `+` and a counterparty address. (Or `STM` with no counterparty.) If omitted, return payments for all currencies. |
 
 Optionally, you can provide the following query parameters:
 
@@ -650,7 +650,7 @@ If the request specifies a `currency` and an `interval`, the result includes obj
 |--------|-------|-------------|
 | `count` | Number | The number of payments that occurred during this interval. |
 | `currency` | String - Currency Code | This summary describes payments that delivered the specified currency. |
-| `issuer` | String - Address | (Omitted for CSC) This summary describes payments that delivered the currency issued by this address. |
+| `issuer` | String - Address | (Omitted for STM) This summary describes payments that delivered the currency issued by this address. |
 | `start` | String - [Timestamp][] | The start time of this interval. |
 | `total_amount` | Number | The amount of the `currency` delivered during this interval. |
 | `average_amount` | Number | The average amount of currency delivered by a single payment during this interval. |
@@ -760,8 +760,8 @@ This method requires the following URL parameters:
 
 | Field | Value | Description |
 |-------|-------|-------------|
-| `base` | String | Base currency of the pair, as a [Currency Code][], followed by `+` and the issuer [Address][] unless it's CSC. |
-| `counter` | String | Counter currency of the pair, as a [Currency Code][], followed by `+` and the issuer [Address][] unless it's CSC. |
+| `base` | String | Base currency of the pair, as a [Currency Code][], followed by `+` and the issuer [Address][] unless it's STM. |
+| `counter` | String | Counter currency of the pair, as a [Currency Code][], followed by `+` and the issuer [Address][] unless it's STM. |
 
 Optionally, you can provide the following query parameters:
 
@@ -792,7 +792,7 @@ A successful response uses the HTTP code **200 OK** and has a JSON body with the
 Request:
 
 ```
-GET /v2/exchanges/USD+cMwjYedjc7qqtKYVLiAccJSmCwih4LnE2q/CSC?descending=true&limit=3&result=tesSUCCESS&type=OfferCreate
+GET /v2/exchanges/USD+cMwjYedjc7qqtKYVLiAccJSmCwih4LnE2q/STM?descending=true&limit=3&result=tesSUCCESS&type=OfferCreate
 ```
 
 Response:
@@ -802,7 +802,7 @@ Response:
 {
     "result": "success",
     "count": 3,
-    "marker": "USD|cMwjYedjc7qqtKYVLiAccJSmCwih4LnE2q|CSC||20151021222220|000016612683|00017|00000",
+    "marker": "USD|cMwjYedjc7qqtKYVLiAccJSmCwih4LnE2q|STM||20151021222220|000016612683|00017|00000",
     "exchanges": [
         {
             "base_amount": 4.98954834453577,
@@ -821,7 +821,7 @@ Response:
             "tx_type": "Payment",
             "base_currency": "USD",
             "base_issuer": "cMwjYedjc7qqtKYVLiAccJSmCwih4LnE2q",
-            "counter_currency": "CSC"
+            "counter_currency": "STM"
         },
         {
             "base_amount": 0.0004716155440678037,
@@ -840,7 +840,7 @@ Response:
             "tx_type": "Payment",
             "base_currency": "USD",
             "base_issuer": "cMwjYedjc7qqtKYVLiAccJSmCwih4LnE2q",
-            "counter_currency": "CSC"
+            "counter_currency": "STM"
         },
         {
             "base_amount": 0.0004714169229390923,
@@ -861,7 +861,7 @@ Response:
             "tx_type": "OfferCreate",
             "base_currency": "USD",
             "base_issuer": "cMwjYedjc7qqtKYVLiAccJSmCwih4LnE2q",
-            "counter_currency": "CSC"
+            "counter_currency": "STM"
         }
     ]
 }
@@ -892,8 +892,8 @@ This method requires the following URL parameters:
 
 | Field     | Value  | Description |
 |-----------|--------|-------------|
-| `base`    | String | Base currency of the pair, as a [Currency Code][], followed by `+` and the issuer [Address][]. Omit the `+` and the issuer for CSC. |
-| `counter` | String | Counter currency of the pair, as a [Currency Code][], followed by `+` and the issuer [Address][]. Omit the `+` and the issuer for CSC. |
+| `base`    | String | Base currency of the pair, as a [Currency Code][], followed by `+` and the issuer [Address][]. Omit the `+` and the issuer for STM. |
+| `counter` | String | Counter currency of the pair, as a [Currency Code][], followed by `+` and the issuer [Address][]. Omit the `+` and the issuer for STM. |
 
 
 Optionally, you can provide the following query parameters:
@@ -912,7 +912,7 @@ A successful response uses the HTTP code **200 OK** and has a JSON body with the
 | `result` | String | The value `success` indicates that this is a successful response. |
 | `rate` | Number | The requested exchange rate, or `0` if the exchange rate could not be determined. |
 
-All exchange rates are calcuated by converting the base currency and counter currency to CSC.
+All exchange rates are calcuated by converting the base currency and counter currency to STM.
 
 The rate is derived from the volume weighted average over the calendar day specified, averaged with the volume weighted average of the last 50 trades within the last 14 days.
 
@@ -921,7 +921,7 @@ The rate is derived from the volume weighted average over the calendar day speci
 Request:
 
 ```
-GET /v2/exchange_rates/USD+cMwjYedjc7qqtKYVLiAccJSmCwih4LnE2q/CSC?date=2015-11-13T00:00:00Z
+GET /v2/exchange_rates/USD+cMwjYedjc7qqtKYVLiAccJSmCwih4LnE2q/STM?date=2015-11-13T00:00:00Z
 ```
 
 Response:
@@ -961,10 +961,10 @@ You must provide at least some of the following query parameters:
 | Field             | Value   | Description |
 |-------------------|---------|-------------|
 | `amount` | Number  | (Required) Amount of currency to normalize. |
-| `currency` | String - [Currency Code][] | The currency code of the `amount` to convert from. Defaults to CSC. |
-| `issuer` | String - [Address][] | The issuer of the currency to convert from. (Required if `currency` is not CSC.) |
-| `exchange_currency` | String - [Currency Code][] | The currency to convert to. Defaults to CSC. |
-| `exchange_issuer` | String - [Address][] | The issuer of the currency to convert to. (Required if `exchange_currency` is not CSC.) |
+| `currency` | String - [Currency Code][] | The currency code of the `amount` to convert from. Defaults to STM. |
+| `issuer` | String - [Address][] | The issuer of the currency to convert from. (Required if `currency` is not STM.) |
+| `exchange_currency` | String - [Currency Code][] | The currency to convert to. Defaults to STM. |
+| `exchange_issuer` | String - [Address][] | The issuer of the currency to convert to. (Required if `exchange_currency` is not STM.) |
 | `date` | String - [Timestamp][] | Convert according to the exchange rate at this time. Defaults to the current time. |
 | `strict` | Boolean | If `true`, do not use exchange rates that are determined by less than 10 exchanges. Defaults to `true`. |
 
@@ -979,14 +979,14 @@ A successful response uses the HTTP code **200 OK** and has a JSON body with the
 | `converted` | Number | Post-conversion amount of the `exchange_currency`, or `0` if the exchange rate could not be determined. |
 | `rate` | Number | Exchange rate used to calculate the conversion, or `0` if the exchange rate could not be determined. |
 
-All exchange rates are calculating by converting both currencies to CSC.
+All exchange rates are calculating by converting both currencies to STM.
 
 #### Example
 
 Request:
 
 ```
-GET /v2/normalize?amount=100&currency=CSC&exchange_currency=USD&exchange_issuer=cMwjYedjc7qqtKYVLiAccJSmCwih4LnE2q
+GET /v2/normalize?amount=100&currency=STM&exchange_currency=USD&exchange_issuer=cMwjYedjc7qqtKYVLiAccJSmCwih4LnE2q
 ```
 
 Response:
@@ -1171,7 +1171,7 @@ Response (trimmed for size):
 ## Get Stats
 [[Source]<br>](https://github.com/ripple/rippled-historical-database/blob/develop/api/routes/stats.js "Source")
 
-Retrieve statistics about transaction activity in the CSC Ledger, divided into intervals of time.
+Retrieve statistics about transaction activity in the STM Ledger, divided into intervals of time.
 
 #### Request Format
 
@@ -1207,7 +1207,7 @@ The `family` and `metrics` query parameters provide a way to filter results to a
 
 | Family | Included Metrics | Meaning |
 |--------|------------------|---------|
-| `type` | All CSC Ledger [transaction types](reference-transaction-format.html), including `Payment`, `AccountSet`, `OfferCreate`, and others. | Number of transactions of the given type that occurred during the interval. |
+| `type` | All STM Ledger [transaction types](reference-transaction-format.html), including `Payment`, `AccountSet`, `OfferCreate`, and others. | Number of transactions of the given type that occurred during the interval. |
 | `result` | All [transaction result codes](reference-transaction-format.html#transaction-results) (string codes, not the numeric codes), including `tesSUCCESS`, `tecPATH_DRY`, and many others. | Number of transactions that resulted in the given code during the interval. |
 | `metric` | Data-API defined Special Transaction Metrics. | (Varies) |
 
@@ -1276,7 +1276,7 @@ Response:
 ## Get Capitalization
 [[Source]<br>](https://github.com/ripple/rippled-historical-database/blob/develop/api/routes/capitalization.js "Source")
 
-Get the total amount of a single currency issued by a single issuer, also known as the [market capitalization](https://en.wikipedia.org/wiki/Market_capitalization). 
+Get the total amount of a single currency issued by a single issuer, also known as the [market capitalization](https://en.wikipedia.org/wiki/Market_capitalization).
 
 #### Request Format
 
@@ -1296,7 +1296,7 @@ This method requires the following URL parameters:
 
 | Field     | Value                      | Description |
 |-----------|----------------------------|-------------|
-| :currency | String | Currency to look up, in the form of [currency](#currency-code)+[issuer](#addresses). CSC is disallowed. |
+| :currency | String | Currency to look up, in the form of [currency](#currency-code)+[issuer](#addresses). STM is disallowed. |
 
 
 Optionally, you can provide the following query parameters:
@@ -1402,7 +1402,7 @@ Response:
 ## Get Active Accounts
 [[Source]<br>](https://github.com/ripple/rippled-historical-database/blob/develop/api/routes/activeAccounts.js "Source")
 
-Get information on which accounts are actively trading in a specific currency pair. 
+Get information on which accounts are actively trading in a specific currency pair.
 
 #### Request Format
 
@@ -1422,8 +1422,8 @@ This method requires the following URL parameters:
 
 | Field    | Value  | Description |
 |----------|--------|-------------|
-| :base    | String | Base currency of the pair, as a [Currency Code][], followed by `+` and the issuer [Address][] unless it's CSC. |
-| :counter | String | Counter currency of the pair, as a [Currency Code][], followed by `+` and the issuer [Address][] unless it's CSC. |
+| :base    | String | Base currency of the pair, as a [Currency Code][], followed by `+` and the issuer [Address][] unless it's STM. |
+| :counter | String | Counter currency of the pair, as a [Currency Code][], followed by `+` and the issuer [Address][] unless it's STM. |
 
 Optionally, you can provide the following query parameters:
 
@@ -1466,7 +1466,7 @@ Each "Account Trading Object" describes the activity of a single account during 
 Request:
 
 ```
-GET /v2/active_accounts/CSC/USD+cMwjYedjc7qqtKYVLiAccJSmCwih4LnE2q
+GET /v2/active_accounts/STM/USD+cMwjYedjc7qqtKYVLiAccJSmCwih4LnE2q
 ```
 
 Response:
@@ -1554,9 +1554,9 @@ Response:
 ## Get Exchange Volume
 [[Source]<br>](https://github.com/ripple/rippled-historical-database/blob/develop/api/routes/network/getMetric.js "Source")
 
-Get aggregated exchange volume for a given time period. 
+Get aggregated exchange volume for a given time period.
 
-The API returns results in units of a single _display currency_ rather than many different currencies. The conversion uses standard rates to and from CSC.
+The API returns results in units of a single _display currency_ rather than many different currencies. The conversion uses standard rates to and from STM.
 
 #### Request Format
 
@@ -1580,7 +1580,7 @@ Optionally, you can provide the following query parameters:
 | `end` | String - [Timestamp][]  | End time of query range. Defaults to the end of the most recent interval. |
 | `interval` | String  | Aggregation interval - valid intervals are `day`, `week`, or `month`. Defaults to `day`. |
 | `live` | String | Return a live rolling window of this length of time. Valid values are `day`, `hour`, or `minute`. Ignored if `interval` is provided.  |
-| `exchange_currency` | String - [Currency Code][] | Normalize all amounts to use this as a display currency. If not CSC, `exchange_issuer` is also required. Defaults to CSC. |
+| `exchange_currency` | String - [Currency Code][] | Normalize all amounts to use this as a display currency. If not STM, `exchange_issuer` is also required. Defaults to STM. |
 | `exchange_issuer` | String - [Address][] | Normalize results to the specified `currency` issued by this issuer. |
 | `limit` | Integer | Maximum results per page. Defaults to 200. Cannot be more than 1000. |
 | `marker` | String  | [Pagination](#pagination) key from previously returned response. |
@@ -1602,8 +1602,8 @@ Each object in the `components` array of the Volume Objects represent the volume
 | `count` | Number | The number of exchanges in this market during this interval. |
 | `rate` | Number | The exchange rate from the base currency to the display currency. |
 | `amount` | Number | The amount of volume in the market, in units of the base currency. |
-| `base` | Object | The `currency` and `issuer` of the base currency of this market. There is no `issuer` for CSC. |
-| `counter` | Object | The `currency` and `issuer` of the counter currency of this market. There is no `issuer` for CSC. |
+| `base` | Object | The `currency` and `issuer` of the base currency of this market. There is no `issuer` for STM. |
+| `counter` | Object | The `currency` and `issuer` of the counter currency of this market. There is no `issuer` for STM. |
 | `converted_amount` | Number | The total amount of volume in the market, converted to the display currency. _(Before [v2.1.0][], this was `convertedAmount`.)_ |
 
 #### Example
@@ -1634,7 +1634,7 @@ Response:
                         "issuer": "cvYAfWj5gh67oV6fW32ZzP3Aw4Eubs59B"
                     },
                     "counter": {
-                        "currency": "CSC"
+                        "currency": "STM"
                     },
                     "converted_amount": 117720.99268355068
                 },
@@ -1647,7 +1647,7 @@ Response:
                         "issuer": "cvYAfWj5gh67oV6fW32ZzP3Aw4Eubs59B"
                     },
                     "counter": {
-                        "currency": "CSC"
+                        "currency": "STM"
                     },
                     "converted_amount": 74003.51871932109
                 },
@@ -1704,9 +1704,9 @@ Response:
 ## Get Payment Volume
 [[Source]<br>](https://github.com/ripple/rippled-historical-database/blob/develop/api/routes/network/getMetric.js "Source")
 
-Get aggregated payment volume for a given time period. 
+Get aggregated payment volume for a given time period.
 
-The API returns results in units of a single _display currency_ rather than many different currencies. The conversion uses standard rates to and from CSC.
+The API returns results in units of a single _display currency_ rather than many different currencies. The conversion uses standard rates to and from STM.
 
 #### Request Format
 
@@ -1730,7 +1730,7 @@ Optionally, you can provide the following query parameters:
 | `end` | String - [Timestamp][]  | End time of query range. Defaults to the end of the most recent interval. |
 | `interval` | String  | Aggregation interval - valid intervals are `day`, `week`, or `month`. Defaults to `day`. |
 | `live` | String | Return a live rolling window of this length of time. Valid values are `day`, `hour`, or `minute`. Ignored if `interval` is provided.  |
-| `exchange_currency` | String - [Currency Code][] | Normalize all amounts to use this as a display currency. If not CSC, `exchange_issuer` is also required. Defaults to CSC. |
+| `exchange_currency` | String - [Currency Code][] | Normalize all amounts to use this as a display currency. If not STM, `exchange_issuer` is also required. Defaults to STM. |
 | `exchange_issuer` | String - [Address][] | Normalize results to the specified `currency` issued by this issuer. |
 | `limit` | Integer | Maximum results per page. Defaults to 200. Cannot be more than 1000. |
 | `marker` | String  | [Pagination](#pagination) key from previously returned response. |
@@ -1750,7 +1750,7 @@ Each object in the `components` array of the Volume Objects represent the volume
 | Field  | Value  | Description |
 |--------|--------|-------------|
 | `currency` | String - [Currency Code][] | The currency of this payment volume object. |
-| `issuer` | String - [Address][] | (Omitted for CSC) The issuer of this payment volume object. |
+| `issuer` | String - [Address][] | (Omitted for STM) The issuer of this payment volume object. |
 | `amount` | Number | Total payment volume for this currency during the interval, in units of the currency itself. |
 | `count` | Number | The total number of payments in this currency. |
 | `rate` | Number | The exchange rate between this currency and the display currency. |
@@ -1810,7 +1810,7 @@ Response:
                     "converted_amount": 644756.0609868265
                 },
                 {
-                    "currency": "CSC",
+                    "currency": "STM",
                     "amount": 296246369.30089426,
                     "count": 8691,
                     "rate": 1,
@@ -1820,7 +1820,7 @@ Response:
             "count": 9388,
             "endTime": "2015-09-11T19:58:59+00:00",
             "exchange": {
-                "currency": "CSC"
+                "currency": "STM"
             },
             "exchangeRate": 1,
             "startTime": "2015-11-10T00:19:04+00:00",
@@ -1835,9 +1835,9 @@ Response:
 ## Get Issued Value
 [[Source]<br>](https://github.com/ripple/rippled-historical-database/blob/develop/api/routes/network/getMetric.js "Source")
 
-Get the total value of all currencies issued by major gateways over time. By default, returns only the most recent measurement. 
+Get the total value of all currencies issued by major gateways over time. By default, returns only the most recent measurement.
 
-The API returns results in units of a single _display currency_ rather than many different currencies. The conversion uses standard rates to and from CSC.
+The API returns results in units of a single _display currency_ rather than many different currencies. The conversion uses standard rates to and from STM.
 
 #### Request Format
 
@@ -1859,7 +1859,7 @@ Optionally, you can provide the following query parameters:
 |--------|---------|-------------|
 | `start` | String - [Timestamp][]  | Start time of query range. Defaults to the start of the most recent interval. |
 | `end` | String - [Timestamp][]  | End time of query range. Defaults to the end of the most recent interval. |
-| `exchange_currency` | String - [Currency Code][] | Normalize all amounts to use this as a display currency. If not CSC, `exchange_issuer` is also required. Defaults to CSC. |
+| `exchange_currency` | String - [Currency Code][] | Normalize all amounts to use this as a display currency. If not STM, `exchange_issuer` is also required. Defaults to STM. |
 | `exchange_issuer` | String - [Address][] | Normalize results to the specified `currency` issued by this issuer. |
 | `limit` | Integer | Maximum results per page. Defaults to 200. Cannot be more than 1000. |
 | `marker` | String  | [Pagination](#pagination) key from previously returned response. |
@@ -1880,8 +1880,8 @@ Each Issued Value Object represents the total value issued at one point in time,
 | Field  | Value | Description |
 |--------|-------|-------------|
 | `components` | Array of Objects | The data on individual issuers that was used to assemble this total. |
-| `exchange` | Object | Indicates the display currency used, as with fields `currency` and (except for CSC) `issuer`. All amounts are normalized by first converting to CSC, and then to the display currency specified in the request. |
-| `exchangeRate` | Number | The exchange rate to the displayed currency from CSC.
+| `exchange` | Object | Indicates the display currency used, as with fields `currency` and (except for STM) `issuer`. All amounts are normalized by first converting to STM, and then to the display currency specified in the request. |
+| `exchangeRate` | Number | The exchange rate to the displayed currency from STM.
 | `time` | String - [Timestamp][] | When this data was measured. |
 | `total` | Number | Total value of all issued assets at this time, in units of the display currency. |
 
@@ -1942,10 +1942,10 @@ Response:
 
 
 
-## Get CSC Distribution
+## Get STM Distribution
 [[Source]<br>](https://github.com/ripple/rippled-historical-database/blob/develop/api/routes/network/xrpDistribution.js "Source")
 
-Get information on the total amount of CSC in existence and in circulation, by weekly intervals. 
+Get information on the total amount of STM in existence and in circulation, by weekly intervals.
 
 #### Request Format
 
@@ -1954,12 +1954,12 @@ Get information on the total amount of CSC in existence and in circulation, by w
 *REST*
 
 ```
-GET /v2/network/csc_distribution
+GET /v2/network/stm_distribution
 ```
 
 <!-- MULTICODE_BLOCK_END -->
 
-[Try it! >](data-api-v2-tool.html#get-csc-distribution)
+[Try it! >](data-api-v2-tool.html#get-stm-distribution)
 
 Optionally, you can provide the following query parameters:
 
@@ -1980,23 +1980,23 @@ A successful response uses the HTTP code **200 OK** and has a JSON body with the
 |--------|-------|-------------|
 | `result` | String | The value `success` indicates that the body represents a successful response. |
 | `count` | Integer | Number of rows returned. |
-| `rows` | Array of Distribution Objects | Weekly snapshots of the CSC distribution. |
+| `rows` | Array of Distribution Objects | Weekly snapshots of the STM distribution. |
 
 Each Distribution Object has the following fields:
 
 | Field  | Value | Description |
 |--------|-------|-------------|
 | `date` | String - [Timestamp][] | The time of this snapshot. |
-| `total` | String | Total CSC in existence. |
-| `undistributed` | String | Aggregate amount of CSC held by CasinoCoin (the company). |
-| `distributed` | String | Aggregate amount of CSC held by others. |
+| `total` | String | Total STM in existence. |
+| `undistributed` | String | Aggregate amount of STM held by Stoxum (the company). |
+| `distributed` | String | Aggregate amount of STM held by others. |
 
 #### Example
 
 Request:
 
 ```
-GET /v2/network/csc_distribution
+GET /v2/network/stm_distribution
 ```
 
 Response:
@@ -2023,7 +2023,7 @@ Response:
 ## Get Top Currencies
 [[Source]<br>](https://github.com/ripple/rippled-historical-database/blob/develop/api/routes/network/topCurrencies.js "Source")
 
-Returns the top currencies on the CSC Ledger, ordered from highest rank to lowest. The ranking is determined by the volume and count of transactions and the number of unique counterparties. By default, returns results for the 30-day rolling window ending on the current date. You can specify a date to get results for the 30-day window ending on that date. 
+Returns the top currencies on the STM Ledger, ordered from highest rank to lowest. The ranking is determined by the volume and count of transactions and the number of unique counterparties. By default, returns results for the 30-day rolling window ending on the current date. You can specify a date to get results for the 30-day window ending on that date.
 
 
 #### Request Format
@@ -2075,12 +2075,12 @@ Each Top Currency Object has the following fields:
 | Field  | Value | Description |
 |--------|-------|-------------|
 | `currency` | String - [Currency Code][] | The currency this object describes. |
-| `issuer` | String - [Address][] | The CSC Ledger address that issues this currency. |
+| `issuer` | String - [Address][] | The STM Ledger address that issues this currency. |
 | `avg_exchange_count` | [String - Number][] | Daily average number of [exchanges](#exchange-objects) |
-| `avg_exchange_volume` | [String - Number][] | Daily average volume of exchanges, normalized to CSC |
+| `avg_exchange_volume` | [String - Number][] | Daily average volume of exchanges, normalized to STM |
 | `avg_payment_count` | [String - Number][] | Daily average number of [payments](#payment-objects) |
-| `avg_payment_volume` | [String - Number][] | Daily average volume of payments, normalized to CSC |
-| `issued_value` | [String - Number][] | Total amount of this currency issued by this issuer, normalized to CSC |
+| `avg_payment_volume` | [String - Number][] | Daily average volume of payments, normalized to STM |
+| `issued_value` | [String - Number][] | Total amount of this currency issued by this issuer, normalized to STM |
 
 #### Example
 
@@ -2126,7 +2126,7 @@ Response:
 ## Get Top Markets
 [[Source]<br>](https://github.com/ripple/rippled-historical-database/blob/develop/api/routes/network/topMarkets.js "Source")
 
-Returns the top exchange markets on the CSC Ledger, ordered from highest rank to lowest. The rank is determined by the number and volume of exchanges and the number of counterparties participating. By default, returns top markets for the 30-day rolling window ending on the current date. You can specify a date to get results for the 30-day window ending on that date. 
+Returns the top exchange markets on the STM Ledger, ordered from highest rank to lowest. The rank is determined by the number and volume of exchanges and the number of counterparties participating. By default, returns top markets for the 30-day rolling window ending on the current date. You can specify a date to get results for the 30-day window ending on that date.
 
 #### Request Format
 
@@ -2177,13 +2177,13 @@ Each Top Market object has the following fields:
 | Field  | Value | Description |
 |--------|-------|-------------|
 | `base_currency` | String - [Currency Code][] | The base currency for this market. |
-| `base_issuer` | String - [Address][] | (Omitted if `base_currency` is CSC) The CSC Ledger address that issues the base currency. |
+| `base_issuer` | String - [Address][] | (Omitted if `base_currency` is STM) The STM Ledger address that issues the base currency. |
 | `counter_currency` | String - [Currency Code][] | The counter currency for this market. |
-| `counter_issuer` | String - [Address][] | (Omitted if `counter_currency` is CSC) The CSC Ledger address that issues the counter currency. |
+| `counter_issuer` | String - [Address][] | (Omitted if `counter_currency` is STM) The STM Ledger address that issues the counter currency. |
 | `avg_base_volume` | String | Daily average volume in terms of the base currency. |
 | `avg_counter_volume` | String | Daily average volume in terms of the counter currency. |
 | `avg_exchange_count` | String | Daily average number of [exchanges](#exchange-objects) |
-| `avg_volume` | String | Daily average volume, normalized to CSC |
+| `avg_volume` | String | Daily average volume, normalized to STM |
 
 #### Example
 
@@ -2209,7 +2209,7 @@ Response:
       "avg_volume": "1.6657039295476614E7",
       "base_currency": "USD",
       "base_issuer": "cvYAfWj5gh67oV6fW32ZzP3Aw4Eubs59B",
-      "counter_currency": "CSC"
+      "counter_currency": "STM"
     },
     {
       "avg_base_volume": "410510.0286920887",
@@ -2218,7 +2218,7 @@ Response:
       "avg_volume": "9117398.719214212",
       "base_currency": "CNY",
       "base_issuer": "cKiCet8SdvWxPXnAgYarFUXMh1zCPz432Y",
-      "counter_currency": "CSC"
+      "counter_currency": "STM"
     },
     ...
   ]
@@ -2230,7 +2230,7 @@ Response:
 ## Get Transaction Costs
 [[Source]<br>](https://github.com/ripple/rippled-historical-database/blob/develop/api/routes/network/getFees.js "Source")
 
-Returns [transaction cost](concept-transaction-cost.html) stats per ledger, hour, or day.  The data shows the average, minimum, maximum, and total transaction costs paid for the given interval or ledger. 
+Returns [transaction cost](concept-transaction-cost.html) stats per ledger, hour, or day.  The data shows the average, minimum, maximum, and total transaction costs paid for the given interval or ledger.
 
 #### Request Format
 
@@ -2276,7 +2276,7 @@ Each Fee Summary object has the following fields:
 | `avg` | Number | Average transaction cost paid in this interval. |
 | `min` | Number | Minimum  transaction cost paid in this interval. |
 | `max` | Number | Maximum  transaction cost paid in this interval. |
-| `total` | Number | Total CSC destroyed by transaction costs. |
+| `total` | Number | Total STM destroyed by transaction costs. |
 | `tx_count` | Number | Number of transactions in this interval. |
 | `date` | String - [Timestamp][] | The start time of this interval (time intervals), or the close time of this ledger (`ledger` interval). |
 | `ledger_index` | Integer - [Ledger Index][] | (Only present in `ledger` interval) The ledger this object describes. |
@@ -2331,7 +2331,7 @@ Response:
 ## Get Topology
 [[Source]<br>](https://github.com/ripple/rippled-historical-database/blob/develop/api/routes/network/getTopology.js "Source")
 
-Get known `casinocoind` servers and peer-to-peer connections between them. 
+Get known `stoxumd` servers and peer-to-peer connections between them.
 
 
 #### Request Format
@@ -2363,10 +2363,10 @@ A successful response uses the HTTP code **200 OK** and has a JSON body with the
 |--------|-------|-------------|
 | `result` | String | The value `success` indicates that the body represents a successful response. |
 | `date`   | String - [Timestamp][] | The time of this measurement. |
-| `node_count`  | Integer | Number of `casinocoind` servers in the topology. |
+| `node_count`  | Integer | Number of `stoxumd` servers in the topology. |
 | `link_count`  | Integer | Number of links in the topology. |
-| `nodes` | Array of [Server Objects][] | Details of `casinocoind` servers in the peer-to-peer network. |
-| `links` | Array of [Link Objects][] | Network connections between `casinocoind` servers in the peer-to-peer network. |
+| `nodes` | Array of [Server Objects][] | Details of `stoxumd` servers in the peer-to-peer network. |
+| `links` | Array of [Link Objects][] | Network connections between `stoxumd` servers in the peer-to-peer network. |
 
 #### Example
 
@@ -2388,7 +2388,7 @@ Response:
   "nodes": [
     {
       "node_public_key": "n94fDXS3ta92gRSi7DKngh47S7Rg4z1FuNsahvbiakFEg51dLeVa",
-      "version": "casinocoind-0.31.0-rc1",
+      "version": "stoxumd-0.31.0-rc1",
       "uptime": 266431,
       "inbound_count": 24,
       "last_updated": "2016-06-03T21:50:57Z"
@@ -2397,7 +2397,7 @@ Response:
       "node_public_key": "n94h5KNspwUGLaGcdHGxruYNmExWHjPkLcMvwsNrivR9czRp6Lor",
       "ip": "104.247.221.178",
       "port": 51235,
-      "version": "casinocoind-0.31.0",
+      "version": "stoxumd-0.31.0",
       "uptime": 608382,
       "inbound_count": 10,
       "outbound_count": 11,
@@ -2436,7 +2436,7 @@ Response:
 ## Get Topology Nodes
 [[Source]<br>](https://github.com/ripple/rippled-historical-database/blob/develop/api/routes/network/getNodes.js "Source")
 
-Get known `casinocoind` nodes. (This is a subset of the data returned by the [Get Topology method](#get-topology).) 
+Get known `stoxum` nodes. (This is a subset of the data returned by the [Get Topology method](#get-topology).)
 
 #### Request Format
 
@@ -2468,8 +2468,8 @@ A successful response uses the HTTP code **200 OK** and has a JSON body with the
 |--------|-------|-------------|
 | `result` | String | The value `success` indicates that the body represents a successful response. |
 | `date`  | String - [Timestamp][] | When this the data was measured. |
-| `count` | Integer | Number of `casinocoind` servers described. |
-| `nodes` | Array of [Server Objects][] | Details of the `casinocoind` servers in the topology. |
+| `count` | Integer | Number of `stoxumd` servers described. |
+| `nodes` | Array of [Server Objects][] | Details of the `stoxumd` servers in the topology. |
 
 #### Example
 
@@ -2490,7 +2490,7 @@ Response:
   "nodes": [
     {
       "node_public_key": "n94BuARkPiYLrMuAVZqMQFhTAGpo12dqUPiH3yrzEnhaEcXfLAnV",
-      "version": "casinocoind-0.30.1",
+      "version": "stoxumd-0.30.1",
       "uptime": 122424,
       "inbound_count": 10,
       "last_updated": "2016-06-06T14:36:52Z"
@@ -2499,7 +2499,7 @@ Response:
       "node_public_key": "n94h5KNspwUGLaGcdHGxruYNmExWHjPkLcMvwsNrivR9czRp6Lor",
       "ip": "104.247.221.178",
       "port": 51235,
-      "version": "casinocoind-0.31.2",
+      "version": "stoxumd-0.31.2",
       "uptime": 38649,
       "inbound_count": 10,
       "outbound_count": 11,
@@ -2527,7 +2527,7 @@ Response:
 ## Get Topology Node
 [[Source]<br>](https://github.com/ripple/rippled-historical-database/blob/develop/api/routes/network/getNodes.js "Source")
 
-Get information about a single `casinocoind` server by its [node public key](#public-keys) (not validator public key). 
+Get information about a single `stoxumd` server by its [node public key](#public-keys) (not validator public key).
 
 #### Request Format
 
@@ -2575,7 +2575,7 @@ Response:
   "node_public_key": "n94h5KNspwUGLaGcdHGxruYNmExWHjPkLcMvwsNrivR9czRp6Lor",
   "ip": "104.247.221.178",
   "port": 51235,
-  "version": "casinocoind-0.31.2",
+  "version": "stoxumd-0.31.2",
   "uptime": 43342,
   "inbound_count": 10,
   "outbound_count": 11,
@@ -2599,7 +2599,7 @@ Response:
 ## Get Topology Links
 [[Source]<br>](https://github.com/ripple/rippled-historical-database/blob/develop/api/routes/network/getLinks.js "Source")
 
-Get information on peer-to-peer connections between `casinocoind` servers. (This is a subset of the data returned by the [Get Topology method](#get-topology).) 
+Get information on peer-to-peer connections between `stoxumd` servers. (This is a subset of the data returned by the [Get Topology method](#get-topology).)
 
 #### Request Format
 
@@ -2631,7 +2631,7 @@ A successful response uses the HTTP code **200 OK** and has a JSON body with the
 | `result` | String | The value `success` indicates that the body represents a successful response. |
 | `date`   | String - [Timestamp][] | When this data was measured. |
 | `count`  | Integer | Number of links returned. |
-| `links`  | Array of [Link Objects][] | Links between `casinocoind` servers. |
+| `links`  | Array of [Link Objects][] | Links between `stoxumd` servers. |
 
 #### Example
 
@@ -2664,7 +2664,7 @@ Response:
 ## Get Validator
 [[Source]<br>](https://github.com/ripple/rippled-historical-database/blob/develop/api/routes/network/getValidators.js "Source")
 
-Get details of a single validator in the [consensus network](https://casinocoin.org/build/casinocoin-ledger-consensus-process/). 
+Get details of a single validator in the [consensus network](https://stoxum.org/build/stoxum-ledger-consensus-process/).
 
 
 #### Request Format
@@ -2701,7 +2701,7 @@ A successful response uses the HTTP code **200 OK** and has a JSON body with the
 | `last_datetime`  | Integer | The last reported validation vote signed by this validator. |
 | `validation_public_key` | String - Base-58 [Public Key][] | This validator's validator public key. |
 | `domain` | String | (May be omitted) The DNS domain associated with this validator. |
-| `domain_state` | String | The value `verified` indicates that this validator has a [verified domain](tutorial-casinocoind-setup.html#domain-verification) controlled by the same operator as the validator. The value `AccountDomainNotFound` indicates that the "Account Domain" part of Domain Verification is not set up properly. The value `CasinocoinTxtNotFound` indicates that the casinocoin.txt step of Domain Verification is not set up properly. |
+| `domain_state` | String | The value `verified` indicates that this validator has a [verified domain](tutorial-stoxumd-setup.html#domain-verification) controlled by the same operator as the validator. The value `AccountDomainNotFound` indicates that the "Account Domain" part of Domain Verification is not set up properly. The value `StoxumTxtNotFound` indicates that the stoxum.txt step of Domain Verification is not set up properly. |
 
 #### Example
 
@@ -2716,7 +2716,7 @@ Response:
 ```
 200 OK
 {
-  "domain": "casinocoin.org",
+  "domain": "stoxum.org",
   "domain_state": "verified",
   "last_datetime": "2016-06-07T01:22:59.929Z",
   "validation_public_key": "n949f75evCHwgyP4fPVgaHqNHxUVN15PsJEZ3B3HnXPcPjcZAoy7",
@@ -2729,7 +2729,7 @@ Response:
 ## Get Validators
 [[Source]<br>](https://github.com/ripple/rippled-historical-database/blob/develop/api/routes/network/getValidators.js "Source")
 
-Get a list of known validators. 
+Get a list of known validators.
 
 
 #### Request Format
@@ -2787,7 +2787,7 @@ Response:
 ## Get Validator Validations
 [[Source]<br>](https://github.com/ripple/rippled-historical-database/blob/develop/api/routes/network/getValidations.js "Source")
 
-Retrieve validation votes signed by a specified validator, including votes for ledger versions that are outside the main ledger chain. 
+Retrieve validation votes signed by a specified validator, including votes for ledger versions that are outside the main ledger chain.
 
 **Note:** The Data API does not have a comprehensive record of all validations. The response only includes data that the Data API has recorded. Some ledger versions, especially older ledgers, may have no validations even if they were validated by consensus.
 
@@ -2886,7 +2886,7 @@ Response:
 ## Get Validations
 [[Source]<br>](https://github.com/ripple/rippled-historical-database/blob/develop/api/routes/network/getValidations.js "Source")
 
-Retrieve validation votes, including votes for ledger versions that are outside the main ledger chain. 
+Retrieve validation votes, including votes for ledger versions that are outside the main ledger chain.
 
 **Note:** The Data API does not have a comprehensive record of all validations. The response only includes data that the Data API has recorded. Some ledger versions, especially older ledgers, may have no validations even if they were validated by consensus.
 
@@ -3026,9 +3026,9 @@ Each member in the `validators` array is a Single Validator Report Object with d
 | `date` | String - [Timestamp][] | The start time of the date this object describes. |
 | `total_ledgers` | Integer | Number of ledger hashes for which this validator submitted validation votes. If this number is much lower than other validators in the same time period, that could mean the validator had downtime. |
 | `main_net_agreement` | [String - Number][] | The fraction of consensus-validated production network ledger versions for which this validator voted in this interval. `"1.0"` indicates 100% agreement. |
-| `main_net_ledgers` | Integer | Number of consensus-validated [production network](tutorial-casinocoind-setup.html#parallel-networks) ledger versions this validator voted for. |
-| `alt_net_agreement` | [String - Number][] | The fraction of the consensus-validated [Test Network](tutorial-casinocoind-setup.html#parallel-networks) ledger versions this validator voted for. `"1.0"` indicates 100% agreement. |
-| `alt_net_ledgers` | Integer | Number of consensus-validated [Test Network](tutorial-casinocoind-setup.html#parallel-networks) ledger versions this validator voted for. |
+| `main_net_ledgers` | Integer | Number of consensus-validated [production network](tutorial-stoxumd-setup.html#parallel-networks) ledger versions this validator voted for. |
+| `alt_net_agreement` | [String - Number][] | The fraction of the consensus-validated [Test Network](tutorial-stoxumd-setup.html#parallel-networks) ledger versions this validator voted for. `"1.0"` indicates 100% agreement. |
+| `alt_net_ledgers` | Integer | Number of consensus-validated [Test Network](tutorial-stoxumd-setup.html#parallel-networks) ledger versions this validator voted for. |
 | `other_ledgers` | Integer | Number of other ledger versions this validator voted for. If this number is high, that could indicate that this validator was running non-standard or out-of-date software. |
 
 #### Example
@@ -3117,13 +3117,13 @@ Daily Validator Report Object fields:
 | `date` | String - [Timestamp][] | The start time of the date this object describes. |
 | `total_ledgers` | Integer | Number of ledger indexes for which this validator submitted validation votes. If this number is much lower than other validators in the same time period, that could mean the validator had downtime. |
 | `main_net_agreement` | [String - Number][] | The fraction of consensus-validated production network ledger versions for which this validator voted in this interval. `"1.0"` indicates 100% agreement. |
-| `main_net_ledgers` | Integer | Number of consensus-validated [production network](tutorial-casinocoind-setup.html#parallel-networks) ledger versions this validator voted for. |
-| `alt_net_agreement` | [String - Number][] | The fraction of the consensus-validated [Test Network](tutorial-casinocoind-setup.html#parallel-networks) ledger versions this validator voted for. `"1.0"` indicates 100% agreement. |
-| `alt_net_ledgers` | Integer | Number of consensus-validated [Test Network](tutorial-casinocoind-setup.html#parallel-networks) ledger versions this validator voted for. |
+| `main_net_ledgers` | Integer | Number of consensus-validated [production network](tutorial-stoxumd-setup.html#parallel-networks) ledger versions this validator voted for. |
+| `alt_net_agreement` | [String - Number][] | The fraction of the consensus-validated [Test Network](tutorial-stoxumd-setup.html#parallel-networks) ledger versions this validator voted for. `"1.0"` indicates 100% agreement. |
+| `alt_net_ledgers` | Integer | Number of consensus-validated [Test Network](tutorial-stoxumd-setup.html#parallel-networks) ledger versions this validator voted for. |
 | `other_ledgers` | Integer | Number of other ledger versions this validator voted for. If this number is high, that could indicate that this validator was running non-standard or out-of-date software. |
 | `last_datetime`  | Integer | The last reported validation vote signed by this validator. |
 | `domain` | String | (May be omitted) The DNS domain associated with this validator. |
-| `domain_state` | String | The value `verified` indicates that this validator has a [verified domain](tutorial-casinocoind-setup.html#domain-verification) controlled by the same operator as the validator. The value `AccountDomainNotFound` indicates that the "Account Domain" part of Domain Verification is not set up properly. The value `CasinocoinTxtNotFound` indicates that the casinocoin.txt step of Domain Verification is not set up properly. |
+| `domain_state` | String | The value `verified` indicates that this validator has a [verified domain](tutorial-stoxumd-setup.html#domain-verification) controlled by the same operator as the validator. The value `AccountDomainNotFound` indicates that the "Account Domain" part of Domain Verification is not set up properly. The value `StoxumTxtNotFound` indicates that the stoxum.txt step of Domain Verification is not set up properly. |
 
 #### Example
 
@@ -3150,7 +3150,7 @@ Response:
       "alt_net_agreement": "0.00000",
       "alt_net_ledgers": 0,
       "other_ledgers": 0,
-      "domain": "casinocoin.org",
+      "domain": "stoxum.org",
       "domain_state": "verified",
       "last_datetime": "2016-06-07T01:20:20.717Z"
     },
@@ -3161,10 +3161,10 @@ Response:
 ```
 
 
-## Get casinocoind Versions
+## Get stoxumd Versions
 [[Source]<br>](https://github.com/ripple/rippled-historical-database/blob/develop/api/routes/network/getVersions.js "Source")
 
-Reports the latest versions of `casinocoind` available from the official CasinoCoin Yum repositories. 
+Reports the latest versions of `stoxumd` available from the official Stoxum Yum repositories.
 
 #### Request Format
 
@@ -3173,12 +3173,12 @@ Reports the latest versions of `casinocoind` available from the official CasinoC
 *REST*
 
 ```
-GET /v2/network/casinocoind_versions
+GET /v2/network/stoxumd_versions
 ```
 
 <!-- MULTICODE_BLOCK_END -->
 
-[Try it! >](data-api-v2-tool.html#get-casinocoind-versions)
+[Try it! >](data-api-v2-tool.html#get-stoxumd-versions)
 
 
 #### Response Format
@@ -3189,22 +3189,22 @@ A successful response uses the HTTP code **200 OK** and has a JSON body with the
 |:---------|:-------------------------|:--------------------------------------|
 | `result` | String                   | The value `success` indicates that the body represents a successful response. |
 | `count`  | Integer                  | Number of rows returned.              |
-| `rows`   | Array of Version Objects | Description of the latest `casinocoind` version in each repository. |
+| `rows`   | Array of Version Objects | Description of the latest `stoxumd` version in each repository. |
 
 Each Version Object contains the following fields:
 
 | Field     | Value                  | Description                            |
 |:----------|:-----------------------|:---------------------------------------|
-| `date`    | String - [Timestamp][] | The date this `casinocoind` version was released. |
-| `repo`    | String                 | The Yum repository where this `casinocoind` is available. The `stable` repository has the latest production version. Other versions are for development and testing. |
-| `version` | String                 | The version string for this version of `casinocoind`. |
+| `date`    | String - [Timestamp][] | The date this `stoxumd` version was released. |
+| `repo`    | String                 | The Yum repository where this `stoxumd` is available. The `stable` repository has the latest production version. Other versions are for development and testing. |
+| `version` | String                 | The version string for this version of `stoxumd`. |
 
 #### Example
 
 Request:
 
 ```
-GET /v2/network/casinocoind_versions
+GET /v2/network/stoxumd_versions
 ```
 
 Response:
@@ -3239,7 +3239,7 @@ Response:
 ## Get All Gateways
 [[Source]<br>](https://github.com/ripple/rippled-historical-database/blob/develop/api/routes/gateways.js "Source")
 
-Get information about [known gateways](https://github.com/ripple/rippled-historical-database/blob/v2.0.4/api/gateways/gateways.json). 
+Get information about [known gateways](https://github.com/ripple/rippled-historical-database/blob/v2.0.4/api/gateways/gateways.json).
 
 #### Request Format
 
@@ -3267,9 +3267,9 @@ Each field in the top level JSON object is a [Currency Code][]. The content of e
 |----------|---------|-------------|
 | `name` | String  | A human-readable proper name for the gateway. |
 | `account` | String - [Address][] | The [issuing address](concept-issuing-and-operational-addresses.html) of this currency. |
-| `featured` | Boolean | Whether this gateway is considered a "featured" issuer of the currency. CasinoCoin decides which gateways to feature based on responsible business practices, volume, and other measures. |
+| `featured` | Boolean | Whether this gateway is considered a "featured" issuer of the currency. Stoxum decides which gateways to feature based on responsible business practices, volume, and other measures. |
 | `label` | String  | (May be omitted) Only provided when the [Currency Code][] is a 40-character hexadecimal value. This is an alternate human-readable name for the currency issued by this gateway.
-| `assets` | Array of Strings | Graphics filenames available for this gateway, if any. (Mostly, these are logos used by CSC Charts.) |
+| `assets` | Array of Strings | Graphics filenames available for this gateway, if any. (Mostly, these are logos used by STM Charts.) |
 
 #### Example
 
@@ -3336,7 +3336,7 @@ Response:
 [[Source]<br>](https://github.com/ripple/rippled-historical-database/blob/develop/api/routes/gateways.js "Source")
 
 <!-- STYLE_OVERRIDE: gateway, gateways -->
-Get information about a specific gateway from [the Data API's list of known gateways](https://github.com/ripple/rippled-historical-database/blob/v2.0.4/api/gateways/gateways.json). 
+Get information about a specific gateway from [the Data API's list of known gateways](https://github.com/ripple/rippled-historical-database/blob/v2.0.4/api/gateways/gateways.json).
 
 #### Request Format
 
@@ -3370,16 +3370,16 @@ A successful response uses the HTTP code **200 OK** and has a JSON body with the
 | `start_date` | String - [Timestamp][] | The approximate date of the first time exchanges for this gateway's currencies appeared in the ledger. |
 | `accounts` | Array | A list of [issuing addresses](concept-issuing-and-operational-addresses.html) used by this gateway. (Gateways may use different issuing accounts for different currencies.) |
 | `hotwallets` | Array of [Address][]es | This gateway's [operational addresses](concept-issuing-and-operational-addresses.html). |
-| `domain` | String | The domain name where this gateway does business. Typically the gateway hosts a `casinocoin.txt` there. |
+| `domain` | String | The domain name where this gateway does business. Typically the gateway hosts a `stoxum.txt` there. |
 | `normalized` | String | A normalized version of the `name` field suitable for including in URLs. |
-| `assets` | Array of Strings | Graphics filenames available for this gateway, if any. (Mostly, these are logos used by CSC Charts.) |
+| `assets` | Array of Strings | Graphics filenames available for this gateway, if any. (Mostly, these are logos used by STM Charts.) |
 
 Each object in the `accounts` field array has the following fields:
 
 | Field      | Value  | Description |
 |------------|--------|-------------|
 | `address` | String | The [issuing address](concept-issuing-and-operational-addresses.html) used by this gateway. |
-| `currencies` | Object | Each field in this object is a [Currency Code][] corresponding to a currency issued from this address. Each value is an object with a `featured` boolean indicating whether that currency is featured. CasinoCoin decides which currencies and gateways to feature based on responsible business practices, volume, and other measures. |
+| `currencies` | Object | Each field in this object is a [Currency Code][] corresponding to a currency issued from this address. Each value is an object with a `featured` boolean indicating whether that currency is featured. Stoxum decides which currencies and gateways to feature based on responsible business practices, volume, and other measures. |
 
 #### Example
 
@@ -3428,7 +3428,7 @@ Response:
 
 [[Source]<br>](https://github.com/ripple/rippled-historical-database/blob/develop/api/routes/gateways.js#L199 "Source")
 
-Retrieve vector icons for various currencies. 
+Retrieve vector icons for various currencies.
 
 #### Request Format
 
@@ -3446,7 +3446,7 @@ This method requires the following URL parameter:
 
 | Field | Value | Description |
 |-------|-------|-------------|
-| `currencyimage` | String | An image file for a currency, such as `csc.svg`. See [the source code](https://github.com/ripple/rippled-historical-database/tree/develop/api/gateways/currencyAssets) for a list of available images. |
+| `currencyimage` | String | An image file for a currency, such as `stm.svg`. See [the source code](https://github.com/ripple/rippled-historical-database/tree/develop/api/gateways/currencyAssets) for a list of available images. |
 
 #### Response Format
 A successful response uses the HTTP code **200 OK** and has a **Content-Type** header of `image/svg+xml` to indicate that the contents are XML representing a file in [SVG format](https://en.wikipedia.org/wiki/Scalable_Vector_Graphics).
@@ -3489,7 +3489,7 @@ Content-Type: image/svg+xml
 ## Get Accounts
 [[Source]<br>](https://github.com/ripple/rippled-historical-database/blob/develop/api/routes/accounts.js "Source")
 
-Retrieve information about the creation of new accounts in the CSC Ledger.
+Retrieve information about the creation of new accounts in the STM Ledger.
 
 #### Request Format
 
@@ -3586,7 +3586,7 @@ Response:
 ## Get Account
 [[Source]<br>](https://github.com/ripple/rippled-historical-database/blob/develop/api/routes/getAccount.js "Source")
 
-Get creation info for a specific casinocoin account
+Get creation info for a specific stoxum account
 
 #### Request Format
 
@@ -3607,7 +3607,7 @@ This method requires the following URL parameters:
 
 | Field     | Value  | Description |
 |-----------|--------|-------------|
-| `address` | String | CSC Ledger address to query. |
+| `address` | String | STM Ledger address to query. |
 
 #### Response Format
 
@@ -3648,7 +3648,7 @@ Response:
 ## Get Account Balances
 [[Source]<br>](https://github.com/ripple/rippled-historical-database/blob/develop/api/routes/accountBalances.js "Source")
 
-Get all balances held or owed by a specific CSC Ledger account.
+Get all balances held or owed by a specific STM Ledger account.
 
 <!-- MULTICODE_BLOCK_START -->
 
@@ -3666,7 +3666,7 @@ This method requires the following URL parameters:
 
 | Field     | Value  | Description |
 |-----------|--------|-------------|
-| `address` | String | CSC Ledger address to query. |
+| `address` | String | STM Ledger address to query. |
 
 Optionally, you can provide the following query parameters:
 
@@ -3753,7 +3753,7 @@ This method requires the following URL parameters:
 
 | Field    | Value  | Description |
 |----------|--------|-------------|
-| `address` | String - [Address][] | CSC Ledger address to query. |
+| `address` | String - [Address][] | STM Ledger address to query. |
 
 Optionally, you can provide the following query parameters:
 
@@ -3787,7 +3787,7 @@ Each order object has the following fields:
 | `specification.quantity` | [Balance Object][] | The maximum amount of the base currency this order would buy or sell (depending on the direction). This value decreases as the order gets partially filled. |
 | `specification.totalPrice` | [Balance Object][] | The maximum amount of the counter currency the order can spend or gain to buy or sell the base currency. This value decreases as the order gets partially filled. |
 | `properties` | Object | Details of how the order was placed. |
-| `properties.maker` | String - [Address][] | The CSC Ledger account that placed the order. |
+| `properties.maker` | String - [Address][] | The STM Ledger account that placed the order. |
 | `properties.sequence` | Number | The sequence number of the transaction that placed this order. |
 | `properties.makerExchangeRate` | [String - Number][] | The exchange rate from the point of view of the account that submitted the order. |
 
@@ -3859,7 +3859,7 @@ Response:
 ## Get Account Transaction History
 [[Source]<br>](https://github.com/ripple/rippled-historical-database/blob/develop/api/routes/accountTransactions.js "Source")
 
-Retrieve a history of transactions that affected a specific account. This includes all transactions the account sent, payments the account received, and payments that casinocoind through the account.
+Retrieve a history of transactions that affected a specific account. This includes all transactions the account sent, payments the account received, and payments that stoxumd through the account.
 
 #### Request Format
 
@@ -3879,7 +3879,7 @@ This method requires the following URL parameters:
 
 | Field    | Value  | Description |
 |----------|--------|-------------|
-| :address | String - [Address][] | CSC Ledger address to query. |
+| :address | String - [Address][] | STM Ledger address to query. |
 
 
 Optionally, you can provide the following query parameters:
@@ -3897,7 +3897,7 @@ Optionally, you can provide the following query parameters:
 | `limit` | Integer | Maximum results per page. Defaults to 20. Cannot be more than 1,000. |
 | `marker` | String  | [Pagination](#pagination) key from previously returned response. |
 
-**Note:** This method cannot return CSV format; only JSON results are supported for raw CSC Ledger transactions.
+**Note:** This method cannot return CSV format; only JSON results are supported for raw STM Ledger transactions.
 
 
 #### Response Format
@@ -4011,7 +4011,7 @@ This method requires the following URL parameters:
 
 | Field      | Value   | Description |
 |------------|---------|-------------|
-| `address`  | String  | CSC Ledger address to query. |
+| `address`  | String  | STM Ledger address to query. |
 | `sequence` | Integer | Transaction sequence number. |
 
 
@@ -4080,7 +4080,7 @@ This method requires the following URL parameters:
 
 | Field     | Value  | Description |
 |-----------|--------|-------------|
-| `address` | String | CSC Ledger address to query. |
+| `address` | String | STM Ledger address to query. |
 
 
 Optionally, you can provide the following query parameters:
@@ -4194,9 +4194,9 @@ This method requires the following URL parameters:
 
 | Field     | Value  | Description |
 |-----------|--------|-------------|
-| `address` | String | CSC Ledger address to query. |
-| `base`    | String | Base currency of the pair, as a [Currency Code][], followed by `+` and the issuer [Address][] unless it's CSC. |
-| `counter` | String | Counter currency of the pair, as a [Currency Code][], followed by `+` and the issuer [Address][] unless it's CSC. |
+| `address` | String | STM Ledger address to query. |
+| `base`    | String | Base currency of the pair, as a [Currency Code][], followed by `+` and the issuer [Address][] unless it's STM. |
+| `counter` | String | Counter currency of the pair, as a [Currency Code][], followed by `+` and the issuer [Address][] unless it's STM. |
 
 
 Optionally, you can provide the following query parameters:
@@ -4226,7 +4226,7 @@ A successful response uses the HTTP code **200 OK** and has a JSON body with the
 Request:
 
 ```
-GET /v2/accounts/csyDrDi9Emy6vPU78qdxovmNpmj5Qh4NKw/exchanges/KRW+cUkMKjQitpgAM5WTGk79xpjT38DEJY283d/CSC?start=2015-08-08T00:00:00Z&end=2015-08-31T00:00:00Z&limit=2
+GET /v2/accounts/csyDrDi9Emy6vPU78qdxovmNpmj5Qh4NKw/exchanges/KRW+cUkMKjQitpgAM5WTGk79xpjT38DEJY283d/STM?start=2015-08-08T00:00:00Z&end=2015-08-31T00:00:00Z&limit=2
 
 ```
 
@@ -4248,7 +4248,7 @@ Response:
             "base_currency": "KRW",
             "base_issuer": "cUkMKjQitpgAM5WTGk79xpjT38DEJY283d",
             "buyer": "cnAqwsu2BEbCjacoZmsXrpViqd3miZhHbT",
-            "counter_currency": "CSC",
+            "counter_currency": "STM",
             "executed_time": "2015-08-08T02:57:40",
             "ledger_index": 15122851,
             "offer_sequence": "1738",
@@ -4266,7 +4266,7 @@ Response:
             "base_issuer": "cUkMKjQitpgAM5WTGk79xpjT38DEJY283d",
             "buyer": "c9xQi5YT8jqVM3wZhbiV94ZKKvGHaVeSDj",
             "client": "rt1.1-26-gbeb68ab",
-            "counter_currency": "CSC",
+            "counter_currency": "STM",
             "executed_time": "2015-08-08T07:15:00",
             "ledger_index": 15126536,
             "offer_sequence": "1738",
@@ -4306,7 +4306,7 @@ This method requires the following URL parameters:
 
 | Field     | Value  | Description |
 |-----------|--------|-------------|
-| `address` | String | CSC Ledger address to query. |
+| `address` | String | STM Ledger address to query. |
 
 
 Optionally, you can provide the following query parameters:
@@ -4355,7 +4355,7 @@ Response:
       "final_balance": "75.169663",
       "tx_index": 7,
       "change_type": "transaction_cost",
-      "currency": "CSC",
+      "currency": "STM",
       "executed_time": "2016-01-29T22:57:20Z",
       "ledger_index": 18555460,
       "tx_hash": "2B44EBE00728D04658E597A85EC4F71D20503B31ABBF556764AD8F7A80BA72F6"
@@ -4366,7 +4366,7 @@ Response:
       "node_index": 1,
       "tx_index": 4,
       "change_type": "payment_source",
-      "currency": "CSC",
+      "currency": "STM",
       "executed_time": "2016-01-26T08:32:20Z",
       "ledger_index": 18489336,
       "tx_hash": "E5C6DD25B2DCF534056D98A2EFE3B7CFAE4EBC624854DE3FA436F733A56D8BD9"
@@ -4376,7 +4376,7 @@ Response:
       "final_balance": "100.181663",
       "tx_index": 4,
       "change_type": "transaction_cost",
-      "currency": "CSC",
+      "currency": "STM",
       "executed_time": "2016-01-26T08:32:20Z",
       "ledger_index": 18489336,
       "tx_hash": "E5C6DD25B2DCF534056D98A2EFE3B7CFAE4EBC624854DE3FA436F733A56D8BD9"
@@ -4415,7 +4415,7 @@ This method requires the following URL parameters:
 
 | Field     | Value  | Description |
 |-----------|--------|-------------|
-| `address` | String | CSC Ledger address to query. |
+| `address` | String | STM Ledger address to query. |
 | `date`    | String | (Optional) UTC date for single report. If omitted, use the `start` and `end` query parameters. |
 
 
@@ -4504,7 +4504,7 @@ Response:
 ## Get Account Transaction Stats
 [[Source]<br>](https://github.com/ripple/rippled-historical-database/blob/develop/api/routes/accountStats.js "Source")
 
-Retrieve daily summaries of transaction activity for an account. 
+Retrieve daily summaries of transaction activity for an account.
 
 <!-- MULTICODE_BLOCK_START -->
 
@@ -4522,7 +4522,7 @@ This method requires the following URL parameters:
 
 | Field     | Value  | Description |
 |-----------|--------|-------------|
-| `address` | String | CSC Ledger address to query. |
+| `address` | String | STM Ledger address to query. |
 
 
 Optionally, you can provide the following query parameters:
@@ -4603,7 +4603,7 @@ Response:
 ## Get Account Value Stats
 [[Source]<br>](https://github.com/ripple/rippled-historical-database/blob/develop/api/routes/accountStats.js "Source")
 
-Retrieve daily summaries of transaction activity for an account. 
+Retrieve daily summaries of transaction activity for an account.
 
 <!-- MULTICODE_BLOCK_START -->
 
@@ -4621,7 +4621,7 @@ This method requires the following URL parameters:
 
 | Field     | Value  | Description |
 |-----------|--------|-------------|
-| `address` | String | CSC Ledger address to query. |
+| `address` | String | STM Ledger address to query. |
 
 
 Optionally, you can provide the following query parameters:
@@ -4650,7 +4650,7 @@ Each Value Stats Object has the following fields:
 | Field  | Value | Description |
 |--------|-------|-------------|
 | `date` | String - [Timestamp][] | This object describes activity on this date. |
-| `value` | [String - Number][] | The total of all currency held by this account, normalized to CSC. |
+| `value` | [String - Number][] | The total of all currency held by this account, normalized to STM. |
 | `balance_change_count` | Number | The number of times the account's balance changed on this date. |
 
 #### Example
@@ -4965,20 +4965,20 @@ As a REST API, the Data API v2 uses [JSON](http://json.org/)'s native datatypes 
 
 {% include 'snippets/string-number-formatting.md' %}
 
-The precision for amounts of **non-CSC currency** in the CSC Ledger is as follows:
+The precision for amounts of **non-STM currency** in the STM Ledger is as follows:
 
 * Minimum nonzero absolute value: `1000000000000000e-96`
 * Maximum value: `9999999999999999e80`
 * Minimum value: `-9999999999999999e80`
 * 15 decimal digits of precision
 
-**CSC** has a different internal representation, and its precision is different:
+**STM** has a different internal representation, and its precision is different:
 
 * Minimum value: `0`
 * Maximum value: `100000000000` (`1e11`)
 * Precise to the nearest `0.000001` (`1e-6`)
 
-In other words, CSC has the same precision as a 64-bit unsigned integer where each unit is equivalent to 0.00000001 CSC.
+In other words, STM has the same precision as a 64-bit unsigned integer where each unit is equivalent to 0.00000001 STM.
 
 ### Addresses
 [Address]: #addresses
@@ -5038,7 +5038,7 @@ The `limit` query parameter to many requests restricts the response to a specifi
 
 When a query has additional objects that are not contained in the current response, the JSON response contains a top-level field `marker` which indicates that you can retrieve additional results. To do so, make more requests with the previous value of the `marker` field as the `marker` query parameter. For each additional request, use the same parameters as the first request (except `marker`). When the response omits the `marker` parameter, that indicates that you have reached the end of the queryable data.
 
-When a `marker` is or would be present, the response contains a [`Link` header](https://tools.ietf.org/html/rfc5988#section-5) with `rel="next"`. This is a full URL to the next page of results. You can use this to paginate over results when the response is in `csv` format instead of `json`. 
+When a `marker` is or would be present, the response contains a [`Link` header](https://tools.ietf.org/html/rfc5988#section-5) with `rel="next"`. This is a full URL to the next page of results. You can use this to paginate over results when the response is in `csv` format instead of `json`.
 
 ## Transaction Objects
 
@@ -5073,7 +5073,7 @@ A "ledger" is one version of the shared global ledger. Each ledger object has th
 | `ledger_hash`  | String - [Hash][] | An identifying hash unique to this ledger, as a hex string. |
 | `ledger_index` | Number - [Ledger Index][] | The sequence number of the ledger. Each new ledger has a ledger index 1 higher than the ledger that came before it. |
 | `parent_hash`  | String - [Hash][] | The identifying hash of the previous ledger. |
-| `total_coins`  | [String - Number][] | The total number of "drops" of CSC still in existence at the time of the ledger. (Each CSC is 100,000,000 drops.) |
+| `total_coins`  | [String - Number][] | The total number of "drops" of STM still in existence at the time of the ledger. (Each STM is 100,000,000 drops.) |
 | `close_time_res` | Number | The ledger close time is rounded to this many seconds. |
 | `accounts_hash` | String - [Hash][] | Hash of the account information contained in this ledger, as hex. |
 | `transactions_hash` | String - [Hash][] | Hash of the transaction information contained in this ledger, as hex. |
@@ -5084,28 +5084,28 @@ A "ledger" is one version of the shared global ledger. Each ledger object has th
 
 ### Genesis Ledger
 
-Due to a mishap early in the CSC Ledger's history, ledgers 1 through 32569 were lost. Thus, ledger #32570 is the earliest ledger available anywhere. For purposes of the Data API v2, ledger #32570 is considered the _genesis ledger_.
+Due to a mishap early in the STM Ledger's history, ledgers 1 through 32569 were lost. Thus, ledger #32570 is the earliest ledger available anywhere. For purposes of the Data API v2, ledger #32570 is considered the _genesis ledger_.
 
 ## Account Creation Objects
 
-An account creation object represents the action of creating an account in the CSC Ledger. There are two variations, depending on whether the account was already present in ledger 32570, the earliest ledger available. Accounts that were already present in ledger 32570 are termed _genesis accounts_.
+An account creation object represents the action of creating an account in the STM Ledger. There are two variations, depending on whether the account was already present in ledger 32570, the earliest ledger available. Accounts that were already present in ledger 32570 are termed _genesis accounts_.
 
 | Field | Value | Description |
 |-------|-------|-------------|
 | `address` | String - [Address][] | The identifying address of this account, in base-58. |
 | `inception` | String - [Timestamp][] | The UTC timestamp when the address was funded. For genesis accounts, this is the timestamp of ledger 32570. |
 | `ledger_index` | Number - [Ledger Index][] | The sequence number of the ledger when the account was created, or 32570 for genesis accounts. |
-| `parent` | String - [Address][] | (Omitted for genesis accounts) The address that provided the CSC to fund this address. |
+| `parent` | String - [Address][] | (Omitted for genesis accounts) The address that provided the STM to fund this address. |
 | `tx_hash` | String - [Hash][] | (Omitted for genesis accounts) The identifying hash of the transaction that funded this account. |
-| `initial_balance` | [String - Number][] | (Omitted for genesis accounts) The amount of CSC that funded this account. |
-| `genesis_balance` | [String - Number][] | (Genesis accounts only) The amount of CSC this account held as of ledger #32570. |
+| `initial_balance` | [String - Number][] | (Omitted for genesis accounts) The amount of STM that funded this account. |
+| `genesis_balance` | [String - Number][] | (Genesis accounts only) The amount of STM this account held as of ledger #32570. |
 | `genesis_index` | Number - [Sequence Number][] | (Genesis accounts only) The transaction sequence number of the account as of ledger #32570. |
 
 
 ## Exchange Objects
 [Exchange Objects]: #exchange-objects
 
-An exchange object represents an actual exchange of currency, which can occur in the CSC Ledger as the result of executing either an OfferCreate transaction or a Payment transaction. In order for currency to actually change hands, there must be a previously-unfilled Offer previously placed in the ledger with an OfferCreate transaction.
+An exchange object represents an actual exchange of currency, which can occur in the STM Ledger as the result of executing either an OfferCreate transaction or a Payment transaction. In order for currency to actually change hands, there must be a previously-unfilled Offer previously placed in the ledger with an OfferCreate transaction.
 
 A single transaction can cause several exchanges to occur. In this case, the sender of the transaction is the taker for all the exchanges, but each exchange has a different provider, currency pair, or both.
 
@@ -5114,14 +5114,14 @@ A single transaction can cause several exchanges to occur. In this case, the sen
 | `base_amount` | Number | The amount of the base currency that was traded. |
 | `counter_amount` | Number | The amount of the counter currency that was traded. |
 | `rate` | Number | The amount of the counter currency acquired per 1 unit of the base currency. |
-| `autobridged_currency` | String - [Currency Code][] | (May be omitted) If the offer was autobridged (CSC order books were used to bridge two non-CSC currencies), this is the other currency from the offer that executed this exchange. |
-| `autobridged_issuer` | String - [Address][] | (May be omitted) If the offer was autobridged (CSC order books were used to bridge two non-CSC currencies), this is the other currency from the offer that executed this exchange. |
+| `autobridged_currency` | String - [Currency Code][] | (May be omitted) If the offer was autobridged (STM order books were used to bridge two non-STM currencies), this is the other currency from the offer that executed this exchange. |
+| `autobridged_issuer` | String - [Address][] | (May be omitted) If the offer was autobridged (STM order books were used to bridge two non-STM currencies), this is the other currency from the offer that executed this exchange. |
 | `base_currency` | String - [Currency Code][] | The base currency. |
-| `base_issuer` | String - [Address][] | (Omitted for CSC) The account that issued the base currency. |
+| `base_issuer` | String - [Address][] | (Omitted for STM) The account that issued the base currency. |
 | `buyer` | String - [Address][] | The account that acquired the base currency. |
 | `client` | String | (May be omitted) If the transaction contains a memo indicating what client application sent it, this is the contents of the memo. |
 | `counter_currency` | String - [Currency Code][] | The counter currency. |
-| `counter_issuer` | String - [Address][] | (Omitted for CSC) The account that issued the counter currency. |
+| `counter_issuer` | String - [Address][] | (Omitted for STM) The account that issued the counter currency. |
 | `executed_time` | String - [Timestamp][] | The time the exchange occurred. |
 | `ledger_index` | Number - [Ledger Index][] | The sequence number of the ledger that included this transaction. |
 | `offer_sequence` | Number - [Sequence Number][] | The sequence number of the `provider`'s existing offer in the ledger. |
@@ -5141,16 +5141,16 @@ Reports objects show the activity of a given account over a specific interval of
 |-------|-------|-------------|
 | `account` | String - [Address][] | The address of the account to which this report pertains. |
 | `date` | String - [Timestamp][] | The start of the interval to which this report pertains. |
-| `high_value_received` | [String - Number][] | Largest amount received in a single transaction, normalized to CSC (as closely as possible). This includes payments and exchanges. |
-| `high_value_sent` | [String - Number][] | The largest amount sent in a single transaction, normalized to CSC (as closely as possible). |
+| `high_value_received` | [String - Number][] | Largest amount received in a single transaction, normalized to STM (as closely as possible). This includes payments and exchanges. |
+| `high_value_sent` | [String - Number][] | The largest amount sent in a single transaction, normalized to STM (as closely as possible). |
 | `payments` | Array of [Payment Summary Objects][] | (May be omitted) Array with information on each payment sent or received by the account during this interval. |
-| `payments_received` | Number | The number of payments sent to this account. (This only includes payments for which this account was the destination, not payments that only casinocoind through the account or consumed the account's offers.) |
+| `payments_received` | Number | The number of payments sent to this account. (This only includes payments for which this account was the destination, not payments that only stoxumd through the account or consumed the account's offers.) |
 | `payments_sent` | Number | The number of payments sent by this account. |
 | `receiving_counterparties` | Array or Number | If account lists requested, an array of addresses that received payments from this account. Otherwise, the number of different accounts that received payments from this account. |
 | `sending_counterparties` | Array or Number |  If account lists requested, an array of addresses that sent payments to this account. Otherwise, the number of different accounts that sent payments to this account. |
-| `total_value` | [String - Number][] | Sum of total value received and sent in payments, normalized to CSC (as closely as possible). |
-| `total_value_received` | [String - Number][] | Sum value of all payments to this account, normalized to CSC (as closely as possible). |
-| `total_value_sent` | [String - Number][] | Sum value of all payments from this account, normalized to CSC (as closely as possible).
+| `total_value` | [String - Number][] | Sum of total value received and sent in payments, normalized to STM (as closely as possible). |
+| `total_value_received` | [String - Number][] | Sum value of all payments to this account, normalized to STM (as closely as possible). |
+| `total_value_sent` | [String - Number][] | Sum value of all payments from this account, normalized to STM (as closely as possible).
 
 ## Payment Summary Objects
 [Payment Summary Objects]: #payment-summary-objects
@@ -5162,14 +5162,14 @@ A Payment Summary Object contains a reduced amount of information about a single
 | `tx_hash` | String - [Hash][] | The identifying hash of the transaction that caused the payment. |
 | `delivered_amount` | [String - Number][] | The amount of the destination `currency` actually received by the destination account. |
 | `currency` | String - [Currency Code][] | The currency delivered to the recipient of the transaction. |
-| `issuer` | String - [Address][] | The gateway issuing the currency, or an empty string for CSC. |
+| `issuer` | String - [Address][] | The gateway issuing the currency, or an empty string for STM. |
 | `type` | String | Either `sent` or `received`, indicating whether the perspective account is sender or receiver of this transaction. |
 
 
 ## Payment Objects
 [Payment Objects]: #payment-objects
 
-In the Data API, a Payment Object represents an event where one account sent value to another account. This mostly lines up with CSC Ledger transactions of the `Payment` [transaction type](reference-transaction-format.html), except that the Data API does not consider a transaction to be a payment if the sending `Account` and the `Destination` account are the same, or if the transaction failed.
+In the Data API, a Payment Object represents an event where one account sent value to another account. This mostly lines up with STM Ledger transactions of the `Payment` [transaction type](reference-transaction-format.html), except that the Data API does not consider a transaction to be a payment if the sending `Account` and the `Destination` account are the same, or if the transaction failed.
 
 Payment objects have the following fields:
 
@@ -5178,8 +5178,8 @@ Payment objects have the following fields:
 | `amount` | [String - Number][] | The amount of the destination `currency` that the transaction was instructed to send. In the case of Partial Payments, this is a "maximum" amount. |
 | `delivered_amount` | [String - Number][] | The amount of the destination `currency` actually received by the destination account. |
 | `destination_balance_changes` | Array | Array of [balance change objects][], indicating all changes made to the `destination` account's balances. |
-| `source_balance_changes` | Array | Array of [balance change objects][], indicating all changes to the `source` account's balances (except the CSC transaction cost). |
-| `transaction_cost` | [String - Number][] | The amount of CSC spent by the `source` account on the transaction cost. (Prior to [v2.0.4][], this parameter was called `fee`.) |
+| `source_balance_changes` | Array | Array of [balance change objects][], indicating all changes to the `source` account's balances (except the STM transaction cost). |
+| `transaction_cost` | [String - Number][] | The amount of STM spent by the `source` account on the transaction cost. (Prior to [v2.0.4][], this parameter was called `fee`.) |
 | `destination_tag` | Integer | (May be omitted) A [destination tag](tutorial-gateway-guide.html#source-and-destination-tags) specified in this payment. |
 | `source_tag` | Integer | (May be omitted) A [source tag](tutorial-gateway-guide.html#source-and-destination-tags) specified in this payment. |
 | `currency` | String - [Currency Code][] | The currency that the `destination` account received. |
@@ -5195,15 +5195,15 @@ Payment objects have the following fields:
 [balance change objects]: #balance-objects-and-balance-change-objects
 [Balance Object]: #balance-objects-and-balance-change-objects
 
-Balance objects represent an CSC Ledger account's balance in a specific currency with a specific counterparty at a single point in time. Balance change objects represent a change to such balances that occurs in transaction execution.
+Balance objects represent an STM Ledger account's balance in a specific currency with a specific counterparty at a single point in time. Balance change objects represent a change to such balances that occurs in transaction execution.
 
-A single CSC Ledger transaction may cause changes to balances with several counterparties, as well as changes to CSC.
+A single STM Ledger transaction may cause changes to balances with several counterparties, as well as changes to STM.
 
 Balance objects and Balance Change objects have the same format, with the following fields:
 
 | Field | Value | Description |
 |-------|-------|-------------|
-| `counterparty` | String - [Address][] | The counterparty, or issuer, of the `currency`. In the case of CSC, this is an empty string. |
+| `counterparty` | String - [Address][] | The counterparty, or issuer, of the `currency`. In the case of STM, this is an empty string. |
 | `currency` | String - [Currency Code][] | The currency for which this balance changed. |
 | `value` | [String - Number][] | The amount of the `currency` that the associated account gained or lost. In balance change objects, this value can be positive (for amounts gained) or negative (for amounts lost). In balance objects, this value can be positive (for amounts the counterparty owes the account) or negative (for amounts owed to the counterparty). |
 
@@ -5219,12 +5219,12 @@ Balance Change Descriptors have the following fields:
 |-------|-------|-------------|
 | `amount_change` | [String - Number][] | The difference in the amount of currency held before and after this change. _(Prior to [v2.0.6][], this field was called `change`.)_ |
 | `final_balance` | [String - Number][] | The balance after the change occurred. |
-| `node_index` | Number (or `null`)| This balance change is represented by the entry at this index of the ModifiedNodes array within the metadata section of the transaction that executed this balance change. **Note:** When the transaction cost is combined with other changes to CSC balance, the transaction cost has a `node_index` of **null** instead. |
+| `node_index` | Number (or `null`)| This balance change is represented by the entry at this index of the ModifiedNodes array within the metadata section of the transaction that executed this balance change. **Note:** When the transaction cost is combined with other changes to STM balance, the transaction cost has a `node_index` of **null** instead. |
 | `tx_index` | Number | The transaction that executed this balance change is at this index in the array of transactions for the ledger that included it. |
 | `change_type` | String | One of several [](#change-types) describing what caused this balance change to occur. |
 | `currency` | String - [Currency Code][] | The change affected this currency. |
 | `executed_time` | String - [Timestamp][] | The time the change occurred. (This is based on the close time of the ledger that included the transaction that executed the change. |
-| `counterparty` | String - [Address][] | (Omitted for CSC) The `currency` is held in a trust line to or from this account. _(Prior to [v2.0.6][], this field was called `issuer`.)_ |
+| `counterparty` | String - [Address][] | (Omitted for STM) The `currency` is held in a trust line to or from this account. _(Prior to [v2.0.6][], this field was called `issuer`.)_ |
 | `ledger_index` | Number - [Ledger Index][] | The sequence number of the ledger that included the transaction that executed this balance change. |
 | `tx_hash` | String - [Hash][] | The identifying hash of the transaction that executed this balance change. |
 
@@ -5234,7 +5234,7 @@ The following values are valid for the `change_type` field of a Balance Change D
 
 | Value | Meaning |
 |-------|---------|
-| `transaction_cost` | This balance change reflects CSC that was destroyed to relay a transaction. _(Prior to [v2.0.4][], this was `network fee` instead.)_ |
+| `transaction_cost` | This balance change reflects STM that was destroyed to relay a transaction. _(Prior to [v2.0.4][], this was `network fee` instead.)_ |
 | `payment_destination` | This balance change reflects currency that was received from a payment. |
 | `payment_source` | This balance change reflects currency that was spent in a payment. |
 | `exchange` | This balance change reflects currency that was traded for other currency, or the same currency from a different issuer. This can occur in the middle of payment execution as well as from offers. |
@@ -5249,8 +5249,8 @@ Volume objects represent the total volumes of money moved, in either payments or
 | `components` | Array of Objects | The data that was used to assemble this total. For payment volume, each object represents payments in a particular currency and issuer. For exchange volume, each object represents a market between two currencies. |
 | `count` | Number | The total number of exchanges in this period. |
 | `endTime` | String - [Timestamp][] | The end time of this interval. |
-| `exchange` | Object | Indicates the display currency used, as with fields `currency` and (except for CSC) `issuer`. All amounts are normalized by first converting to CSC, and then to the display currency specified in the request. |
-| `exchangeRate` | Number | The exchange rate to the displayed currency from CSC.
+| `exchange` | Object | Indicates the display currency used, as with fields `currency` and (except for STM) `issuer`. All amounts are normalized by first converting to STM, and then to the display currency specified in the request. |
+| `exchangeRate` | Number | The exchange rate to the displayed currency from STM.
 | `startTime` | String - [Timestamp][] | The start of this period. |
 | `total` | Number | Total volume of all recorded exchanges in the period. |
 
@@ -5259,17 +5259,17 @@ Volume objects represent the total volumes of money moved, in either payments or
 [Server Object]: #server-objects
 [Server Objects]: #server-objects
 
-A "Server Object" describes one `casinocoind` server in the CSC Ledger peer-to-peer network. Server objects are returned by the [Get Topology](#get-topology), [Get Toplogy Nodes](#get-topology-nodes), and [Get Topology Node](#get-topology-node) methods. The Data API collects reported network topology approximately every 30 seconds using the [peer crawler](reference-casinocoind.html#peer-crawler).
+A "Server Object" describes one `stoxumd` server in the STM Ledger peer-to-peer network. Server objects are returned by the [Get Topology](#get-topology), [Get Toplogy Nodes](#get-topology-nodes), and [Get Topology Node](#get-topology-node) methods. The Data API collects reported network topology approximately every 30 seconds using the [peer crawler](reference-stoxumd.html#peer-crawler).
 
 Server objects have the following fields, with some only appearing if the request specified a verbose response:
 
 | Field  | Value | Description |
 |--------|-------|-------------|
 | `node_public_key` | String - Base-58 [Public Key][] | The public key used by this server to sign its peer-to-peer communications, not including validations. |
-| `version` | String | The `casinocoind` version of this server, when it was last asked. |
+| `version` | String | The `stoxumd` version of this server, when it was last asked. |
 | `uptime` | Integer | Number of seconds this server has been connected to the network. |
 | `ip` | String | (May be omitted) IP address of the node (may be omitted) |
-| `port` | Integer | (May be omitted) Port where this server speaks the [`casinocoind` Peer Protocol](reference-casinocoind.html#peer-protocol). |
+| `port` | Integer | (May be omitted) Port where this server speaks the [`stoxumd` Peer Protocol](reference-stoxumd.html#peer-protocol). |
 | `inbound_count` | Integer | (May be omitted) Number of inbound peer-to-peer connections to this server. |
 | `inbound_added` | String | (May be omitted) Number of new inbound peer-to-peer connections since the last measurement.  |
 | `inbound_dropped` | String | (May be omitted) Number of inbound peer-to-peer connections dropped since the last measurement. |
@@ -5293,12 +5293,12 @@ Server objects have the following fields, with some only appearing if the reques
 [Link Object]: #link-objects
 [Link Objects]: #link-objects
 
-A Link Object represents a peer-to-peer network connection between two `casinocoind` servers. It has the following fields:
+A Link Object represents a peer-to-peer network connection between two `stoxumd` servers. It has the following fields:
 
 | Field  | Value | Description |
 |--------|-------|-------------|
-| `source` | String - Base-58 [Public Key][] | The node public key of the `casinocoind` making the outgoing connection. |
-| `target` | String - Base-58 [Public Key][] | The node public key of the `casinocoind` receiving the incoming connection. |
+| `source` | String - Base-58 [Public Key][] | The node public key of the `stoxumd` making the outgoing connection. |
+| `target` | String - Base-58 [Public Key][] | The node public key of the `stoxumd` receiving the incoming connection. |
 
 
 ## Validation Objects
@@ -5313,9 +5313,9 @@ A Validation Object has the following fields:
 
 | Field  | Value  | Description |
 |--------|--------|-------------|
-| `count`  | Integer | (May be omitted) The number of `casinocoind` servers that reported seeing this validation. Not available for old data. |
+| `count`  | Integer | (May be omitted) The number of `stoxumd` servers that reported seeing this validation. Not available for old data. |
 | `ledger_hash` | String - [Hash][]  | The hash of the ledger version this validation vote applies to. |
-| `reporter_public_key` | String - Base-58 [Public Key][] | The public key of the `casinocoind` server that first reported this validation, in base-58. |
+| `reporter_public_key` | String - Base-58 [Public Key][] | The public key of the `stoxumd` server that first reported this validation, in base-58. |
 | `validation_public_key` | String - Base-58 [Public Key][] | The public key of the validator used to sign this validation, in base-58. |
 | `signature` | String | The validator's signature of the validation details, in hexadecimal. |
 | `first_datetime` | String - [Timestamp][] | Date and time of the first report of this validation. |
@@ -5325,7 +5325,7 @@ A Validation Object has the following fields:
 
 # Running the Historical Database
 
-You can also serve the Data API v2 from your own instance of the Historical Database software, and populate it with transactions from your own `casinocoind` instance. This is useful if you do not want to depend on CasinoCoin to run the historical database indefinitely, or you want access to historical transactions from within your own intranet.
+You can also serve the Data API v2 from your own instance of the Historical Database software, and populate it with transactions from your own `stoxumd` instance. This is useful if you do not want to depend on Stoxum to run the historical database indefinitely, or you want access to historical transactions from within your own intranet.
 
 ## Installation
 
@@ -5347,13 +5347,13 @@ To install the Data API v2:
 1. Install HBase. For production use, configure it in distributed mode.
 2. Clone the Historical Database Git Repository:
 
-        git clone https://github.com/ripple/casinocoind-historical-database.git
+        git clone https://github.com/ripple/stoxumd-historical-database.git
 
     (You can also download and extract a zipped release instead.)
 
 3. Use npm to install additional modules:
 
-        cd casinocoind-historical-database
+        cd stoxumd-historical-database
         npm install
 
     The install script creates the required config files: `config/api.config.json` and `config/import.config.json`
@@ -5378,11 +5378,11 @@ $ docker-compose run --rm webapp npm test
 
 ### Services
 
-The `casinocoind` Historical Database consists of several processes that can be run separately.
+The `stoxumd` Historical Database consists of several processes that can be run separately.
 
-* [Live Ledger Importer](#live-ledger-importer) - Monitors `casinocoind` for newly-validated ledgers.
+* [Live Ledger Importer](#live-ledger-importer) - Monitors `stoxumd` for newly-validated ledgers.
     Command: `node import/live`
-* [Backfiller](#backfiller) - Populates the database with older ledgers from a `casinocoind` instance.
+* [Backfiller](#backfiller) - Populates the database with older ledgers from a `stoxumd` instance.
     Command: `node import/postgres/backfill`
 * API Server - Provides [REST API access](#api-method-reference) to the data.
     Command:  `npm start` (restarts the server automatically when source files change),
@@ -5390,9 +5390,9 @@ The `casinocoind` Historical Database consists of several processes that can be 
 
 ## Importing Data
 
-In order to retrieve data from the `casinocoind` Historical Database, you must first populate it with data. Broadly speaking, there are two ways this can happen:
+In order to retrieve data from the `stoxumd` Historical Database, you must first populate it with data. Broadly speaking, there are two ways this can happen:
 
-* Connect to a `casinocoind` server that has the historical ledgers, and retrieve them. (Later, you can reconfigure the `casinocoind` server not to keep history older than what you have in your Historical Database.)
+* Connect to a `stoxumd` server that has the historical ledgers, and retrieve them. (Later, you can reconfigure the `stoxumd` server not to keep history older than what you have in your Historical Database.)
     * You can choose to retrieve only new ledgers as they are validated, or you can retrieve old ledgers, too.
 * Or, you can load a dump from a database that already has the historical ledger data. (At this time, there are no publicly-available database dumps of historical data.) Use the standard process for your database.
 
@@ -5400,7 +5400,7 @@ In all cases, keep in mind that the integrity of the data is only as good as the
 
 ### Live Ledger Importer
 
-The Live Ledger Importer is a service that connects to a `casinocoind` server using the WebSocket API, and listens for ledger close events. Each time a new ledger is closed, the Importer requests the latest validated ledger. Although this process has some fault tolerance built in to prevent ledgers from being skipped, the Importer may still miss ledgers.
+The Live Ledger Importer is a service that connects to a `stoxumd` server using the WebSocket API, and listens for ledger close events. Each time a new ledger is closed, the Importer requests the latest validated ledger. Although this process has some fault tolerance built in to prevent ledgers from being skipped, the Importer may still miss ledgers.
 
 The Live Ledger Importer includes a secondary process that runs periodically to validate the data already imported and check for gaps in the ledger history.
 
@@ -5415,13 +5415,13 @@ $ node import/live
 
 ### Backfiller
 
-The Backfiller retrieves old ledgers from a `casinocoind` instance by moving backwards in time. You can optionally provide start and stop indexes to retrieve a specific range of ledgers, by their sequence number.
+The Backfiller retrieves old ledgers from a `stoxumd` instance by moving backwards in time. You can optionally provide start and stop indexes to retrieve a specific range of ledgers, by their sequence number.
 
 The `--startIndex` parameter defines the most-recent ledger to retrieve. The Backfiller retrieves this ledger first and then continues retrieving progressively older ledgers. If this parameter is omitted, the Backfiller begins with the newest validated ledger.
 
 The `--stopIndex` parameter defines the oldest ledger to retrieve. The Backfiller stops after it retrieves this ledger. If omitted, the Backfiller continues as far back as possible. Because backfilling goes from most recent to least recent, the stop index should be a smaller than the start index.
 
-**Caution:** The Backfiller is best for filling in relatively short histories of transactions. Importing a complete history of all CSC Ledger transactions using the Backfiller could take weeks. If you want a full history, we recommend acquiring a database dump with early transctions, and importing it directly. For the public server, CasinoCoin (the company) used the internal SQLite database from an offline `casinocoind` to populate its historical databases with the early transactions, then used the Backfiller to catch up to date after the import finished.
+**Caution:** The Backfiller is best for filling in relatively short histories of transactions. Importing a complete history of all STM Ledger transactions using the Backfiller could take weeks. If you want a full history, we recommend acquiring a database dump with early transctions, and importing it directly. For the public server, Stoxum (the company) used the internal SQLite database from an offline `stoxumd` to populate its historical databases with the early transactions, then used the Backfiller to catch up to date after the import finished.
 
 Example usage:
 

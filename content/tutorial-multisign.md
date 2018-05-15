@@ -1,6 +1,6 @@
 # How to Multi-Sign
 
-Multi-signing is one of three ways to authorize transactions for the CSC Ledger, alongside signing with [regular keys](reference-transaction-format.html#setregularkey) and master keys. You can configure your address to allow any combination of the three methods to authorize transactions.
+Multi-signing is one of three ways to authorize transactions for the STM Ledger, alongside signing with [regular keys](reference-transaction-format.html#setregularkey) and master keys. You can configure your address to allow any combination of the three methods to authorize transactions.
 
 Benefits of multi-signing include:
 
@@ -11,18 +11,18 @@ Benefits of multi-signing include:
 
 To use multi-signing:
 
-1. [The CSC Ledger peer-to-peer network must have multi-signing enabled.](#availability-of-multi-signing)
+1. [The STM Ledger peer-to-peer network must have multi-signing enabled.](#availability-of-multi-signing)
 2. [Set up a list of signers on your account.](#setting-up-multi-signing)
 3. [Send transactions using multiple signatures.](#sending-a-multi-signed-transaction)
 
 
 ## Availability of Multi-Signing
 
-Multi-signing has been enabled by an [**Amendment**](concept-amendments.html) to the CSC Ledger Consensus Protocol since 2016-06-27.
+Multi-signing has been enabled by an [**Amendment**](concept-amendments.html) to the STM Ledger Consensus Protocol since 2016-06-27.
 
-If you want to use multi-signing with `casinocoind` with a fresh ledger in [stand-alone mode](concept-stand-alone-mode.html), you must force the MultiSign feature to be enabled. You can check the status of the MultiSign amendment using the [`feature` command](reference-casinocoind.html#feature).
+If you want to use multi-signing with `stoxumd` with a fresh ledger in [stand-alone mode](concept-stand-alone-mode.html), you must force the MultiSign feature to be enabled. You can check the status of the MultiSign amendment using the [`feature` command](reference-stoxumd.html#feature).
 
-To force the multi-signing feature to be enabled, add the following stanza to your `casinocoind.cfg`: <!--{# TODO: Link to casinocoind.cfg docs when those exist. #}-->
+To force the multi-signing feature to be enabled, add the following stanza to your `stoxumd.cfg`: <!--{# TODO: Link to stoxumd.cfg docs when those exist. #}-->
 
     [features]
     MultiSign
@@ -30,26 +30,26 @@ To force the multi-signing feature to be enabled, add the following stanza to yo
 
 ## Setting up Multi-Signing
 
-To multi-sign transactions from a particular address, you must create a list of addresses that can contribute to a multi-signature for your address. This list is stored in the CSC Ledger as a [SignerList node](reference-ledger-format.html#signerlist). The following procedure demonstrates how to set up a SignerList for your address:
+To multi-sign transactions from a particular address, you must create a list of addresses that can contribute to a multi-signature for your address. This list is stored in the STM Ledger as a [SignerList node](reference-ledger-format.html#signerlist). The following procedure demonstrates how to set up a SignerList for your address:
 
 
 ### 1. Prepare a funded address
 
-You need an CSC Ledger address that can send transactions, and has enough CSC available. Multi-signing requires more than the usual amount of CSC for the [account reserve](concept-reserves.html) and [transaction cost](concept-transaction-cost.html), increasing with the number of signers and signatures you use.
+You need an STM Ledger address that can send transactions, and has enough STM available. Multi-signing requires more than the usual amount of STM for the [account reserve](concept-reserves.html) and [transaction cost](concept-transaction-cost.html), increasing with the number of signers and signatures you use.
 
-If you started `casinocoind` in [stand-alone mode](concept-stand-alone-mode.html) with a new genesis ledger, you must:
+If you started `stoxumd` in [stand-alone mode](concept-stand-alone-mode.html) with a new genesis ledger, you must:
 
 1. Generate keys for a new address, or reuse keys you already have.
-2. Submit a Payment transaction to fund the new address from the genesis account. (Send at least 100,000,000 [drops of CSC](reference-casinocoind.html#specifying-currency-amounts).)
+2. Submit a Payment transaction to fund the new address from the genesis account. (Send at least 100,000,000 [drops of STM](reference-stoxumd.html#specifying-currency-amounts).)
 3. Manually close the ledger.
 
 
 ### 2. Prepare member keys
 
-You need several sets of CSC Ledger keys (address and secret) to include as members of your SignerList. These can be funded addresses that exist in the ledger, or you can generate new addresses using the [`wallet_propose` command](reference-casinocoind.html#wallet-propose). For example:
+You need several sets of STM Ledger keys (address and secret) to include as members of your SignerList. These can be funded addresses that exist in the ledger, or you can generate new addresses using the [`wallet_propose` command](reference-stoxumd.html#wallet-propose). For example:
 
-    $ casinocoind wallet_propose
-    Loading: "/home/mduo13/.config/casinocoin/casinocoind.cfg"
+    $ stoxumd wallet_propose
+    Loading: "/home/mduo13/.config/stoxum/stoxumd.cfg"
     Connecting to 127.0.0.1:5005
     {
         "result" : {
@@ -64,18 +64,18 @@ You need several sets of CSC Ledger keys (address and secret) to include as memb
         }
     }
 
-Take note of the `account_id` (CSC Ledger Address) and `master_seed` (secret key) for each one you generate.
+Take note of the `account_id` (STM Ledger Address) and `master_seed` (secret key) for each one you generate.
 
 
 ### 3. Send SignerListSet transaction
 
-[Sign and submit](reference-transaction-format.html#signing-and-submitting-transactions) a [SignerListSet transaction](reference-transaction-format.html#signerlistset) in the normal (single-signature) way. This associates a SignerList with your CSC Ledger address, so that a combination of signatures from the members of that SignerList can multi-sign later transactions on your behalf.
+[Sign and submit](reference-transaction-format.html#signing-and-submitting-transactions) a [SignerListSet transaction](reference-transaction-format.html#signerlistset) in the normal (single-signature) way. This associates a SignerList with your STM Ledger address, so that a combination of signatures from the members of that SignerList can multi-sign later transactions on your behalf.
 
 In this example, the SignerList has 3 members, with the weights and quorum set up such that multi-signed transactions need a signature from csA2LpzuawewSBQXkiju3YQTMzW13pAAdW plus at least one signature from the other two members of the list.
 
 {% include 'snippets/secret-key-warning.md' %}
 
-    $ casinocoind submit shqZZy2Rzs9ZqWTCQAdqc3bKgxnYq '{
+    $ stoxumd submit shqZZy2Rzs9ZqWTCQAdqc3bKgxnYq '{
     >     "Flags": 0,
     >     "TransactionType": "SignerListSet",
     >     "Account": "cnBFvgZphmN39GWzUJeUitaP22Fr9be75H",
@@ -102,7 +102,7 @@ In this example, the SignerList has 3 members, with the weights and quorum set u
     >         }
     >     ]
     > }'
-    Loading: "/home/mduo13/.config/casinocoin/casinocoind.cfg"
+    Loading: "/home/mduo13/.config/stoxum/stoxumd.cfg"
     Connecting to 127.0.0.1:5005
     {
        "result" : {
@@ -147,17 +147,17 @@ In this example, the SignerList has 3 members, with the weights and quorum set u
 
 Make sure that the [Transaction Result](reference-transaction-format.html#transaction-results) is [**tesSUCCESS**](reference-transaction-format.html#tes-success). Otherwise, the transaction failed. If you have a problem in stand-alone mode or a non-production network, check that [multi-sign is enabled](#availability-of-multi-signing).
 
-**Note:** The more members in the SignerList, the more CSC your address must have for purposes of the [owner reserve](concept-reserves.html#owner-reserves). If your address does not have enough CSC, the transaction fails with [tecINSUFFICIENT_RESERVE](reference-transaction-format.html#tec-codes). See also: [SignerLists and Reserves](reference-ledger-format.html#signerlists-and-reserves).
+**Note:** The more members in the SignerList, the more STM your address must have for purposes of the [owner reserve](concept-reserves.html#owner-reserves). If your address does not have enough STM, the transaction fails with [tecINSUFFICIENT_RESERVE](reference-transaction-format.html#tec-codes). See also: [SignerLists and Reserves](reference-ledger-format.html#signerlists-and-reserves).
 
 
 ### 4. Close the ledger
 
 On the live network, you can wait 4-7 seconds for the ledger to close automatically.
 
-If you're running `casinocoind` in stand-alone mode, use the [`ledger_accept` command](reference-casinocoind.html#ledger-accept) to manually close the ledger:
+If you're running `stoxumd` in stand-alone mode, use the [`ledger_accept` command](reference-stoxumd.html#ledger-accept) to manually close the ledger:
 
-    $ casinocoind ledger_accept
-    Loading: "/home/mduo13/.config/casinocoin/casinocoind.cfg"
+    $ stoxumd ledger_accept
+    Loading: "/home/mduo13/.config/stoxum/stoxumnd.cfg"
     Connecting to 127.0.0.1:5005
     {
        "result" : {
@@ -169,12 +169,12 @@ If you're running `casinocoind` in stand-alone mode, use the [`ledger_accept` co
 
 ### 5. Confirm the new signer list
 
-Use the [`account_objects` command](reference-casinocoind.html#account-objects) to confirm that the SignerList is associated with the address in the latest validated ledger.
+Use the [`account_objects` command](reference-stoxumd.html#account-objects) to confirm that the SignerList is associated with the address in the latest validated ledger.
 
 Normally, an account can own many objects of different types (such as trust lines and offers). If you funded a new address for this tutorial, the SignerList is the only object in the response.
 
-    $ casinocoind account_objects cEuLyBCvcw4CFmzv8RepSiAoNgF8tTGJQC validated
-    Loading: "/home/mduo13/.config/casinocoin/casinocoind.cfg"
+    $ stoxumd account_objects cEuLyBCvcw4CFmzv8RepSiAoNgF8tTGJQC validated
+    Loading: "/home/mduo13/.config/stoxum/stoxumd.cfg"
     Connecting to 127.0.0.1:5005
     {
        "result" : {
@@ -259,11 +259,11 @@ Here's an example transaction ready to be multi-signed:
 
 ### 2. Get one signature
 
-Use the [`sign_for` command](reference-casinocoind.html#sign-for) with the secret key and address of one of the members of your SignerList to get a signature for that member.
+Use the [`sign_for` command](reference-stoxumd.html#sign-for) with the secret key and address of one of the members of your SignerList to get a signature for that member.
 
 {% include 'snippets/secret-key-warning.md' %}
 
-    $ casinocoind sign_for csA2LpzuawewSBQXkiju3YQTMzW13pAAdW <rsA2L..'s secret> '{
+    $ stoxumd sign_for csA2LpzuawewSBQXkiju3YQTMzW13pAAdW <rsA2L..'s secret> '{
     >     "TransactionType": "TrustSet",
     >     "Account": "cEuLyBCvcw4CFmzv8RepSiAoNgF8tTGJQC",
     >     "Flags": 262144,
@@ -276,7 +276,7 @@ Use the [`sign_for` command](reference-casinocoind.html#sign-for) with the secre
     >     "SigningPubKey": "",
     >     "Fee": "30000"
     > }'
-    Loading: "/home/mduo13/.config/casinocoin/casinocoind.cfg"
+    Loading: "/home/mduo13/.config/stoxum/stoxumd.cfg"
     Connecting to 127.0.0.1:5005
     {
        "result" : {
@@ -321,7 +321,7 @@ You can collect additional signatures in parallel or in serial:
 
 {% include 'snippets/secret-key-warning.md' %}
 
-    $ casinocoind sign_for cUpy3eEg8rqjqfUoLeBnZkscbKbFsKXC3v <rUpy..'s secret> '{
+    $ stoxumd sign_for cUpy3eEg8rqjqfUoLeBnZkscbKbFsKXC3v <rUpy..'s secret> '{
     >    "Account" : "cEuLyBCvcw4CFmzv8RepSiAoNgF8tTGJQC",
     >    "Fee" : "30000",
     >    "Flags" : 262144,
@@ -344,7 +344,7 @@ You can collect additional signatures in parallel or in serial:
     >    "TransactionType" : "TrustSet",
     >    "hash" : "A94A6417D1A7AAB059822B894E13D322ED3712F7212CE9257801F96DE6C3F6AE"
     > }'
-    Loading: "/home/mduo13/.config/casinocoin/casinocoind.cfg"
+    Loading: "/home/mduo13/.config/stoxum/stoxumd.cfg"
     Connecting to 127.0.0.1:5005
     {
        "result" : {
@@ -388,11 +388,11 @@ Depending on the SignerList you configured, you may need to repeat this step sev
 
 ### 4. Combine signatures and submit
 
-If you collected the signatures in serial, the `tx_json` from the last `sign_for` response has all the signatures assembled, so you can use that as the argument to the [`submit_multisigned` command](reference-casinocoind.html#submit-multisigned).
+If you collected the signatures in serial, the `tx_json` from the last `sign_for` response has all the signatures assembled, so you can use that as the argument to the [`submit_multisigned` command](reference-stoxumd.html#submit-multisigned).
 
-If you collected the signatures in parallel, you must manually construct a `tx_json` object with all the signatures included. Take the `Signers` arrays from all the `sign_for` responses, and combine their contents into a single `Signers` array that has each signature. Add the combined `Signers` array to the original transaction JSON value, and use that as the argument to the [`submit_multisigned` command](reference-casinocoind.html#submit-multisigned).
+If you collected the signatures in parallel, you must manually construct a `tx_json` object with all the signatures included. Take the `Signers` arrays from all the `sign_for` responses, and combine their contents into a single `Signers` array that has each signature. Add the combined `Signers` array to the original transaction JSON value, and use that as the argument to the [`submit_multisigned` command](reference-stoxumd.html#submit-multisigned).
 
-    $ casinocoind submit_multisigned '{
+    $ stoxumd submit_multisigned '{
     >              "Account" : "cEuLyBCvcw4CFmzv8RepSiAoNgF8tTGJQC",
     >              "Fee" : "30000",
     >              "Flags" : 262144,
@@ -422,7 +422,7 @@ If you collected the signatures in parallel, you must manually construct a `tx_j
     >              "TransactionType" : "TrustSet",
     >              "hash" : "BD636194C48FD7A100DE4C972336534C8E710FD008C0F3CF7BC5BF34DAF3C3E6"
     >           }'
-    Loading: "/home/mduo13/.config/casinocoin/casinocoind.cfg"
+    Loading: "/home/mduo13/.config/stoxu/stoxumd.cfg"
     Connecting to 127.0.0.1:5005
     {
     	"result": {
@@ -469,10 +469,10 @@ Take note of the `hash` value from the response so you can check the results of 
 
 If you are using the live network, you can wait 4-7 seconds for the ledger to close automatically.
 
-If you're running `casinocoind` in stand-alone mode, use the [`ledger_accept` command](reference-casinocoind.html#ledger-accept) to manually close the ledger:
+If you're running `stoxumd` in stand-alone mode, use the [`ledger_accept` command](reference-stoxumd.html#ledger-accept) to manually close the ledger:
 
-    $ casinocoind ledger_accept
-    Loading: "/home/mduo13/.config/casinocoin/casinocoind.cfg"
+    $ stoxumd ledger_accept
+    Loading: "/home/mduo13/.config/stoxum/stoxumd.cfg"
     Connecting to 127.0.0.1:5005
     {
        "result" : {
@@ -484,14 +484,14 @@ If you're running `casinocoind` in stand-alone mode, use the [`ledger_accept` co
 
 ### 6. Confirm transaction results
 
-Use the hash value from the response to the `submit_multisigned` command to look up the transaction using the [`tx` command](reference-casinocoind.html#tx). In particular, check that the `TransactionResult` is the string `tesSUCCESS`.
+Use the hash value from the response to the `submit_multisigned` command to look up the transaction using the [`tx` command](reference-stoxumd.html#tx). In particular, check that the `TransactionResult` is the string `tesSUCCESS`.
 
 On the live network, you must also confirm that the `validated` field is set to the boolean `true`. If the field is not `true`, you might need to wait longer for the consensus process to finish; or your transaction may be unable to be included in a ledger for some reason.
 
 In stand-alone mode, the server automatically considers a ledger to be `validated` if it has been manually closed.
 
-    $ casinocoind tx BD636194C48FD7A100DE4C972336534C8E710FD008C0F3CF7BC5BF34DAF3C3E6
-    Loading: "/home/mduo13/.config/casinocoin/casinocoind.cfg"
+    $ stoxumd tx BD636194C48FD7A100DE4C972336534C8E710FD008C0F3CF7BC5BF34DAF3C3E6
+    Loading: "/home/mduo13/.config/stoxum/stoxumd.cfg"
     Connecting to 127.0.0.1:5005
     {
     	"result": {
@@ -533,7 +533,7 @@ In stand-alone mode, the server automatically considers a ledger to be `validate
     				}
     			}, {
     				"CreatedNode": {
-    					"LedgerEntryType": "CasinocoinState",
+    					"LedgerEntryType": "StoxumState",
     					"LedgerIndex": "93E317B32022977C77810A2C558FBB28E30E744C68E73720622B797F957EC5FA",
     					"NewFields": {
     						"Balance": {

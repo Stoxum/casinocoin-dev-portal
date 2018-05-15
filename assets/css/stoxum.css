@@ -3552,7 +3552,8 @@ fieldset[disabled] .home .navbar-default .btn-link:focus {
   z-index: 99999;
   border-bottom: 1px solid #346aa9;
   background-image: url(../img/bg-min.png);
-  background-size: 45%;
+  background-size: 40%;
+  background-position: center;
   background-color: #fff;
 }
 .navbar-default .navbar-brand {

@@ -1,9 +1,9 @@
-# CSC Ledger Accounts
+# STM Ledger Accounts
 
-An "Account" in the CSC Ledger represents a holder of CSC and a sender of [transactions](reference-transaction-format.html). The core elements of an account are:
+An "Account" in the STM Ledger represents a holder of STM and a sender of [transactions](reference-transaction-format.html). The core elements of an account are:
 
 - An identifying **address**, such as `cDarPNJEpCnpBZSfmcquydockkePkjPGA2`
-- An **CSC balance**. Some of this CSC is set aside for the [Reserve](concept-reserves.html).
+- An **STM balance**. Some of this STM is set aside for the [Reserve](concept-reserves.html).
 - A **sequence number**, starting at 1 and increasing with each transaction sent from this account. No transaction can be included in a ledger unless the transaction's sequence number matches its sender's next sequence number.
 - A **history of transactions** that affected this account and its balances.
 - One or more ways to [authorize transactions](reference-transaction-format.html#authorizing-transactions), possibly including:
@@ -13,48 +13,48 @@ An "Account" in the CSC Ledger represents a holder of CSC and a sender of [trans
 
 In the ledger's data tree, an account's core data is stored in the [AccountRoot](reference-ledger-format.html#accountroot) ledger object type. An account can also be the owner (or partial owner) of several other types of data.
 
-**Tip:** An "Account" in the CSC Ledger is somewhere between the financial usage (like "bank account") and the computing usage (like "UNIX account"). Non-CSC currencies and assets aren't stored in an CSC Ledger Account itself; each such asset is stored in an accounting relationship called a "Trust Line" that connects two parties.
+**Tip:** An "Account" in the STM Ledger is somewhere between the financial usage (like "bank account") and the computing usage (like "UNIX account"). Non-STM currencies and assets aren't stored in an STM Ledger Account itself; each such asset is stored in an accounting relationship called a "Trust Line" that connects two parties.
 
 ## Addresses
 
 {% include 'data_types/address.md' %}
 
-Any valid address can become an account in the CSC Ledger by receiving a [Payment][] of CSC, as long as the amount of CSC delivered is greater than or equal to the [account reserve](concept-reserves.html). This is called _funding_ the account. You can also use an address that has not been funded to represent a [regular key](reference-transaction-format.html#setregularkey) or a member of a [signer list](reference-transaction-format.html#multi-signing). Only a funded account can be the sender of a transaction.
+Any valid address can become an account in the STM Ledger by receiving a [Payment][] of STM, as long as the amount of STM delivered is greater than or equal to the [account reserve](concept-reserves.html). This is called _funding_ the account. You can also use an address that has not been funded to represent a [regular key](reference-transaction-format.html#setregularkey) or a member of a [signer list](reference-transaction-format.html#multi-signing). Only a funded account can be the sender of a transaction.
 
-Creating a valid address is a strictly mathematical task starting with a key pair. You can generate a key pair and calculate its address entirely offline without communicating to the CSC Ledger or any other party. The conversion from a public key to an address involves a one-way hash function, so it is possible to confirm that a public key matches an address but it is impossible to derive the public key from the address alone. (This is part of the reason why signed transactions include the public key _and_ the address of the sender.)
+Creating a valid address is a strictly mathematical task starting with a key pair. You can generate a key pair and calculate its address entirely offline without communicating to the STM Ledger or any other party. The conversion from a public key to an address involves a one-way hash function, so it is possible to confirm that a public key matches an address but it is impossible to derive the public key from the address alone. (This is part of the reason why signed transactions include the public key _and_ the address of the sender.)
 
-For more technical details of how to calculate an CSC Ledger address, see [Address Encoding](#address-encoding).
+For more technical details of how to calculate an STM Ledger address, see [Address Encoding](#address-encoding).
 
 ### Special Addresses
 
-Some addresses have special meaning, or historical uses, in the CSC Ledger. In many cases, these are "black hole" addresses, meaning the address is not derived from a known secret key. Since it is effectively impossible to guess a secret key from only an address, any CSC possessed by black hole addresses is lost forever.
+Some addresses have special meaning, or historical uses, in the STM Ledger. In many cases, these are "black hole" addresses, meaning the address is not derived from a known secret key. Since it is effectively impossible to guess a secret key from only an address, any STM possessed by black hole addresses is lost forever.
 
 | Address                     | Name | Meaning | Black Hole? |
 |-----------------------------|------|---------|-------------|
-| rrrrrrrrrrrrrrrrrrrrrhoLvTp | ACCOUNT\_ZERO | An address that is the base58 encoding of the value `0`. In peer-to-peer communications, `casinocoind` uses this address as the issuer for CSC. | Yes |
-| rrrrrrrrrrrrrrrrrrrrBZbvji  | ACCOUNT\_ONE | An address that is the base58 encoding of the value `1`. In the ledger, [CasinocoinState entries](reference-ledger-format.html#casinocoinstate) use this address as a placeholder for the issuer of a trust line balance. | Yes |
-| cDarPNJEpCnpBZSfmcquydockkePkjPGA2 | The genesis account | When `casinocoind` starts a new genesis ledger from scratch (for example, in stand-alone mode), this account holds all the CSC. This address is generated from the seed value "masterpassphrase" which is [hard-coded](https://github.com/casinocoin/casinocoind/blob/4.0.1/src/casinocoin/app/ledger/Ledger.cpp#L184). | No |
-| rrrrrrrrrrrrrrrrrNAMEtxvNvQ | CasinoCoin Name reservation black-hole | In the past, CasinoCoin asked users to send CSC to this account to reserve CasinoCoin Names.| Yes |
-| rrrrrrrrrrrrrrrrrrrn5RM1rHd | NaN Address | Previous versions of [casinocoin-libjs](https://github.com/casinocoin/casinocoin-libjs) generated this address when base58 encoding the value [NaN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NaN). | Yes |
+| rrrrrrrrrrrrrrrrrrrrrhoLvTp | ACCOUNT\_ZERO | An address that is the base58 encoding of the value `0`. In peer-to-peer communications, `stoxumd` uses this address as the issuer for STM. | Yes |
+| rrrrrrrrrrrrrrrrrrrrBZbvji  | ACCOUNT\_ONE | An address that is the base58 encoding of the value `1`. In the ledger, [StoxumState entries](reference-ledger-format.html#stoxumstate) use this address as a placeholder for the issuer of a trust line balance. | Yes |
+| cDarPNJEpCnpBZSfmcquydockkePkjPGA2 | The genesis account | When `stoxumd` starts a new genesis ledger from scratch (for example, in stand-alone mode), this account holds all the STM. This address is generated from the seed value "masterpassphrase" which is [hard-coded](https://github.com/stoxum/stoxumd/src/stoxum/app/ledger/Ledger.cpp#L184). | No |
+| rrrrrrrrrrrrrrrrrNAMEtxvNvQ | Stoxum Name reservation black-hole | In the past, Stoxum asked users to send STM to this account to reserve Stoxum Names.| Yes |
+| rrrrrrrrrrrrrrrrrrrn5RM1rHd | NaN Address | Previous versions of [stoxum-libjs](https://github.com/stoxum/stoxum-libjs) generated this address when base58 encoding the value [NaN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NaN). | Yes |
 
 
 ## Permanence of Accounts
 
-Once created, an account exists in the CSC Ledger's data tree forever. This is because the current sequence number for a transaction must be tracked forever, so that old transactions cannot be processed a second time.
+Once created, an account exists in the STM Ledger's data tree forever. This is because the current sequence number for a transaction must be tracked forever, so that old transactions cannot be processed a second time.
 
-Unlike Bitcoin and many other crypto-currencies, each new version of the CSC Ledger's public ledger chain contains the full state of the ledger, which increases in size with each new account. For that reason, CasinoCoin discourages creating new accounts unless entirely necessary. Institutions who send and receive value on behalf of many users can use [**Source Tags** and **Destination Tags**](tutorial-gateway-guide.html#source-and-destination-tags) to distinguish payments from and to their customers while only using one (or a handful) of accounts in the CSC Ledger.
+Unlike Bitcoin and many other crypto-currencies, each new version of the STM Ledger's public ledger chain contains the full state of the ledger, which increases in size with each new account. For that reason, Stoxum discourages creating new accounts unless entirely necessary. Institutions who send and receive value on behalf of many users can use [**Source Tags** and **Destination Tags**](tutorial-gateway-guide.html#source-and-destination-tags) to distinguish payments from and to their customers while only using one (or a handful) of accounts in the STM Ledger.
 
 
 ## Transaction History
 
-In the CSC Ledger, transaction history is tracked by a "thread" of transactions linked by a transaction's identifying hash and the ledger index. The `AccountRoot` ledger object has the identifying hash and ledger of the transaction that most recently modified it; the metadata of that transaction includes the previous state of the `AccountRoot` node, so it is possible to iterate through the history of a single account this way. This transaction history includes any transactions that modify the `AccountRoot` node directly, including:
+In the STM Ledger, transaction history is tracked by a "thread" of transactions linked by a transaction's identifying hash and the ledger index. The `AccountRoot` ledger object has the identifying hash and ledger of the transaction that most recently modified it; the metadata of that transaction includes the previous state of the `AccountRoot` node, so it is possible to iterate through the history of a single account this way. This transaction history includes any transactions that modify the `AccountRoot` node directly, including:
 
-- Transactions sent by the account, because they modify the account's `Sequence` number. These transactions also modify the account's CSC balance because of the [transaction cost](concept-transaction-cost.html).
-- Transactions that modified the account's CSC balance, including incoming [Payment transactions][] and other types of transactions such as [PaymentChannelClaim][] and [EscrowFinish][].
+- Transactions sent by the account, because they modify the account's `Sequence` number. These transactions also modify the account's STM balance because of the [transaction cost](concept-transaction-cost.html).
+- Transactions that modified the account's STM balance, including incoming [Payment transactions][] and other types of transactions such as [PaymentChannelClaim][] and [EscrowFinish][].
 
-The _conceptual_ transaction history of an account also includes transactions that modified the account's owned objects and non-CSC balances. These objects are separate ledger objects, each with their own thread of transactions that affected them. If you have an account's full ledger history, you can follow it forward to find the ledger objects created or modified by it. A "complete" transaction history includes the history of objects owned by a transaction, such as:
+The _conceptual_ transaction history of an account also includes transactions that modified the account's owned objects and non-STM balances. These objects are separate ledger objects, each with their own thread of transactions that affected them. If you have an account's full ledger history, you can follow it forward to find the ledger objects created or modified by it. A "complete" transaction history includes the history of objects owned by a transaction, such as:
 
-- `CasinocoinState` objects (Trust Lines) connected to the account.
+- `StoxumState` objects (Trust Lines) connected to the account.
 - `DirectoryNode` objects, especially the owner directory tracking the account's owned objects.
 - `Offer` objects, representing the account's outstanding currency-exchange orders in the decentralized exchange
 - `PayChannel` objects, representing asynchronous payment channels to and from the account
@@ -66,17 +66,17 @@ For more information on each of these objects, see the [Ledger Format Reference]
 
 ## Address Encoding
 
-**Tip:** These technical details are only relevant for people building low-level library software for CSC Ledger compatibility!
+**Tip:** These technical details are only relevant for people building low-level library software for STM Ledger compatibility!
 
-[[Source]<br>](https://github.com/casinocoin/casinocoind/blob/4.0.1/src/casinocoin/protocol/impl/AccountID.cpp#L109-L140 "Source")
+[[Source]<br>](https://github.com/stoxum/stoxumd/src/stoxum/protocol/impl/AccountID.cpp#L109-L140 "Source")
 
-CSC Ledger addresses are encoded using [base58](https://en.wikipedia.org/wiki/Base58) with the CasinoCoin _dictionary_: `cpshnaf39wBUDNEGHJKLM4PQRST7VWXYZ2bcdeCg65jkm8oFqi1tuvAxyz`. Since the CSC Ledger encodes several types of keys with base58, it prefixes the encoded data with a one-byte "type prefix" (also called a "version prefix") to distinguish them. The type prefix causes addresses to usually start with different letters in base58 format.
+STM Ledger addresses are encoded using [base58](https://en.wikipedia.org/wiki/Base58) with the Stoxum _dictionary_: `cpshnaf39wBUDNEGHJKLM4PQRST7VWXYZ2bcdeCg65jkm8oFqi1tuvAxyz`. Since the STM Ledger encodes several types of keys with base58, it prefixes the encoded data with a one-byte "type prefix" (also called a "version prefix") to distinguish them. The type prefix causes addresses to usually start with different letters in base58 format.
 
 The following diagram shows the relationship between keys and addresses:
 
 ![Passphrase → Secret Key → Public Key + Type Prefix → Account ID + Checksum → Address](img/key-address-rels.png)
 
-The formula for calculating an CSC Ledger address is as follows. For the complete example code, see [`encode_address.js`](https://github.com/casinocoin/casinocoin-dev-portal/blob/master/content/code_samples/address_encoding/encode_address.js).
+The formula for calculating an STM Ledger address is as follows. For the complete example code, see [`encode_address.js`](https://github.com/stoxum/stoxum-dev-portal/content/code_samples/address_encoding/encode_address.js).
 
 1. Import required algorithms: SHA-256, RIPEMD160, and base58. Set the dictionary for base58.
 

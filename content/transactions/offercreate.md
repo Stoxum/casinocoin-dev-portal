@@ -1,8 +1,8 @@
 ## OfferCreate
 
-[[Source]<br>](https://github.com/casinocoin/casinocoind/blob/master/src/casinocoin/app/tx/impl/CreateOffer.cpp "Source")
+[[Source]<br>](https://github.com/stoxum/stoxumd/src/stoxum/app/tx/impl/CreateOffer.cpp "Source")
 
-An OfferCreate transaction is effectively a [limit order](http://en.wikipedia.org/wiki/limit_order). It defines an intent to exchange currencies, and creates an Offer object in the CSC Ledger if not completely fulfilled when placed. Offers can be partially fulfilled.
+An OfferCreate transaction is effectively a [limit order](http://en.wikipedia.org/wiki/limit_order). It defines an intent to exchange currencies, and creates an Offer object in the STM Ledger if not completely fulfilled when placed. Offers can be partially fulfilled.
 
 ```
 {
@@ -23,7 +23,7 @@ An OfferCreate transaction is effectively a [limit order](http://en.wikipedia.or
 
 | Field                     | JSON Type           | [Internal Type][] | Description |
 |:--------------------------|:--------------------|:------------------|:-------|
-| [Expiration](#expiration) | Unsigned Integer    | UInt32            | _(Optional)_ Time after which the offer is no longer active, in [seconds since the CasinoCoin Epoch](reference-casinocoind.html#specifying-time). |
+| [Expiration](#expiration) | Unsigned Integer    | UInt32            | _(Optional)_ Time after which the offer is no longer active, in [seconds since the Stoxum Epoch](reference-stoxumd.html#specifying-time). |
 | OfferSequence             | Unsigned Integer    | UInt32            | _(Optional)_ An offer to delete first, specified in the same way as [OfferCancel][]. |
 | TakerGets                 | [Currency Amount][] | Amount            | The amount and type of currency being provided by the offer creator. |
 | TakerPays                 | [Currency Amount][] | Amount            | The amount and type of currency being requested by the offer creator. |
@@ -42,8 +42,8 @@ It is possible for an offer to become temporarily or permanently _unfunded_:
     * The offer becomes funded again when the creator obtains more of that currency.
 * If the currency required to fund the offer is held in a [frozen trust line](concept-freeze.html).
     * The offer becomes funded again when the trust line is no longer frozen.
-* If the creator does not have enough CSC for the reserve amount of a new trust line required by the offer. (See [Offers and Trust](#offers-and-trust).)
-    * The offer becomes funded again when the creator obtains more CSC, or the reserve requirements decrease.
+* If the creator does not have enough STM for the reserve amount of a new trust line required by the offer. (See [Offers and Trust](#offers-and-trust).)
+    * The offer becomes funded again when the creator obtains more STM, or the reserve requirements decrease.
 * If the Expiration time included in the offer is before the close time of the most recently-closed ledger. (See [Expiration](#expiration).)
 
 An unfunded offer can stay on the ledger indefinitely, but it does not have any effect. The only ways an offer can be *permanently* removed from the ledger are:
@@ -52,20 +52,20 @@ An unfunded offer can stay on the ledger indefinitely, but it does not have any 
 * An OfferCancel or OfferCreate transaction explicitly cancels the offer.
 * An OfferCreate transaction from the same account crosses the earlier offer. (In this case, the older offer is automatically canceled.)
 * An offer is found to be unfunded during transaction processing, typically because it was at the tip of the orderbook.
-    * This includes cases where one side or the other of an offer is found to be closer to 0 than `casinocoind`'s precision supports.
+    * This includes cases where one side or the other of an offer is found to be closer to 0 than `stoxumd`'s precision supports.
 
 #### Tracking Unfunded Offers
 
-Tracking the funding status of all offers can be computationally taxing. In particular, addresses that are actively trading may have a large number of offers open. A single balance can affect the funding status of many offers to buy different currencies. Because of this, `casinocoind` does not proactively find and remove offers.
+Tracking the funding status of all offers can be computationally taxing. In particular, addresses that are actively trading may have a large number of offers open. A single balance can affect the funding status of many offers to buy different currencies. Because of this, `stoxumd` does not proactively find and remove offers.
 
-A client application can locally track the funding status of offers. To do this, first retreive an order book using the [`book_offers` command](reference-casinocoind.html#book-offers) and check the `taker_gets_funded` field of offers. Then,  [subscribe](reference-casinocoind.html#subscribe) to the `transactions` stream and watch the transaction metadata to see which offers are modified.
+A client application can locally track the funding status of offers. To do this, first retreive an order book using the [`book_offers` command](reference-stoxumd.html#book-offers) and check the `taker_gets_funded` field of offers. Then,  [subscribe](reference-stoxumd.html#subscribe) to the `transactions` stream and watch the transaction metadata to see which offers are modified.
 
 
 ### Offers and Trust
 
 The limit values of trust lines (See [TrustSet](#trustset)) do not affect offers. In other words, you can use an offer to acquire more than the maximum amount you trust an issuer to redeem.
 
-However, holding non-CSC balances still requires a trust line to the address issuing those balances. When an offer is taken, it automatically creates any necessary trust lines, setting their limits to 0. Because [trust lines increase the reserve an account must hold](concept-reserves.html), any offers that would require a new trust line also require the address to have enough CSC to meet the reserve for that trust line.
+However, holding non-STM balances still requires a trust line to the address issuing those balances. When an offer is taken, it automatically creates any necessary trust lines, setting their limits to 0. Because [trust lines increase the reserve an account must hold](concept-reserves.html), any offers that would require a new trust line also require the address to have enough STM to meet the reserve for that trust line.
 
 A trust line indicates an issuer you trust enough to accept their issuances as payment, within limits. Offers are explicit instructions to acquire certain issuances, so they are allowed to go beyond those limits.
 
@@ -73,15 +73,15 @@ A trust line indicates an issuer you trust enough to accept their issuances as p
 
 Existing offers are grouped by exchange rate (sometimes called "offer quality"), which is measured as the ratio between `TakerGets` and `TakerPays`. Offers with a higher exchange rate are taken preferentially. (That is, the person accepting the offer receives as much as possible for the amount of currency they pay out.) Offers with the same exchange rate are taken on the basis of which offer was placed in the earliest ledger version.
 
-When offers of the same exchange rate are placed in the same ledger version, the order in which they are taken is determined by the [canonical order](https://github.com/casinocoin/casinocoind/blob/master/src/casinocoin/app/misc/CanonicalTXSet.cpp "Source: Transaction ordering") in which the transactions were [applied to the ledger](https://github.com/casinocoin/casinocoind/blob/4.0.1/src/casinocoin/app/consensus/CLLConsensus.cpp#L1435-L1538 "Source: Applying transactions"). This behavior is designed to be deterministic, efficient, and hard to game.
+When offers of the same exchange rate are placed in the same ledger version, the order in which they are taken is determined by the [canonical order](https://github.com/stoxum/stoxumd/src/stoxum/app/misc/CanonicalTXSet.cpp "Source: Transaction ordering") in which the transactions were [applied to the ledger](https://github.com/stoxum/stoxumd/src/stoxum/app/consensus/CLLConsensus.cpp#L1435-L1538 "Source: Applying transactions"). This behavior is designed to be deterministic, efficient, and hard to game.
 
 #### TickSize
 
 _Requires the [TickSize amendment](reference-amendments.html#ticksize)._
 
-When an Offer is placed into an order book, its exchange rate is truncated based on the `TickSize` values set by the issuers of the currencies involved in the Offer. When a trader offers to exchange CSC and an issued currency, the `TickSize` from the issuer of the currency applies. When a trader offers to exchange two issued currencies, the offer uses the smaller `TickSize` value (that is, the one with fewer significant digits). If neither currency has a `TickSize` set, the default behavior applies.
+When an Offer is placed into an order book, its exchange rate is truncated based on the `TickSize` values set by the issuers of the currencies involved in the Offer. When a trader offers to exchange STM and an issued currency, the `TickSize` from the issuer of the currency applies. When a trader offers to exchange two issued currencies, the offer uses the smaller `TickSize` value (that is, the one with fewer significant digits). If neither currency has a `TickSize` set, the default behavior applies.
 
-The `TickSize` value truncates the number of _significant digits_ in the exchange rate of an offer when it gets placed in an order book. Issuers can set `TickSize` to an integer from `3` to `15` using an [AccountSet transaction][]. The exchange rate is represented as significant digits and an exponent; the `TickSize` does not affect the exponent. This allows the CSC Ledger to represent exchange rates between assets that vary greatly in value (for example, a hyperinflated currency compared to a rare commodity). The lower the `TickSize` an issuer sets, the larger the increment traders must offer to be considered a higher exchange rate than the existing Offers.
+The `TickSize` value truncates the number of _significant digits_ in the exchange rate of an offer when it gets placed in an order book. Issuers can set `TickSize` to an integer from `3` to `15` using an [AccountSet transaction][]. The exchange rate is represented as significant digits and an exponent; the `TickSize` does not affect the exponent. This allows the STM Ledger to represent exchange rates between assets that vary greatly in value (for example, a hyperinflated currency compared to a rare commodity). The lower the `TickSize` an issuer sets, the larger the increment traders must offer to be considered a higher exchange rate than the existing Offers.
 
 The `TickSize` does not affect the part of an Offer that can be executed immediately. (For that reason, OfferCreate transactions with `tfImmediateOrCancel` are unaffected by `TickSize` values.) If the Offer cannot be fully executed, the transaction processing engine calculates the exchange rate and truncates it based on `TickSize`. Then, the engine rounds the remaining amount of the Offer from the "less important" side to match the truncated exchange rate. For a default OfferCreate transaction (a "buy" Offer), the `TakerPays` amount (the amount being bought) gets rounded. If the `tfSell` flag is enabled (a "sell" Offer) the `TakerGets` amount (the amount being sold) gets rounded.
 
@@ -94,15 +94,15 @@ Since transactions can take time to propagate and confirm, the timestamp of a le
 
 You can determine the final disposition of an offer with an `Expiration` as soon as you see a fully-validated ledger with a close time equal to or greater than the expiration time.
 
-**Note:** Since only new transactions can modify the ledger, an expired offer can stay on the ledger after it becomes inactive. The offer is treated as unfunded and has no effect, but it can continue to appear in results (for example, from the [ledger_entry](reference-casinocoind.html#ledger-entry) command). Later on, the expired offer can get finally deleted as a result of another transaction (such as another OfferCreate) if the server finds it while processing.
+**Note:** Since only new transactions can modify the ledger, an expired offer can stay on the ledger after it becomes inactive. The offer is treated as unfunded and has no effect, but it can continue to appear in results (for example, from the [ledger_entry](reference-stoxumd.html#ledger-entry) command). Later on, the expired offer can get finally deleted as a result of another transaction (such as another OfferCreate) if the server finds it while processing.
 
 If an OfferCreate transaction has an `Expiration` time that has already passed when the transaction first gets included in a ledger, the transaction does not execute the offer but still results in a `tesSUCCESS` transaction code. (This is because such a transaction could still successfully cancel another offer.)
 
 ### Auto-Bridging
 
-Any OfferCreate that would exchange two non-CSC currencies could potentially use CSC as an intermediary currency in a synthetic order book. This is because of auto-bridging, which serves to improve liquidity across all currency pairs by using CSC as a vehicle currency. This works because of CSC's nature as a native cryptocurrency to the CSC Ledger. Offer execution can use a combination of direct and auto-bridged offers to achieve the best total exchange rate.
+Any OfferCreate that would exchange two non-STM currencies could potentially use STM as an intermediary currency in a synthetic order book. This is because of auto-bridging, which serves to improve liquidity across all currency pairs by using STM as a vehicle currency. This works because of STM's nature as a native cryptocurrency to the STM Ledger. Offer execution can use a combination of direct and auto-bridged offers to achieve the best total exchange rate.
 
-Example: _Anita places an offer to sell GBP and buy BRL. She might find that this uncommon currency market has few offers. There is one offer with a good rate, but it has insufficient quantity to satisfy Anita's trade. However, both GBP and BRL have active, competitive markets to CSC. Auto-bridging software finds a way to complete Anita's offer by purchasing CSC with GBP from one trader, then selling the CSC to another trader to buy BRL. Anita automatically gets the best rate possible by combining the small offer in the direct GBP:BRL market with the better composite rates created by pairing GBP:CSC and CSC:BRL offers._
+Example: _Anita places an offer to sell GBP and buy BRL. She might find that this uncommon currency market has few offers. There is one offer with a good rate, but it has insufficient quantity to satisfy Anita's trade. However, both GBP and BRL have active, competitive markets to STM. Auto-bridging software finds a way to complete Anita's offer by purchasing STM with GBP from one trader, then selling the STM to another trader to buy BRL. Anita automatically gets the best rate possible by combining the small offer in the direct GBP:BRL market with the better composite rates created by pairing GBP:STM and STM:BRL offers._
 
 Auto-bridging happens automatically on any OfferCreate transaction. [Payment transactions](#payment) _do not_ autobridge by default, but path-finding can find paths that have the same effect.
 

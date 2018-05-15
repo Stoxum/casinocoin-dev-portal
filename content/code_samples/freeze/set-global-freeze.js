@@ -1,7 +1,7 @@
-const {CasinocoinAPI} = require('casinocoin-libjs');
+const { CasinocoinAPI } = require('casinocoin-libjs');
 
 const api = new CasinocoinAPI({
-  server: 'wss://ws01.casinocoin.org', // Public rippled server
+  server: 'wss://ws01.stoxum.io/', // Public rippled server
   port: 4443
 });
 api.on('error', (errorCode, errorMessage) => {
@@ -10,8 +10,8 @@ api.on('error', (errorCode, errorMessage) => {
 
 const issuing_address = 'rf1BiGeXwwQoi8Z2ueFYTEXSwuJYfV2Jpn';
 const issuing_secret = 's████████████████████████████';
-    // Best practice: get your secret from an encrypted
-    //  config file instead
+// Best practice: get your secret from an encrypted
+//  config file instead
 
 api.connect().then(() => {
 
@@ -21,7 +21,7 @@ api.connect().then(() => {
   };
 
   console.log('preparing settings transaction for account:',
-              issuing_address);
+    issuing_address);
   return api.prepareSettings(issuing_address, settings);
 
 }).then(prepared_tx => {

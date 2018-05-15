@@ -1,5 +1,5 @@
 ## SignerListSet
-[[Source]<br>](https://github.com/casinocoin/casinocoind/blob/4.0.1/src/casinocoin/app/tx/impl/SetSignerList.cpp "Source")
+[[Source]<br>](https://github.com/stoxum/stoxumd/src/stoxum/app/tx/impl/SetSignerList.cpp "Source")
 
 The SignerListSet transaction creates, replaces, or removes a list of signers that can be used to [multi-sign](#multi-signing) a transaction. This transaction type was introduced by the [MultiSign amendment](reference-amendments.html#multisign).
 

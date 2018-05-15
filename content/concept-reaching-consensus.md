@@ -1,14 +1,14 @@
-# Reaching Consensus in the CSC Ledger
+# Reaching Consensus in the STM Ledger
 
-The CSC Ledger is a universal payment system enabling users to transfer funds (including fiat currencies, digital currencies and other forms of value) across national boundaries as seamlessly as sending an email. Like other digital currencies such as Bitcoin, the CSC Ledger enables peer-to-peer transaction settlement across a decentralized network of computers. Unlike other digital currency protocols,the CSC Ledger also allows users to transact in currencies other than the ledger's native currency, CSC. In addition, the technology enables near real-time settlement (three to six seconds) and is built to route each international transaction to the cheapest FX bid/ask spread available in the network.
+The STM Ledger is a universal payment system enabling users to transfer funds (including fiat currencies, digital currencies and other forms of value) across national boundaries as seamlessly as sending an email. Like other digital currencies such as Bitcoin, the STM Ledger enables peer-to-peer transaction settlement across a decentralized network of computers. Unlike other digital currency protocols, the STM Ledger also allows users to transact in currencies other than the ledger's native currency, STM. In addition, the technology enables near real-time settlement (three to six seconds) and is built to route each international transaction to the cheapest FX bid/ask spread available in the network.
 
 # Background
 
 ## Mechanics
 
-At the core, the CSC Ledger is a shared database that records information such as accounts, balances, and offers to trade assets. Signed instructions called "transactions" cause changes such as creating accounts, making payments, and trading assets.
+At the core, the STM Ledger is a shared database that records information such as accounts, balances, and offers to trade assets. Signed instructions called "transactions" cause changes such as creating accounts, making payments, and trading assets.
 
-As a cryptographic system, the owners of CSC Ledger accounts are identified by cryptographic identities. Transactions are authorized by cryptographic signatures matching these identities. Every server processes every transaction according to the same deterministic, known rules. Ultimately, the goal is for every server in the network to have a complete copy of the exact same ledger state, without needing a single central authority to arbitrate transactions.
+As a cryptographic system, the owners of STM Ledger accounts are identified by cryptographic identities. Transactions are authorized by cryptographic signatures matching these identities. Every server processes every transaction according to the same deterministic, known rules. Ultimately, the goal is for every server in the network to have a complete copy of the exact same ledger state, without needing a single central authority to arbitrate transactions.
 
 ## The Double Spend Problem
 
@@ -20,7 +20,7 @@ If Alice can send the "same" $10 to both Charlie and Bob, the payment system cea
 
 Conventionally, payment systems solve the double spend problem by having a central authority track and approve transactions. For example, a bank decides to clear a deck based on the issuer's available balance, of which the bank is the sole custodian. In such a system, all participants follow the central authority's decisions.
 
-Distributed ledger technologies, like the CSC Ledger, have no central authority. They must solve the double spend problem in some other way.
+Distributed ledger technologies, like the STM Ledger, have no central authority. They must solve the double spend problem in some other way.
 
 # How Consensus Works
 
@@ -34,9 +34,9 @@ We can also order transactions by deterministic rules. Because transactions are 
 
 This would be enough to solve the double spend problem without a central authority, but it would require us to have every transaction that would ever occur (so that we could sort them) before we could be certain of the results of any transaction. Obviously, this is impractical. <!-- STYLE_OVERRIDE: obviously -->
 
-If we could collect transactions into groups and agree on those groupings, we could sort the transactions within that group. As long as every participant agrees on which transactions are to be processed as a unit, they can use deterministic rules to solve the double spend problem without any need for a central authority. The participants each sort the transactions and apply them in a deterministic way following the known rules. The CSC Ledger solves the double-spend problem in exactly this way.
+If we could collect transactions into groups and agree on those groupings, we could sort the transactions within that group. As long as every participant agrees on which transactions are to be processed as a unit, they can use deterministic rules to solve the double spend problem without any need for a central authority. The participants each sort the transactions and apply them in a deterministic way following the known rules. The STM Ledger solves the double-spend problem in exactly this way.
 
-The CSC Ledger allows multiple conflicting transactions to be in the agreed group. The group of transactions is executed according to deterministic rules, so whichever transaction comes first according to the sorting rules succeeds and whichever conflicting transaction comes second fails.
+The STM Ledger allows multiple conflicting transactions to be in the agreed group. The group of transactions is executed according to deterministic rules, so whichever transaction comes first according to the sorting rules succeeds and whichever conflicting transaction comes second fails.
 
 ## Consensus Rules
 
@@ -71,7 +71,7 @@ Imagine a group of people in a room trying to agree which door they should use t
 
 The probability of this kind of failure can be made very low, but it cannot be reduced to zero. The engineering tradeoffs are such that driving this probability down below about one in a thousand makes consensus significantly slower, and less able to tolerate network and endpoint failures.
 
-## How the CSC Ledger Handles Consensus Failure
+## How the STM Ledger Handles Consensus Failure
 
 After a consensus round completes, each participant applies the set of transactions that they believe were agreed to. This results in constructing what they believe the next state of the ledger should be.
 
@@ -95,6 +95,6 @@ On rare occasions, the network as a whole fails to make forward progress for a f
 
 One form of reliability is the ability of a system to provide results even under conditions where some components have failed, some participants are malicious, and so on. While this is important, there is another form of reliability that is much more important in cryptographic payment systems — the ability of a system to produce results that can be relied upon. That is, when a system reports a result to us as reliable, we should be able to rely on that result.
 
-Real-world systems, however, face operational conditions in which both kinds of reliability can be compromised. These include hardware failures, communication failures, and even dishonest participants. Part of the CSC Ledger's design philosophy is to detect conditions where the reliability of results are impaired and report them, rather than providing results that must not be relied on.
+Real-world systems, however, face operational conditions in which both kinds of reliability can be compromised. These include hardware failures, communication failures, and even dishonest participants. Part of the STM Ledger's design philosophy is to detect conditions where the reliability of results are impaired and report them, rather than providing results that must not be relied on.
 
-The CSC Ledger's consensus algorithm provides a robust alternative to proof of work systems, without consuming computational resources needlessly. Byzantine failures are possible, and do happen, but the consequence is only minor delays. In all cases, the CSC Ledger's consensus algorithm reports results as reliable only when they in fact are.
+The STM Ledger's consensus algorithm provides a robust alternative to proof of work systems, without consuming computational resources needlessly. Byzantine failures are possible, and do happen, but the consequence is only minor delays. In all cases, the STM Ledger's consensus algorithm reports results as reliable only when they in fact are.

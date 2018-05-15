@@ -1,50 +1,50 @@
 var urlParams;
 (window.onpopstate = function () {
-    var match,
-        pl     = /\+/g,  // Regex for replacing addition symbol with a space
-        search = /([^&=]+)=?([^&]*)/g,
-        decode = function (s) { return decodeURIComponent(s.replace(pl, " ")); },
-        query  = window.location.search.substring(1);
+  var match,
+    pl = /\+/g,  // Regex for replacing addition symbol with a space
+    search = /([^&=]+)=?([^&]*)/g,
+    decode = function (s) { return decodeURIComponent(s.replace(pl, " ")); },
+    query = window.location.search.substring(1);
 
-    urlParams = {};
-    while (match = search.exec(query))
-       urlParams[decode(match[1])] = decode(match[2]);
+  urlParams = {};
+  while (match = search.exec(query))
+    urlParams[decode(match[1])] = decode(match[2]);
 })();
 
-;(function() {
+; (function () {
   var DOC_BASE = 'reference-rippled.html';
 
-  var request_button  = $('#request_button');
-  var online_state    = $('#online_state');
-  var command_list    = $('#command_list');
-  var commands        = $(command_list).find('li');
-  var command_table   = $('#command_table');
-  var input           = $('#input');
-  var description     = $(input).find('#description');
-  var options         = $(input).find('#options');
-  var output          = $('#output');
-  var response        = $('#response');
-  var request         = $('#request');
-  var status          = $('#status');
-  var info            = $('#info');
+  var request_button = $('#request_button');
+  var online_state = $('#online_state');
+  var command_list = $('#command_list');
+  var commands = $(command_list).find('li');
+  var command_table = $('#command_table');
+  var input = $('#input');
+  var description = $(input).find('#description');
+  var options = $(input).find('#options');
+  var output = $('#output');
+  var response = $('#response');
+  var request = $('#request');
+  var status = $('#status');
+  var info = $('#info');
   var spinner = $(".loader");
-  
-  var BASE_HOST_DEFAULT = 'ws01.casinocoin.org';
+
+  var BASE_HOST_DEFAULT = 'ws01.stoxum.io';
   var BASE_PORT_DEFAULT = 4443;
 
   var remote = new ripple.Remote({
-    trusted:        true,
-    local_signing:  true,
-    local_fee:      false,
+    trusted: true,
+    local_signing: true,
+    local_fee: false,
     servers: [
       {
-        host:    BASE_HOST_DEFAULT,
-        port:    BASE_PORT_DEFAULT,
-        secure:  true
+        host: BASE_HOST_DEFAULT,
+        port: BASE_PORT_DEFAULT,
+        secure: true
       }
     ]
   });
-  
+
   function new_remote(options) {
     remote = new ripple.Remote(options);
   }
@@ -56,16 +56,16 @@ var urlParams;
     $(online_state).text(state);
   };
 
-  remote.on('disconnect', function() {
+  remote.on('disconnect', function () {
     set_online_state('disconnected');
   });
 
-  remote.on('connect', function() {
+  remote.on('connect', function () {
     var msg = "connected";
     if (remote._servers.length === 1) {
-        msg = "connected to "+remote._servers[0].getHostID();
+      msg = "connected to " + remote._servers[0].getHostID();
     } else if (remote._servers.length > 1) {
-        msg = "connected to "+remote._servers.length+" servers";
+      msg = "connected to " + remote._servers.length + " servers";
     }
     set_online_state(msg);
   });
@@ -77,28 +77,28 @@ var urlParams;
 
   id._c = 2;
 
-  id.reset = function() {
+  id.reset = function () {
     id._c = remote._get_server()._id;
   };
 
   /* ---- ---- ---- ---- ---- */
 
   //Build requests
-  var selected_request = { };
-  var requests = { };
+  var selected_request = {};
+  var requests = {};
 
-  $(commands).each(function(i, el) {
+  $(commands).each(function (i, el) {
     requests[$(el).text()] = 0;
   });
 
   function Request(cmd, attrs) {
     var obj = {
-      id:       void(0),
-      name:     cmd,
-      message:  { command:  cmd }
+      id: void (0),
+      name: cmd,
+      message: { command: cmd }
     }
 
-    Object.keys(attrs || { }).forEach(function(k) {
+    Object.keys(attrs || {}).forEach(function (k) {
       if (k[0] === '_') {
         obj[k] = attrs[k];
       } else {
@@ -135,16 +135,16 @@ var urlParams;
   /* ---- ---- */
 
   Request('subscribe', {
-    accounts: [ ],
-    streams: [ 'server', 'ledger' ],
+    accounts: [],
+    streams: ['server', 'ledger'],
     _description: 'Start receiving selected streams from the server.',
     _link: DOC_BASE + '#subscribe',
     _stream: true
   });
 
   Request('unsubscribe', {
-    accounts: [ ],
-    streams: [ 'server', 'ledger' ],
+    accounts: [],
+    streams: ['server', 'ledger'],
     _description: 'Stop receiving selected streams from the server.',
     _link: DOC_BASE + '#unsubscribe',
     _stream: true
@@ -153,21 +153,21 @@ var urlParams;
   /* ---- ---- */
 
   Request('ledger', {
-    ledger_index:  void(0),
-    ledger_hash:   void(0),
-    full:          false,
-    expand:        false,
-    transactions:  true,
-    accounts:      true,
+    ledger_index: void (0),
+    ledger_hash: void (0),
+    full: false,
+    expand: false,
+    transactions: true,
+    accounts: true,
     _description: 'Returns ledger information.',
     _link: DOC_BASE + '#ledger'
   });
 
   Request('ledger_entry', {
-    type:          'account_root',
-    account_root:  sample_address,
-    ledger_index:   'validated',
-    ledger_hash:  void(0),
+    type: 'account_root',
+    account_root: sample_address,
+    ledger_index: 'validated',
+    ledger_hash: void (0),
     _description: 'Get a single node from the ledger',
     _link: DOC_BASE + '#ledger-entry'
   });
@@ -191,49 +191,49 @@ var urlParams;
   });
 
   Request('account_lines', {
-    account:        sample_address,
-    account_index:  void(0),
-    ledger:         'current',
+    account: sample_address,
+    account_index: void (0),
+    ledger: 'current',
     _description: "Get a list of trust lines connected to an account.",
     _link: DOC_BASE + '#account-lines'
   });
 
   Request('account_offers', {
-    account:        sample_address,
-    account_index:  void(0),
-    ledger:         'current',
+    account: sample_address,
+    account_index: void (0),
+    ledger: 'current',
     _description: 'Get a list of offers created by an account.',
     _link: DOC_BASE + '#account-offers'
   });
 
   Request('account_tx', {
-    account:           sample_address,
-    ledger_index_min:  -1,
-    ledger_index_max:  -1,
-    binary:            false,
-    count:             false,
-    limit:             10,
-    forward:           false,
-    marker:            void(0),
+    account: sample_address,
+    ledger_index_min: -1,
+    ledger_index_max: -1,
+    binary: false,
+    count: false,
+    limit: 10,
+    forward: false,
+    marker: void (0),
     _description: 'Get a list of transactions that applied to a specified account.',
     _link: DOC_BASE + '#account-tx'
   });
-  
+
   Request('account_currencies', {
-    account:           sample_address,
-    strict:            true,
-    ledger_index:      "validated",
-    account_index:     0,
+    account: sample_address,
+    strict: true,
+    ledger_index: "validated",
+    account_index: 0,
     _description: 'Returns a list of currencies the account can send or receive.',
     _link: DOC_BASE + '#account-currencies'
   });
-  
+
   Request('gateway_balances', {
-    account:           sample_address,
-    strict:            true,
-    hotwallet:         [],
-    ledger_index:      "validated",
-    account_index:     0,
+    account: sample_address,
+    strict: true,
+    hotwallet: [],
+    ledger_index: "validated",
+    account_index: 0,
     _description: 'Returns a list of currencies the account can send or receive.',
     _link: DOC_BASE + '#gateway-balances'
   });
@@ -241,9 +241,9 @@ var urlParams;
   /* ---- ---- */
 
   Request('transaction_entry', {
-    tx_hash:       sample_tx,
-    ledger_index:  348734,
-    ledger_hash:   void(0),
+    tx_hash: sample_tx,
+    ledger_index: 348734,
+    ledger_hash: void (0),
     _description: 'Get information about a specified transaction.',
     _link: DOC_BASE + '#transaction-entry'
   });
@@ -261,11 +261,11 @@ var urlParams;
   });
 
   Request('book_offers', {
-    ledger_hash: void(0),
-    ledger_index: void(0),
+    ledger_hash: void (0),
+    ledger_index: void (0),
     taker: sample_address,
     taker_gets: {
-      currency: 'CSC'
+      currency: 'STM'
     },
     taker_pays: {
       currency: 'USD',
@@ -281,9 +281,9 @@ var urlParams;
     source_account: sample_address,
     destination_account: sample_address_2,
     destination_amount: {
-        "currency": "USD",
-        "value": "0.01",
-        "issuer": sample_address_2
+      "currency": "USD",
+      "value": "0.01",
+      "issuer": sample_address_2
     },
     _description: 'Start or stop searching for payment paths between specified accounts.',
     _link: DOC_BASE + '#path-find',
@@ -291,15 +291,15 @@ var urlParams;
   });
 
   Request('casinocoin_path_find', {
-    ledger_hash : void(0),
-    ledger_index : void(0),
-    source_account : sample_address,
-    source_currencies : [ { currency : 'USD' } ],
-    destination_account : sample_address_2,
-    destination_amount : {
-        "currency": "USD",
-        "value": "0.01",
-        "issuer": sample_address_2
+    ledger_hash: void (0),
+    ledger_index: void (0),
+    source_account: sample_address,
+    source_currencies: [{ currency: 'USD' }],
+    destination_account: sample_address_2,
+    destination_amount: {
+      "currency": "USD",
+      "value": "0.01",
+      "issuer": sample_address_2
     },
     _description: 'Find a path between specified accounts once. For repeated usage, call <strong>path_find</strong> instead.',
     _link: DOC_BASE + '#ripple-path-find'
@@ -311,7 +311,7 @@ var urlParams;
       Flags: 0,
       TransactionType: 'AccountSet',
       Account: 'rf1BiGeXwwQoi8Z2ueFYTEXSwuJYfV2Jpn',
-      Sequence: void(0),
+      Sequence: void (0),
       Fee: '10000',
       Flags: 0
     },
@@ -319,25 +319,25 @@ var urlParams;
     _link: DOC_BASE + '#submit',
     _takes_secret: true
   });
-  
+
   Request('sign', {
-  tx_json : {
-      "TransactionType" : "Payment",
-      "Account" : "rf1BiGeXwwQoi8Z2ueFYTEXSwuJYfV2Jpn",
-      "Destination" : "ra5nK24KXen9AHvsdFTKHSANinZseWnPcX",
-      "Amount" : { 
-         "currency" : "USD",
-         "value" : "1",
-         "issuer" : "rf1BiGeXwwQoi8Z2ueFYTEXSwuJYfV2Jpn"
+    tx_json: {
+      "TransactionType": "Payment",
+      "Account": "rf1BiGeXwwQoi8Z2ueFYTEXSwuJYfV2Jpn",
+      "Destination": "ra5nK24KXen9AHvsdFTKHSANinZseWnPcX",
+      "Amount": {
+        "currency": "USD",
+        "value": "1",
+        "issuer": "rf1BiGeXwwQoi8Z2ueFYTEXSwuJYfV2Jpn"
       }
-   },
-   secret : "sn3nxiW7v8KXzPzAqzyHXbSSKNuN9",
-   offline: false,
-   fee_mult_max: 1000,
-   _description: 'Sends a transaction to be signed by the server.',
-   _link: DOC_BASE + '#sign',
+    },
+    secret: "sn3nxiW7v8KXzPzAqzyHXbSSKNuN9",
+    offline: false,
+    fee_mult_max: 1000,
+    _description: 'Sends a transaction to be signed by the server.',
+    _link: DOC_BASE + '#sign',
     _takes_secret: true
-});
+  });
 
   /* ---- ---- ---- ---- ---- */
 
@@ -346,13 +346,13 @@ var urlParams;
       var obj = JSON.parse(obj);
     }
 
-    var rewrite = { };
+    var rewrite = {};
     if (obj.id) rewrite.id = obj.id;
     if (obj.command) rewrite.command = obj.command;
     if (obj.status) rewrite.status = obj.status;
     if (obj.type) rewrite.type = obj.type;
 
-    Object.keys(obj).forEach(function(k) {
+    Object.keys(obj).forEach(function (k) {
       if (!rewrite.hasOwnProperty(k)) {
         rewrite[k] = obj[k];
       }
@@ -380,22 +380,22 @@ var urlParams;
     if (command._description) {
       //$(description).html(command._description).show();
       $(description).html(command._description);
-      $(description).append(" <a class='button btn btn-primary' href='"+command._link+"'>Read more</a>");
+      $(description).append(" <a class='button btn btn-primary' href='" + command._link + "'>Read more</a>");
     } else {
       $(description).hide();
     }
 
     $('#selected_command').html($('<a>')
-                                .attr('href', command._link)
-                                .text(command.name));
+      .attr('href', command._link)
+      .text(command.name));
 
     cm_request.setValue(JSON.stringify(message, null, 2));
   };
 
   var STREAM_PAUSED = false;
-  var STREAM_SHOWN  = false;
-  var WAITING       = false;
-  var events = [ ];
+  var STREAM_SHOWN = false;
+  var WAITING = false;
+  var events = [];
 
   function set_output(message) {
     var parsed = rewrite_obj(message);
@@ -407,12 +407,12 @@ var urlParams;
       spinner.hide();
 
       var request_header = '<span class="request_name">'
-      + selected_request.name;
+        + selected_request.name;
       + '</span>';
 
       var timestamp = '<span class="timestamp">'
-      + (Date.now() - selected_request.t) + 'ms'
-      + '</span>';
+        + (Date.now() - selected_request.t) + 'ms'
+        + '</span>';
 
       $(request_button).removeClass('depressed');
 
@@ -430,11 +430,11 @@ var urlParams;
       $(status).prepend(el);
 
       CodeMirror(el, {
-        value:        JSON.stringify(parsed, null, 2),
-        mode:         'javascript',
-        json:         true,
-        smartIndent:  false,
-        readOnly:     true
+        value: JSON.stringify(parsed, null, 2),
+        mode: 'javascript',
+        json: true,
+        smartIndent: false,
+        readOnly: true
       });
 
       events.unshift(parsed);
@@ -446,50 +446,50 @@ var urlParams;
     selected_request.message.id = id();
     selected_request.message = rewrite_obj(selected_request.message);
     set_input(selected_request);
-    
+
     //Remove sign button & sequence number lookup
 
-//    if (selected_request.name !== 'submit') {
-//      $('#sign_button').hide();
-//      return;
-//    }
+    //    if (selected_request.name !== 'submit') {
+    //      $('#sign_button').hide();
+    //      return;
+    //    }
 
     if (selected_request._takes_secret === true) {
-        $("#test_warning").show();
+      $("#test_warning").show();
     } else {
-        $("#test_warning").hide();
+      $("#test_warning").hide();
     }
-    
+
     if (selected_request._stream === true) {
-        $("#stream_output").show();
+      $("#stream_output").show();
     } else {
-        $("#stream_output").hide();
+      $("#stream_output").hide();
     }
 
     if (!remote._connected) {
-      remote.once('connected', function() {
+      remote.once('connected', function () {
         select_request(request);
       });
       return;
     }
 
-//    $('#sign_button').show();
+    //    $('#sign_button').show();
 
-//    var tx_json = selected_request.message.tx_json;
+    //    var tx_json = selected_request.message.tx_json;
 
-//    if (ripple.UInt160.is_valid(tx_json.Account)) {
-//      selected_request.message.id = id._c;
-//      remote.request_account_info(tx_json.Account, function(err, info) {
-//        id.reset();
-//        tx_json.Sequence = info.account_data.Sequence;
-//        set_input(selected_request);
-//      });
-//    }
+    //    if (ripple.UInt160.is_valid(tx_json.Account)) {
+    //      selected_request.message.id = id._c;
+    //      remote.request_account_info(tx_json.Account, function(err, info) {
+    //        id.reset();
+    //        tx_json.Sequence = info.account_data.Sequence;
+    //        set_input(selected_request);
+    //      });
+    //    }
   };
 
   /* ---- ---- ---- ---- ---- */
 
-  $(commands).click(function() {
+  $(commands).click(function () {
     var cmd = $(this).text().trim();
 
     if (!requests[cmd]) return;
@@ -501,9 +501,9 @@ var urlParams;
     $(this).addClass('selected');
   });
 
-  var previous_key = void(0);
+  var previous_key = void (0);
 
-  $(window).keydown(function(e) {
+  $(window).keydown(function (e) {
     if (e.which === 13 && previous_key === 17) {
       //ctrl + enter
       e.preventDefault();
@@ -516,11 +516,11 @@ var urlParams;
   /* ---- ---- ---- ---- ---- */
 
   function prepare_request(request) {
-  
-    var isArray = Array.isArray(request);
-    var result  = isArray ? [ ] : { };
 
-    Object.keys(request).forEach(function(k) {
+    var isArray = Array.isArray(request);
+    var result = isArray ? [] : {};
+
+    Object.keys(request).forEach(function (k) {
       var v = request[k];
       switch (typeof v) {
         case 'undefined': break;
@@ -534,17 +534,17 @@ var urlParams;
     });
 
     if (isArray) {
-      result = result.filter(function(el) {
+      result = result.filter(function (el) {
         return el !== null && typeof el !== 'undefined'
       });
     }
 
     var empty = isArray && result.length === 0;
 
-    return empty ? void(0) : result;
+    return empty ? void (0) : result;
   };
 
-  $('#stream_show').click(function() {
+  $('#stream_show').click(function () {
     if ($(status).is(':visible')) {
       $(status).hide();
       $(status).empty();
@@ -555,7 +555,7 @@ var urlParams;
       $(status).show();
       STREAM_SHOWN = true;
 
-      events.forEach(function(event) {
+      events.forEach(function (event) {
         var el = $('<div class="json status">')[0];
         $(status).append(el);
         CodeMirror(el, {
@@ -567,7 +567,7 @@ var urlParams;
     }
   });
 
-  $('#stream_pause').click(function() {
+  $('#stream_pause').click(function () {
     if ($(this).hasClass('paused')) {
       $(this).removeClass('paused');
       $(this).text('pause');
@@ -581,84 +581,84 @@ var urlParams;
     };
   });
 
-//stop opening all links in new tabs
-//  $(document.body).delegate('a', 'click', function(e) {
-//    e.preventDefault();
-//    e.stopPropagation();
-//    window.open($(this).attr('href'));
-//  });
+  //stop opening all links in new tabs
+  //  $(document.body).delegate('a', 'click', function(e) {
+  //    e.preventDefault();
+  //    e.stopPropagation();
+  //    window.open($(this).attr('href'));
+  //  });
 
   var tooltip = $('#tooltip');
   var mousedown = false;
 
-  $(window).mousedown(function() { mousedown = true; });
-  $(window).mouseup(function() { mousedown = false; });
+  $(window).mousedown(function () { mousedown = true; });
+  $(window).mouseup(function () { mousedown = false; });
 
-//get rid of sign button
-//  $('#sign_button').click(function() {
-//    if (selected_request._signed) return;
-//
-//    var self = this;
-//    var message = cm_request.getValue();
-//
-//    try {
-//      message = JSON.parse(message);
-//    } catch(e) {
-//      alert('Invalid JSON');
-//      return;
-//    }
-//
-//    var tx_json = message.tx_json;
-//
-//    if (!ripple.UInt160.is_valid(tx_json.Account)) {
-//      alert('Account is invalid');
-//      return;
-//    }
-//
-//    if (!message.secret) {
-//      alert('Transacting account must have specified secret');
-//      return;
-//    }
-//
-//    $(this).addClass('depressed');
-//
-//    remote.account(tx_json.Account).get_next_sequence(function(e, s) {
-//      id.reset();
-//      tx_json.Sequence = s;
-//
-//      try {
-//        var tx = remote.transaction();
-//        tx.tx_json = tx_json;
-//        tx._secret = message.secret;
-//        tx.complete();
-//        tx.sign();
-//      } catch(e) {
-//        alert('Unable to sign transaction ' + e.message);
-//        $(self).removeClass('depressed');
-//        return;
-//      }
-//
-//      message.tx_blob = tx.serialize().to_hex();
-//
-//      delete message.secret;
-//      delete message.tx_json;
-//
-//      selected_request.message = message;
-//      selected_request._signed = true;
-//
-//      set_input(selected_request);
-//
-//      $(self).removeClass('depressed');
-//    });
-//  });
+  //get rid of sign button
+  //  $('#sign_button').click(function() {
+  //    if (selected_request._signed) return;
+  //
+  //    var self = this;
+  //    var message = cm_request.getValue();
+  //
+  //    try {
+  //      message = JSON.parse(message);
+  //    } catch(e) {
+  //      alert('Invalid JSON');
+  //      return;
+  //    }
+  //
+  //    var tx_json = message.tx_json;
+  //
+  //    if (!ripple.UInt160.is_valid(tx_json.Account)) {
+  //      alert('Account is invalid');
+  //      return;
+  //    }
+  //
+  //    if (!message.secret) {
+  //      alert('Transacting account must have specified secret');
+  //      return;
+  //    }
+  //
+  //    $(this).addClass('depressed');
+  //
+  //    remote.account(tx_json.Account).get_next_sequence(function(e, s) {
+  //      id.reset();
+  //      tx_json.Sequence = s;
+  //
+  //      try {
+  //        var tx = remote.transaction();
+  //        tx.tx_json = tx_json;
+  //        tx._secret = message.secret;
+  //        tx.complete();
+  //        tx.sign();
+  //      } catch(e) {
+  //        alert('Unable to sign transaction ' + e.message);
+  //        $(self).removeClass('depressed');
+  //        return;
+  //      }
+  //
+  //      message.tx_blob = tx.serialize().to_hex();
+  //
+  //      delete message.secret;
+  //      delete message.tx_json;
+  //
+  //      selected_request.message = message;
+  //      selected_request._signed = true;
+  //
+  //      set_input(selected_request);
+  //
+  //      $(self).removeClass('depressed');
+  //    });
+  //  });
 
   function send_request() {
     var request = remote.request_server_info();
-    var value   = cm_request.getValue();
+    var value = cm_request.getValue();
 
     try {
       var message = JSON.parse(value);
-    } catch(e) {
+    } catch (e) {
       alert('Invalid request JSON');
       return;
     }
@@ -666,9 +666,9 @@ var urlParams;
     $(this).addClass('depressed');
     $(response).addClass('obscured');
 
-    WAITING                  = true;
+    WAITING = true;
     selected_request.message = message;
-    selected_request.t       = Date.now();
+    selected_request.t = Date.now();
     spinner.show();
 
     request.message = prepare_request(message);
@@ -681,45 +681,45 @@ var urlParams;
     $(request_button).click(send_request);
   };
 
-  $(function() {
+  $(function () {
     set_online_state('connecting');
-    
+
     if (urlParams["base_url"]) {
-        base_url = urlParams["base_url"].split(":");
-        if (base_url.length == 2) {
-            base_host = base_url[0];
-            base_port = base_url[1];
-        } else {
-            base_host = base_url[0];
-            base_port = BASE_PORT_DEFAULT;
-        }
-        
-        if (urlParams["use_wss"]
-            && urlParams["use_wss"].toLowerCase() === "false") {
-            use_wss = false;
-        } else {
-            use_wss = true;
-        }
-        
-        new_remote({
-            trusted:        true,
-            local_signing:  true,
-            local_fee:      false,
-            servers: [
-              {
-                host:    base_host,
-                port:    base_port,
-                secure:  use_wss
-              }
-            ]
-        });
+      base_url = urlParams["base_url"].split(":");
+      if (base_url.length == 2) {
+        base_host = base_url[0];
+        base_port = base_url[1];
+      } else {
+        base_host = base_url[0];
+        base_port = BASE_PORT_DEFAULT;
+      }
+
+      if (urlParams["use_wss"]
+        && urlParams["use_wss"].toLowerCase() === "false") {
+        use_wss = false;
+      } else {
+        use_wss = true;
+      }
+
+      new_remote({
+        trusted: true,
+        local_signing: true,
+        local_fee: false,
+        servers: [
+          {
+            host: base_host,
+            port: base_port,
+            secure: use_wss
+          }
+        ]
+      });
     }
 
     remote.connect(init);
 
     if (window.location.hash) {
-      var cmd   = window.location.hash.slice(1).toLowerCase();
-      var keys  = Object.keys(requests);
+      var cmd = window.location.hash.slice(1).toLowerCase();
+      var keys = Object.keys(requests);
       var index = keys.indexOf(cmd);
 
       if (index === -1) return;
