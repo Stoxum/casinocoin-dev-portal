@@ -54,8 +54,8 @@ Currently Stoxum (the company) maintains a set of public WebSocket servers at:
 
 | `Domain`        | Port | Notes                                 |
 |:----------------|:-----|:--------------------------------------|
-| `ws01.stoxum.org` | 443  | `wss://` only; general purpose server |
-| `ws01.stoxum.org` | 443  | `wss://` only; full-history server    |
+| `s1.stoxum.com` | 51231  | `wss://` only; general purpose server |
+| `s1.stoxum.com` | 51231  | `wss://` only; full-history server    |
 
 These public servers are not for sustained or business use, and they may become unavailable at any time. For regular use, you should run your own `stoxum` server or contract someone you trust to do so.
 

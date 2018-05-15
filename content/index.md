@@ -96,7 +96,7 @@ Use the following [boilerplate code](https://en.wikipedia.org/wiki/Boilerplate_c
 const StoxumAPI = require('stoxum-libjs').StoxumAPI;
 
 const api = new StoxumAPI({
-  server: 'wss://ws01.stoxum.org', // Public stoxumd server hosted by Stoxum, Inc.
+  server: 'wss://s1.stoxum.com', // Public stoxumd server hosted by Stoxum, Inc.
   port: 4443
 });
 api.on('error', (errorCode, errorMessage) => {

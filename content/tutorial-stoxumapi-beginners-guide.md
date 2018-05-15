@@ -125,8 +125,8 @@ The second line imports StoxumAPI into the current scope using Node.js's require
 
 ```
 const api = new StoxumAPI({
-  server: 'wss://ws01.stoxum.org', // Public stoxumd server
-  port: 4443
+  server: 'wss://s1.stoxum.com', // Public stoxumd server
+  port: 51231
 });
 ```
 
