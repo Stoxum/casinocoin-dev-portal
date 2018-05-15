@@ -12,7 +12,7 @@ const myInstructions = {
   maxLedgerVersionOffset: 5
 }
 
-const api = new CasinocoinAPI({ server: 'wss://ws01.stoxum.io/', port: 4443 })
+const api = new CasinocoinAPI({ server: 'wss://s1.stoxum.com/', port: 51231 })
 
 function submitTransaction(lastClosedLedgerVersion, prepared, secret) {
   const signedData = api.sign(prepared.txJSON, secret)

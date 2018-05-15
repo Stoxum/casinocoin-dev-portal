@@ -29,8 +29,8 @@ var urlParams;
   var info = $('#info');
   var spinner = $(".loader");
 
-  var BASE_HOST_DEFAULT = 'ws01.stoxum.io';
-  var BASE_PORT_DEFAULT = 4443;
+  var BASE_HOST_DEFAULT = 's1.stoxum.com';
+  var BASE_PORT_DEFAULT = 51231;
 
   var remote = new ripple.Remote({
     trusted: true,

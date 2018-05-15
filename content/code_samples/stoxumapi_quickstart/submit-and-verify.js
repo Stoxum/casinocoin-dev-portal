@@ -24,7 +24,7 @@ const myOrder = {
 /* Milliseconds to wait between checks for a new ledger. */
 const INTERVAL = 1000;
 /* Instantiate CasinocoinAPI. Uses s2 (full history server) */
-const api = new CasinocoinAPI({ server: 'wss://ws01.stoxum.io/', port: 4443 });
+const api = new CasinocoinAPI({ server: 'wss://s1.stoxum.com/', port: 51231 });
 /* Number of ledgers to check for valid transaction before failing */
 const ledgerOffset = 5;
 const myInstructions = { maxLedgerVersionOffset: ledgerOffset };
