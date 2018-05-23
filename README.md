@@ -1,7 +1,7 @@
-casinocoin-dev-portal
+stoxum-dev-portal
 =================
 
-The [CasinoCoin Developer Portal](https://dev.ripple.com) is the authoritative source for CasinoCoin documentation, including the `casinocoind` server, CasinocoinAPI, the CasinoCoin Data API, and other CasinoCoin open-source software.
+The [Stoxum Developer Portal](https://dev.ripple.com) is the authoritative source for Stoxum documentation, including the `stoxumd` server, StoxumAPI, the Stoxum Data API, and other Stoxum open-source software.
 
 
 Repository Layout
@@ -9,7 +9,7 @@ Repository Layout
 
 The HTML pages in this portal are generated from the markdown files in the [content/](content/) folder. Always edit the markdown files, not the HTML files. The [assets/](assets/) folder contains static files used by the site's templates. The [img](img/) folder contains images used in the docs.
 
-The HTML files are generated using CasinoCoin's documentation tool, called [**Dactyl**](https://github.com/ripple/dactyl). After you've done the [Dactyl Setup](#dactyl-setup), you can build the docs from the `tool/` folder:
+The HTML files are generated using Stoxum's documentation tool, called [**Dactyl**](https://github.com/ripple/dactyl). After you've done the [Dactyl Setup](#dactyl-setup), you can build the docs from the `tool/` folder:
 
 ```
 cd tool
