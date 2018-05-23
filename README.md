@@ -34,4 +34,4 @@ Contributing
 
 The Developer Portal welcomes outside contributions, especially to the documentation contents. If you have any corrections, improvements, or expansions of the portal, please contribute pull requests to the **master** branch.
 
-Contributions become copyright CasinoCoin and are provided under the MIT [LICENSE](LICENSE).
+Contributions become copyright Stoxum and are provided under the MIT [LICENSE](LICENSE).
