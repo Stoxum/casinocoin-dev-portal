@@ -1,5 +1,5 @@
 'use strict'
-const CasinocoinAPI = require('casinocoin-libjs').CasinocoinAPI
+const StoxumAPI = require('stoxum-libjs').StoxumAPI
 const cc = require('five-bells-condition')
 const crypto = require('crypto')
 

@@ -1,16 +1,18 @@
 {
-  "name": "my_casinocoin_experiment",
+  "name": "my_stoxum_experiment",
   "version": "0.0.1",
   "license": "MIT",
   "private": true,
   "//": "Change the license to something appropriate. You may want to use 'UNLICENSED' if you are just starting out.",
   "dependencies": {
-    "casinocoin-libjs": "*",
+    "stoxum-libjs": "*",
     "babel-cli": "^6.0.0",
     "babel-preset-es2015": "*"
   },
   "babel": {
-    "presets": ["es2015"]
+    "presets": [
+      "es2015"
+    ]
   },
   "devDependencies": {
     "eslint": "*"

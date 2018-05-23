@@ -1,9 +1,9 @@
 //---------- List of requests ------------------------//
 // Must be loaded after apitool-rest.js //
-//var DOC_BASE = "reference-rippled.html";
-//var URL_BASE = "https://ws01.casinocoin.org:51234";
+//var DOC_BASE = "reference-stoxumd.html";
+//var URL_BASE = "wss://s1.stoxum.com:51234";
 
-var DEFAULT_ADDRESS_1 = "cDarPNJEpCnpBZSfmcquydockkePkjPGA2";
+var DEFAULT_ADDRESS_1 = "xEqwuCZog9LJZWGZVzazu3Qsem6Lh9x4yF";
 var KRW_TRADER_ADDRESS = "csyDrDi9Emy6vPU78qdxovmNpmj5Qh4NKw";
 var JPY_TRADER_ADDRESS = "cK5j9n8baXfL4gzUoZsfxBvvsv97P5swaV";
 var DEFAULT_HASH = "9D591B18EDDD34F0B6CF4223A2940AEA2C3CC778925BABF289E0011CD8FA056E";
@@ -23,7 +23,7 @@ Request('account_currencies', {
         "method": "account_currencies",
         "params": [
             {
-                "account": "cDarPNJEpCnpBZSfmcquydockkePkjPGA2",
+                "account": "xEqwuCZog9LJZWGZVzazu3Qsem6Lh9x4yF",
                 "account_index": 0,
                 "ledger_index": "validated",
                 "strict": true

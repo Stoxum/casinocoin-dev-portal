@@ -12,7 +12,7 @@ var urlParams;
 })();
 
 ; (function () {
-  var DOC_BASE = 'reference-rippled.html';
+  var DOC_BASE = 'reference-stoxumd.html';
 
   var request_button = $('#request_button');
   var online_state = $('#online_state');
@@ -111,7 +111,7 @@ var urlParams;
     return obj;
   };
 
-  var sample_address = 'cDarPNJEpCnpBZSfmcquydockkePkjPGA2';
+  var sample_address = 'xEqwuCZog9LJZWGZVzazu3Qsem6Lh9x4yF';
   var sample_address_2 = 'cJzUdHEh7MF7xwzxF7Tww7H6uWvfKRX5wJ';
   var sample_tx = 'D7F330C0AB4B9554879579975C3917DEA3846A7E8F4B315EF9758F6136E1E15E';
 
@@ -290,7 +290,7 @@ var urlParams;
     _stream: true
   });
 
-  Request('casinocoin_path_find', {
+  Request('stoxum_path_find', {
     ledger_hash: void (0),
     ledger_index: void (0),
     source_account: sample_address,

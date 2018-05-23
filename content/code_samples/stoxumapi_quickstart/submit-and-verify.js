@@ -1,6 +1,6 @@
 'use strict';
 /* import StoxumAPI and support libraries */
-const CasinocoinAPI = require('casinocoin-libjs').CasinocoinAPI;
+const StoxumAPI = require('stoxum-libjs').StoxumAPI;
 const assert = require('assert');
 
 /* Credentials of the account placing the order */
@@ -23,8 +23,8 @@ const myOrder = {
 
 /* Milliseconds to wait between checks for a new ledger. */
 const INTERVAL = 1000;
-/* Instantiate CasinocoinAPI. Uses s2 (full history server) */
-const api = new CasinocoinAPI({ server: 'wss://s1.stoxum.com/', port: 51231 });
+/* Instantiate StoxumAPI. Uses s2 (full history server) */
+const api = new StoxumAPI({ server: 'wss://s1.stoxum.com/', port: 51231 });
 /* Number of ledgers to check for valid transaction before failing */
 const ledgerOffset = 5;
 const myInstructions = { maxLedgerVersionOffset: ledgerOffset };

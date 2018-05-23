@@ -1,6 +1,6 @@
-const { CasinocoinAPI } = require('casinocoin-libjs');
+const { StoxumAPI } = require('stoxum-libjs');
 
-const api = new CasinocoinAPI({
+const api = new StoxumAPI({
   server: 'wss://s1.stoxum.com/', // Public rippled server
   port: 51231
 });

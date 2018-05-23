@@ -1,5 +1,5 @@
 'use strict'
-const CasinocoinAPI = require('casinocoin-libjs').CasinocoinAPI
+const StoxumAPI = require('stoxum-libjs').StoxumAPI
 
 const myAddr = 'rf1BiGeXwwQoi8Z2ueFYTEXSwuJYfV2Jpn'
 const mySecret = 's████████████████████████████'
@@ -12,7 +12,7 @@ const myInstructions = {
   maxLedgerVersionOffset: 5
 }
 
-const api = new CasinocoinAPI({ server: 'wss://s1.stoxum.com/', port: 51231 })
+const api = new StoxumAPI({ server: 'wss://s1.stoxum.com/', port: 51231 })
 
 function submitTransaction(lastClosedLedgerVersion, prepared, secret) {
   const signedData = api.sign(prepared.txJSON, secret)

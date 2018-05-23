@@ -76,9 +76,9 @@ To support interest-bearing and demurraging currencies, client applications must
 
 ### stoxum-libjs Support
 
-Demurrage was supported in stoxum-libjs versions **0.7.37** through **0.12.9**. Demurrage is ***not supported*** in [StoxumAPI](reference-casinocoinapi.html).
+Demurrage was supported in stoxum-libjs versions **0.7.37** through **0.12.9**. Demurrage is ***not supported*** in [StoxumAPI](reference-stoxumapi.html).
 
-The following code samples demonstrate how to use compatible versions of casinocoin-libjs to convert between ledger values and display values.
+The following code samples demonstrate how to use compatible versions of stoxum-libjs to convert between ledger values and display values.
 
 To convert from a display value to a ledger value, use `Amount.from_human()`:
 
@@ -87,7 +87,7 @@ To convert from a display value to a ledger value, use `Amount.from_human()`:
 // and pass in a reference_date that represents the current date
 // (in this case, ledger value 10 XAU with 0.5% annual demurrage,
 //  at 2017-11-04T00:07:50Z.)
-var demAmount = casinocoin.Amount.from_human('10 0158415500000000C1F76FF6ECB0BAC600000000',
+var demAmount = stoxum.Amount.from_human('10 0158415500000000C1F76FF6ECB0BAC600000000',
                                   {reference_date:563069270});
 
 // set the issuer
@@ -105,7 +105,7 @@ To convert from a ledger value to a display value:
 
 ```js
 // create an Amount object with the ledger value,
-ledgerAmount = casinocoin.Amount.from_json({
+ledgerAmount = stoxum.Amount.from_json({
   "currency": "015841551A748AD2C1F76FF6ECB0CCCD00000000",
   "issuer": "cHb9CJAWyB4rj91VRWn96DkukG4bwdtyTh",
   "value": "10.93625123082769"})
