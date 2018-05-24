@@ -1,0 +1,6 @@
+volumes:
+  - ${SOURCE_PATH}:/src
+  - bundle-storage:/src/out
+network_mode: bridge
+ports:
+  - '3244:80'

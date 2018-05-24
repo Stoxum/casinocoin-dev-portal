@@ -1,0 +1,6 @@
+FROM python:3.4.8-alpine
+LABEL maintainer="Mr. Stox <mrstox@stoxum.org>"
+
+WORKDIR /src
+RUN pip3 install dactyl
+COPY . /src

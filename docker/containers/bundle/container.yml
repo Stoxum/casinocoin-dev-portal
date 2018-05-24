@@ -1,0 +1,10 @@
+image: bundle
+labels:
+  - role=bundle
+working_dir: /src
+entrypoint: /src/docker/containers/bundle/entrypoint
+network_mode: host
+volumes:
+  - bundle-storage:/src/out
+cap_drop:
+  - ALL

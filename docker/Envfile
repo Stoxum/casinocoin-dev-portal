@@ -1,0 +1,3 @@
+box@dev.stoxum.com: production
+dev: nginx bundle
+production: nginx bundle
